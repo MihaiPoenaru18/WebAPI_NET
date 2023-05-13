@@ -3,22 +3,29 @@ using WebApplication1.Model;
 
 namespace WebApplication1.DataAccess.Repository
 {
-    public class CoffeeShopUsersRepository : ICoffeeShopRepository<Users>
+    public class CoffeeShopUserRepository : ICoffeeShopRepository<User>
     {
         private readonly CoffeeShopContext _context;
-        public CoffeeShopUsersRepository(CoffeeShopContext context) 
+        public CoffeeShopUserRepository(CoffeeShopContext context) 
         {
             _context = context; 
         }
 
-        public async Task<IEnumerable<Users>> GetAll()
+        public async Task<IEnumerable<User>> GetAll()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.User.ToListAsync();
         }
 
-        public Task<Users> Insert(Users item)
+        public async Task<bool> Insert(User user)
         {
-            throw new NotImplementedException();
+           if(user != null)
+            {
+               //check if user exist in db
+                _context.User.Add(user);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
 
         public Task Delete(Guid id)
@@ -26,12 +33,12 @@ namespace WebApplication1.DataAccess.Repository
             throw new NotImplementedException();
         }
 
-        public Task<Users> GetById(Guid id)
+        public Task<User> GetById(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public Task Update(Users item)
+        public Task Update(User item)
         {
             throw new NotImplementedException();
         }
