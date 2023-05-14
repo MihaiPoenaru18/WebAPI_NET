@@ -10,6 +10,6 @@
 
         Task Update(T item);
 
-        Task Delete(Guid id);
+        void Delete(Guid id);
     }
 }

@@ -5,7 +5,7 @@ using Swashbuckle.AspNetCore.Filters;
 using System.Text;
 using WebApplication1.DataAccess;
 using WebApplication1.DataAccess.Repository;
-using WebApplication1.Model;
+using WebApplication1.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,7 +27,7 @@ builder.Services.AddScoped<ICoffeeShopRepository<User>, CoffeeShopUserRepository
 #endregion
 builder.Services.AddSwaggerGen(options =>
 {
-    options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+    options.AddSecurityDefinition("bearer", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
         Name = "Authorization",

@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WebApplication1.Model;
+using WebApplication1.Models;
 
 namespace WebApplication1.DataAccess.Repository
 {
@@ -18,9 +18,8 @@ namespace WebApplication1.DataAccess.Repository
 
         public async Task<bool> Insert(User user)
         {
-           if(user != null)
+           if(user!= null && !IsUserExistingInDB(user))
             {
-               //check if user exist in db
                 _context.User.Add(user);
                 await _context.SaveChangesAsync();
                 return true;
@@ -28,14 +27,25 @@ namespace WebApplication1.DataAccess.Repository
             return false;
         }
 
-        public Task Delete(Guid id)
+        public void Delete(Guid id)
         {
-            throw new NotImplementedException();
+            var user = GetById(id).Result;
+            _context.User.Remove(user);
         }
 
-        public Task<User> GetById(Guid id)
+        public bool IsUserExistingInDB(User user)
         {
-            throw new NotImplementedException();
+            var email = GetAll().Result.Where(x=>x.Email == user.Email).FirstOrDefault();
+            if(email != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<User> GetById(Guid id)
+        {
+           return await _context.User.FindAsync(id);
         }
 
         public Task Update(User item)

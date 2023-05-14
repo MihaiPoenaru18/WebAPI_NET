@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
-using CoffeeShop_WebApi.Model;
+using Azure.Core;
+using CoffeeShop_WebApi.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using WebApplication1.DataAccess.Repository;
-using WebApplication1.Model;
-
+using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
@@ -19,8 +20,8 @@ namespace WebApplication1.Controllers
         private ICoffeeShopRepository<User> _usersRepository;
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
-        
-        public CoffeeShopController( ICoffeeShopRepository<User> usersRepository, IConfiguration configuration, IMapper mapper)
+
+        public CoffeeShopController(ICoffeeShopRepository<User> usersRepository, IConfiguration configuration, IMapper mapper)
         {
             _usersRepository = usersRepository;
             _configuration = configuration;
@@ -40,15 +41,80 @@ namespace WebApplication1.Controllers
             user = _mapper.Map<User>(request);
             user.PasswordHash = passwordHash;
 
-            await _usersRepository.Insert(user);
+            bool isUserExistingInDB = await _usersRepository.Insert(user);
+            if (!isUserExistingInDB)
+            {
+                return BadRequest("The user alright exist!!!");
+            }
             return Ok("Register Success");
         }
 
-        private string CreateToken(User user)
+        [HttpPost("Login")]
+        public ActionResult<User> Login(LoginUser loginUser)
         {
+            var findUser = _usersRepository.GetAll().Result.Where(x => x.Email == loginUser.Email).FirstOrDefault();
+            if (findUser == null)
+            {
+                return BadRequest("User not found.");
+            }
+
+            if (!BCrypt.Net.BCrypt.Verify(loginUser.Password, findUser.PasswordHash))
+            {
+                return BadRequest("Wrong password.");
+            }
+
+            string token = CreateToken(loginUser);
+
+            return Ok(token);
+        }
+
+        [HttpGet("GetUserInfo"),Authorize]
+        public ActionResult<UserDto> GetUserInfo([FromQuery] LoginUser loginUser)
+        {
+            var findUser = _usersRepository.GetAll().Result.Where(x => x.Email == loginUser.Email).FirstOrDefault();
+            //var s = User?.Identity?.Name;
+            if (findUser == null)
+            {
+                return BadRequest("findUser == null");
+            }
+            var userName = User?.Identity?.Name;
+            var roleClaims = User?.FindAll(ClaimTypes.Role);
+            var roles = roleClaims?.Select(c => c.Value).ToList();
+            var roles2 = User?.Claims
+                .Where(c => c.Type == ClaimTypes.Role)
+                .Select(c => c.Value)
+                .ToList();
+            return Ok(new { userName, roles, roles2 });
+
+            //var s = _mapper.Map<User,UserDto>(findUser);
+            //return Ok(s) ;
+        }
+
+
+
+        [HttpGet("GetAllUsersInfo"), Authorize]
+        
+        public ActionResult<IEnumerable<User>> GetAllUsersInfoo([FromQuery] LoginUser loginUser)
+        {
+            if (loginUser.Role == "Admin")
+            {
+                var allUsers = _usersRepository.GetAll().Result;
+                if (allUsers == null)
+                {
+                    return BadRequest("Database is empty!!!");
+                }
+
+                return allUsers.OrderBy(x => x.FirstName).ToList();
+            }
+            return BadRequest("You are not authorised for this request!!!");
+        }
+
+        private string CreateToken(LoginUser loginUser)
+        {
+            var findUser = _usersRepository.GetAll().Result.Where(x => x.Email == loginUser.Email).FirstOrDefault();
             List<Claim> claims = new List<Claim> {
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, "Admin"),
+                new Claim(ClaimTypes.Email, loginUser.Email),
+                new Claim(ClaimTypes.Name,$"{findUser.FirstName} {findUser.LastName}"),
                 new Claim(ClaimTypes.Role, "User"),
             };
 
@@ -66,24 +132,6 @@ namespace WebApplication1.Controllers
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
             return jwt;
-        }
-
-        [HttpPost("Login")]
-        public async Task<ActionResult<User>> Login(UserDto request)
-        {
-            if (user.Email != request.Email)
-            {
-                return BadRequest("User not found.");
-            }
-
-            if (!BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
-            {
-                return BadRequest("Wrong password.");
-            }
-
-             string token = CreateToken(user);
-
-            return Ok(token);
         }
 
         [HttpPost]

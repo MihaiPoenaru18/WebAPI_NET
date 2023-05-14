@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using CoffeeShop_WebApi.Model;
-using WebApplication1.Model;
+using CoffeeShop_WebApi.Models;
+using WebApplication1.Models;
 
 namespace CoffeeShop_WebApi.Services.AutoMapper
 {
@@ -9,6 +9,8 @@ namespace CoffeeShop_WebApi.Services.AutoMapper
         public AutoMapperUser() 
         {
             CreateMap<UserDto, User>();
+
+            CreateMap<User,UserDto>();
         }
     }
 }
