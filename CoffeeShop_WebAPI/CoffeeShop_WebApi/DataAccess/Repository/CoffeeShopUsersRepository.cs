@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using WebApplication1.Models;
+﻿using CoffeeShop_WebApi.DataAccess.ModelDB;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApplication1.DataAccess.Repository
 {

@@ -1,3 +1,6 @@
+using CoffeeShop_WebApi.DataAccess.ModelDB;
+using CoffeeShop_WebApi.Models;
+using CoffeeShop_WebApi.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -5,7 +8,6 @@ using Swashbuckle.AspNetCore.Filters;
 using System.Text;
 using WebApplication1.DataAccess;
 using WebApplication1.DataAccess.Repository;
-using WebApplication1.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +26,8 @@ builder.Services.AddDbContext<CoffeeShopContext>(options =>
 #region Repositories
 
 builder.Services.AddScoped<ICoffeeShopRepository<User>, CoffeeShopUserRepository>();
+builder.Services.AddScoped<IServices<UserDto>, ServicesUser>();
+
 #endregion
 builder.Services.AddSwaggerGen(options =>
 {
