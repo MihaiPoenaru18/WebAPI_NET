@@ -12,8 +12,8 @@ using WebApplication1.DataAccess;
 namespace CoffeeShop_WebApi.Migrations
 {
     [DbContext(typeof(CoffeeShopContext))]
-    [Migration("20230513151420_Init")]
-    partial class Init
+    [Migration("20230516161441_InitMigration")]
+    partial class InitMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace CoffeeShop_WebApi.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("WebApplication1.Model.User", b =>
+            modelBuilder.Entity("CoffeeShop_WebApi.DataAccess.ModelDB.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -43,7 +43,7 @@ namespace CoffeeShop_WebApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PasswordHash")
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

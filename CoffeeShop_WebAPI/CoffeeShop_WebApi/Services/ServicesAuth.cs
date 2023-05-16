@@ -53,7 +53,7 @@ namespace CoffeeShop_WebApi.Services
             Guid g = Guid.NewGuid();
             user.Id = g;
             user = _mapper.Map<User>(userDto);
-            user.PasswordHash = passwordHash;
+            user.Password = passwordHash;
             return await _usersRepository.Insert(user);
         }
 

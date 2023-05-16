@@ -10,7 +10,7 @@ namespace CoffeeShop_WebApi.Services.AutoMapper
         {
             var config = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<User, UserDto>().ForMember(dest => dest.Password, act => act.MapFrom(src => src.PasswordHash));
+                cfg.CreateMap<User, UserDto>().ForMember(dest => dest.Password, act => act.MapFrom(src => src.Password));
             });
             return new Mapper(config);
         }

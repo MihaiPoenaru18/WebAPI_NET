@@ -51,7 +51,7 @@ namespace WebApplication1.Controllers
             return Ok(_services.CreateToken(loginUser));
         }
 
-        [HttpGet("GetUserInfo")]
+        [HttpGet("GetUserInfo") ,]
         public ActionResult<UserDto> GetUserInfo([FromQuery] LoginUser loginUser)
         {
             //_services.GetInfo(loginUser);
