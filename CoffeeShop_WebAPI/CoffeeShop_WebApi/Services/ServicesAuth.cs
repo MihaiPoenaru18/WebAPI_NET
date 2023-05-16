@@ -24,7 +24,7 @@ namespace CoffeeShop_WebApi.Services
             _configuration = configuration;
         }
 
-        public UserDto GetInfo(LoginUser loginUser)// gandeste la un parametru generic)
+        public UserDto GetInfo(LoginUser loginUser)
         {
             var findUser = _usersRepository.GetAll().Result.Where(x => x.Email == loginUser.Email).FirstOrDefault();
             //var s = User?.Identity?.Name;
