@@ -9,13 +9,13 @@ using System.Security.Claims;
 
 namespace WebApplication1.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/AuthController/[controller]")]
     [ApiController]
-    public class CoffeeShopController : ControllerBase
+    public class AuthController : ControllerBase
     {
         private IServices<UserDto> _services;
 
-        public CoffeeShopController(IServices<UserDto> services)
+        public AuthController(IServices<UserDto> services)
         {
             _services = services;
         }
@@ -34,8 +34,8 @@ namespace WebApplication1.Controllers
             return Ok("Register Success");
         }
 
-        [HttpPost("GetToken")]
-        public ActionResult<ResposeToken> Login(LoginUser loginUser)
+        [HttpGet("GetToken")]
+        public ActionResult<ResposeToken> Login([FromQuery] LoginUser loginUser)
         {
             var findUser = _services.GetAllUsers().Where(x => x.Email == loginUser.Email).FirstOrDefault();
             if (findUser == null)
@@ -51,18 +51,18 @@ namespace WebApplication1.Controllers
             return Ok(_services.CreateToken(loginUser));
         }
 
-        [HttpGet("GetUserInfo"), Authorize]
+        [HttpGet("GetUserInfo")]
         public ActionResult<UserDto> GetUserInfo([FromQuery] LoginUser loginUser)
         {
             //_services.GetInfo(loginUser);
-            var userName = User?.Identity?.Name;
-            var roleClaims = User?.FindAll(ClaimTypes.Role);
-            var roles = roleClaims?.Select(c => c.Value).ToList();
-            var roles2 = User?.Claims
-                .Where(c => c.Type == ClaimTypes.Role)
-                .Select(c => c.Value)
-                .ToList();
-            // return Ok(new { userName, roles, roles2 });
+            //var userName = User?.Identity?.Name;
+            //var roleClaims = User?.FindAll(ClaimTypes.Role);
+            //var roles = roleClaims?.Select(c => c.Value).ToList();
+            //var roles2 = User?.Claims
+            //    .Where(c => c.Type == ClaimTypes.Role)
+            //    .Select(c => c.Value)
+            //    .ToList();
+            //return Ok(new { userName, roles, roles2 });
             //var s = _mapper.Map<User,UserDto>(findUser);
             return Ok(_services.GetInfo(loginUser));
         }

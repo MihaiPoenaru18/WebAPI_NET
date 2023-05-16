@@ -10,14 +10,14 @@ using WebApplication1.DataAccess.Repository;
 
 namespace CoffeeShop_WebApi.Services
 {
-    public class ServicesUser : IServices<UserDto>
+    public class ServicesAuth : IServices<UserDto>
     {
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
         private ICoffeeShopRepository<User> _usersRepository;
         private static User user = new User();
 
-        public ServicesUser(ICoffeeShopRepository<User> usersRepository, IMapper mapper, IConfiguration configuration)
+        public ServicesAuth(ICoffeeShopRepository<User> usersRepository, IMapper mapper, IConfiguration configuration)
         {
             _usersRepository = usersRepository;
             _mapper = mapper;
@@ -57,14 +57,14 @@ namespace CoffeeShop_WebApi.Services
             return await _usersRepository.Insert(user);
         }
 
-
         public ResposeToken CreateToken(LoginUser loginUser)
         {
             var findUser = _usersRepository.GetAll().Result.Where(x => x.Email == loginUser.Email).FirstOrDefault();
             var expiresDate = DateTime.Now.AddDays(1);
             List<Claim> claims = new List<Claim> {
                 new Claim(ClaimTypes.Email, loginUser.Email),
-                new Claim(ClaimTypes.Name,$"{findUser.FirstName} {findUser.LastName}"),
+                new Claim(ClaimTypes.Name, $"{findUser.FirstName} {findUser.LastName}"),
+                new Claim(ClaimTypes.Role, "Admin"),
                 new Claim(ClaimTypes.Role, "User"),
             };
 

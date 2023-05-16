@@ -26,24 +26,21 @@ builder.Services.AddDbContext<CoffeeShopContext>(options =>
 #region Repositories
 
 builder.Services.AddScoped<ICoffeeShopRepository<User>, CoffeeShopUserRepository>();
-builder.Services.AddScoped<IServices<UserDto>, ServicesUser>();
+builder.Services.AddScoped<IServices<UserDto>, ServicesAuth>();
 
 #endregion
 builder.Services.AddSwaggerGen(options =>
 {
-    options.AddSecurityDefinition("bearer", new OpenApiSecurityScheme
+    options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
         Name = "Authorization",
         Type = SecuritySchemeType.ApiKey
     });
-
     options.OperationFilter<SecurityRequirementsOperationFilter>();
 });
-builder.Services.AddCors(options => options.AddPolicy(name: "CoffeeShop", policy =>
-{
-    policy.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();
-}));
+
+
 
 builder.Services.AddAuthentication().AddJwtBearer(options =>
 {
@@ -53,7 +50,7 @@ builder.Services.AddAuthentication().AddJwtBearer(options =>
         ValidateAudience = false,
         ValidateIssuer = false,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-                builder.Configuration.GetSection("AppSettings:Token").Value!))
+        builder.Configuration.GetSection("AppSettings:Token").Value!))
     };
 });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
