@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using Azure.Core;
+using CoffeeShop_WebApi.Authorization;
+using CoffeeShop_WebApi.Authorization.Models;
 using CoffeeShop_WebApi.DataAccess.ModelDB;
 using CoffeeShop_WebApi.Models;
 using CoffeeShop_WebApi.Services;
-using Microsoft.AspNetCore.Authorization;
+
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
+
 
 namespace WebApplication1.Controllers
 {
@@ -34,41 +36,30 @@ namespace WebApplication1.Controllers
             return Ok("Register Success");
         }
 
-        [HttpGet("GetToken")]
-        public ActionResult<ResposeToken> Login([FromQuery] LoginUser loginUser)
+        [HttpGet("Authenticate")]
+        public ActionResult<AuthenticateResponse> Login([FromQuery] AuthenticateRequest authenticateRequest)
         {
-            var findUser = _services.GetAllUsers().Where(x => x.Email == loginUser.Email).FirstOrDefault();
-            if (findUser == null)
+            var findUser = _services.GetAllUsers().SingleOrDefault(x => x.Email == authenticateRequest.Email);
+            var response = _services.Authenticate(authenticateRequest);
+
+            if (!BCrypt.Net.BCrypt.Verify(authenticateRequest.Password, findUser.Password) && response == null && findUser == null)
             {
-                return BadRequest("User not found.");
+                return BadRequest("Username or password is incorrect");
             }
 
-            if (!BCrypt.Net.BCrypt.Verify(loginUser.Password, findUser.Password))
-            {
-                return BadRequest("Wrong password.");
-            }
-
-            return Ok(_services.CreateToken(loginUser));
+            return Ok(response);
         }
 
-        [HttpGet("GetUserInfo") ,]
-        public ActionResult<UserDto> GetUserInfo([FromQuery] LoginUser loginUser)
+        [AllowAnonymous]
+        [HttpGet("GetUserInfo"), Authorize]
+        public ActionResult<UserDto> GetUserInfo([FromQuery] AuthenticateRequest loginUser)
         {
-            //_services.GetInfo(loginUser);
-            //var userName = User?.Identity?.Name;
-            //var roleClaims = User?.FindAll(ClaimTypes.Role);
-            //var roles = roleClaims?.Select(c => c.Value).ToList();
-            //var roles2 = User?.Claims
-            //    .Where(c => c.Type == ClaimTypes.Role)
-            //    .Select(c => c.Value)
-            //    .ToList();
-            //return Ok(new { userName, roles, roles2 });
-            //var s = _mapper.Map<User,UserDto>(findUser);
             return Ok(_services.GetInfo(loginUser));
         }
 
+        [AllowAnonymous]
         [HttpGet("GetAllUsersInfo"), Authorize]
-        public ActionResult<IEnumerable<User>> GetAllUsersInfoo([FromQuery] LoginUser loginUser)
+        public ActionResult<IEnumerable<User>> GetAllUsersInfoo([FromQuery] AuthenticateRequest loginUser)
         {
             if (loginUser.Role == "Admin")
             {

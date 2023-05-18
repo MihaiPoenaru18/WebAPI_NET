@@ -1,6 +1,6 @@
-﻿namespace CoffeeShop_WebApi.Models
+﻿namespace CoffeeShop_WebApi.Authorization.Models
 {
-    public class LoginUser
+    public class AuthenticateRequest
     {
         public required string Email { get; set; }
         public string Role { get; set; } = "User";

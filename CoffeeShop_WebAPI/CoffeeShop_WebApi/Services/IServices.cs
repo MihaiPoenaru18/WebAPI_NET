@@ -1,12 +1,15 @@
-﻿using CoffeeShop_WebApi.Models;
+﻿using CoffeeShop_WebApi.Authorization.Models;
 
 namespace CoffeeShop_WebApi.Services
 {
     public interface IServices<T> where T : class
     {
-        T GetInfo(LoginUser loginUse);
+        T GetInfo(AuthenticateRequest loginUse);
+
         IEnumerable<T> GetAllUsers();
+
         Task<bool> IsUserRegistered(T user);
-        ResposeToken CreateToken(LoginUser loginUser);
+
+        AuthenticateResponse? Authenticate(AuthenticateRequest request);
     }
 }
