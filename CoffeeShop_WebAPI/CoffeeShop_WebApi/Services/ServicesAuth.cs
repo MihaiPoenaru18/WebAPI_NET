@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
+using CoffeeShop_WebApi.Authorization;
+using CoffeeShop_WebApi.Authorization.Models;
 using CoffeeShop_WebApi.DataAccess.ModelDB;
 using CoffeeShop_WebApi.Models;
 using CoffeeShop_WebApi.Services.AutoMapper;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using WebApplication1.DataAccess.Repository;
 
 namespace CoffeeShop_WebApi.Services
@@ -13,21 +11,21 @@ namespace CoffeeShop_WebApi.Services
     public class ServicesAuth : IServices<UserDto>
     {
         private readonly IMapper _mapper;
-        private readonly IConfiguration _configuration;
+        private readonly IAuthentication _authorization;
         private ICoffeeShopRepository<User> _usersRepository;
         private static User user = new User();
 
-        public ServicesAuth(ICoffeeShopRepository<User> usersRepository, IMapper mapper, IConfiguration configuration)
+        public ServicesAuth(ICoffeeShopRepository<User> usersRepository, IMapper mapper, IAuthentication authorization)
         {
             _usersRepository = usersRepository;
             _mapper = mapper;
-            _configuration = configuration;
+            _authorization = authorization;
         }
 
-        public UserDto GetInfo(LoginUser loginUser)
+        public UserDto GetInfo(AuthenticateRequest loginUser)
         {
-            var findUser = _usersRepository.GetAll().Result.Where(x => x.Email == loginUser.Email).FirstOrDefault();
-            //var s = User?.Identity?.Name;
+            var findUser = _usersRepository.GetAll().Result.SingleOrDefault(x => x.Email == loginUser.Email);
+         
             if (findUser == null)
             {
                 return null;
@@ -47,44 +45,27 @@ namespace CoffeeShop_WebApi.Services
             return users;
         }
 
-        public async Task<bool> IsUserRegistered(UserDto userDto)
+        public async Task<bool> IsUserRegistered(UserDto user)
         {
-            string passwordHash = BCrypt.Net.BCrypt.HashPassword(userDto.Password);
-            Guid g = Guid.NewGuid();
-            user.Id = g;
-            user = _mapper.Map<User>(userDto);
-            user.Password = passwordHash;
-            return await _usersRepository.Insert(user);
+            if (user.Role != "User" || user.Role != "Admin")
+            {
+                string passwordHash = BCrypt.Net.BCrypt.HashPassword(user.Password);
+                Guid g = Guid.NewGuid();
+                ServicesAuth.user.Id = g;
+                ServicesAuth.user = _mapper.Map<User>(user);
+                ServicesAuth.user.Password = passwordHash;
+                return await _usersRepository.Insert(ServicesAuth.user);
+            }
+            return false;
         }
-
-        public ResposeToken CreateToken(LoginUser loginUser)
+        public AuthenticateResponse? Authenticate(AuthenticateRequest request)
         {
-            var findUser = _usersRepository.GetAll().Result.Where(x => x.Email == loginUser.Email).FirstOrDefault();
-            var expiresDate = DateTime.Now.AddDays(1);
-            List<Claim> claims = new List<Claim> {
-                new Claim(ClaimTypes.Email, loginUser.Email),
-                new Claim(ClaimTypes.Name, $"{findUser.FirstName} {findUser.LastName}"),
-                new Claim(ClaimTypes.Role, "Admin"),
-                new Claim(ClaimTypes.Role, "User"),
-            };
-
-            var key = new SymmetricSecurityKey(Encoding.UTF32.GetBytes(
-                _configuration.GetSection("AppSettings:Token").Value!));
-
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-            var token = new JwtSecurityToken(
-                    claims: claims,
-                    expires: expiresDate,
-                    signingCredentials: creds);
-
-            ResposeToken resposeToken = new ResposeToken();
-            resposeToken.CreatedDate = DateTime.Now;
-            resposeToken.ExpiresDate = expiresDate;
-            resposeToken.Token = new JwtSecurityTokenHandler().WriteToken(token);
-
-            return resposeToken;
+            var response = _authorization.Authorization(request,DateTime.Now.AddDays(1));
+            if (response == null)
+            {
+                return null;
+            }
+            return response;
         }
-
-
     }
 }

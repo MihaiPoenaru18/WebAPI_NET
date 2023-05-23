@@ -1,3 +1,4 @@
+using CoffeeShop_WebApi.Authorization;
 using CoffeeShop_WebApi.DataAccess.ModelDB;
 using CoffeeShop_WebApi.Models;
 using CoffeeShop_WebApi.Services;
@@ -27,44 +28,37 @@ builder.Services.AddDbContext<CoffeeShopContext>(options =>
 
 builder.Services.AddScoped<ICoffeeShopRepository<User>, CoffeeShopUserRepository>();
 builder.Services.AddScoped<IServices<UserDto>, ServicesAuth>();
-
+builder.Services.AddScoped<IAuthentication, Authentication>();
 #endregion
-builder.Services.AddSwaggerGen(options =>
-{
-    options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+
+builder.Services.AddCors(options => options.AddPolicy(name: "NgOrigins",
+    policy =>
     {
-        In = ParameterLocation.Header,
-        Name = "Authorization",
-        Type = SecuritySchemeType.ApiKey
-    });
-    options.OperationFilter<SecurityRequirementsOperationFilter>();
-});
+        policy.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();
+    }));
 
-
-
-builder.Services.AddAuthentication().AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuerSigningKey = true,
-        ValidateAudience = false,
-        ValidateIssuer = false,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-        builder.Configuration.GetSection("AppSettings:Token").Value!))
-    };
-});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+{
+    // global cors policy
+    app.UseCors(x => x
+        .AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader());
 
+    app.MapControllers();
+}
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("NgOrigins");
 
 app.UseHttpsRedirection();
 
