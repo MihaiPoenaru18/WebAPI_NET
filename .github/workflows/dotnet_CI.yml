@@ -20,7 +20,7 @@ jobs:
     - name: Setup NuGet
       uses: NuGet/setup-nuget@v1.2.0
     - name: RestoreNuget packages 
-      run: nuget restore  
+      run: nuget restore CoffeeShop_WebAPI/CoffeeShop_WebAPI.sln
     - name: Restore dependencies
       run: dotnet restore CoffeeShop_WebAPI/CoffeeShop_WebAPI.sln
     - name: Build the solution
