@@ -1,11 +1,8 @@
-﻿using AutoMapper;
-using Azure.Core;
-using CoffeeShop_WebApi.Authorization;
+﻿using CoffeeShop_WebApi.Authorization;
 using CoffeeShop_WebApi.Authorization.Models;
 using CoffeeShop_WebApi.DataAccess.ModelDB;
-using CoffeeShop_WebApi.Models;
+using CoffeeShop_WebApi.EntiteModels;
 using CoffeeShop_WebApi.Services;
-
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -22,7 +19,7 @@ namespace WebApplication1.Controllers
             _services = services;
         }
 
-        [HttpPost("Register")]
+        [HttpPost("RegisterUser")]
         public ActionResult<User> Register(UserDto request)
         {
             if (request == null)

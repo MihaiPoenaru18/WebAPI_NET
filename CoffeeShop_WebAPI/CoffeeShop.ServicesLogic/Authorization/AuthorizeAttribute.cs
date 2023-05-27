@@ -1,6 +1,7 @@
-﻿using CoffeeShop_WebApi.DataAccess.ModelDB;
-using Microsoft.AspNetCore.Mvc.Filters;
+﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
+using CoffeeShop_WebApi.DataAccess.ModelDB;
+using Microsoft.AspNetCore.Http;
 
 namespace CoffeeShop_WebApi.Authorization
 {

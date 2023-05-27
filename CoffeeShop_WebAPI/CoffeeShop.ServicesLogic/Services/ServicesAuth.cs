@@ -2,7 +2,7 @@
 using CoffeeShop_WebApi.Authorization;
 using CoffeeShop_WebApi.Authorization.Models;
 using CoffeeShop_WebApi.DataAccess.ModelDB;
-using CoffeeShop_WebApi.Models;
+using CoffeeShop_WebApi.EntiteModels;
 using CoffeeShop_WebApi.Services.AutoMapper;
 using WebApplication1.DataAccess.Repository;
 
@@ -47,13 +47,15 @@ namespace CoffeeShop_WebApi.Services
 
         public async Task<bool> IsUserRegistered(UserDto user)
         {
+            var mapperUser = MapperConfig.InitializeAutomapper();
+            var u = new User();
             if (user.Role != "User" || user.Role != "Admin")
             {
                 string passwordHash = BCrypt.Net.BCrypt.HashPassword(user.Password);
                 Guid g = Guid.NewGuid();
                 ServicesAuth.user.Id = g;
-                ServicesAuth.user = _mapper.Map<User>(user);
                 ServicesAuth.user.Password = passwordHash;
+                ServicesAuth.user = _mapper.Map(user, u);
                 return await _usersRepository.Insert(ServicesAuth.user);
             }
             return false;
