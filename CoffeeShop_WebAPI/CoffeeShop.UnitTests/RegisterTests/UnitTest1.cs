@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace CoffeeShop_WebApi_UnitTests
+namespace CoffeeShop.UnitTests
 {
     [TestClass]
     public class UnitTest1
