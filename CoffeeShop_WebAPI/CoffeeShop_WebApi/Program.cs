@@ -1,13 +1,9 @@
+using CoffeeShop.DataAccess.DataAccess.DataBaseContext;
 using CoffeeShop_WebApi.Authorization;
 using CoffeeShop_WebApi.DataAccess.ModelDB;
 using CoffeeShop_WebApi.Models;
 using CoffeeShop_WebApi.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.Filters;
-using System.Text;
-using WebApplication1.DataAccess;
 using WebApplication1.DataAccess.Repository;
 
 var builder = WebApplication.CreateBuilder(args);

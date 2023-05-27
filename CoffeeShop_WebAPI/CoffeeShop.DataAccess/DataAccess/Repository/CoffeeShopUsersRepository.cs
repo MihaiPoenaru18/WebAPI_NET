@@ -1,4 +1,5 @@
-﻿using CoffeeShop_WebApi.DataAccess.ModelDB;
+﻿using CoffeeShop.DataAccess.DataAccess.DataBaseContext;
+using CoffeeShop_WebApi.DataAccess.ModelDB;
 using Microsoft.EntityFrameworkCore;
 
 namespace WebApplication1.DataAccess.Repository
