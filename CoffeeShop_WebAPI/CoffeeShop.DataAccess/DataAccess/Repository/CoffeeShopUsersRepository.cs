@@ -1,4 +1,5 @@
-﻿using CoffeeShop.DataAccess.DataAccess.DataBaseContext;
+﻿using BCrypt.Net;
+using CoffeeShop.DataAccess.DataAccess.DataBaseContext;
 using CoffeeShop_WebApi.DataAccess.ModelDB;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,6 +22,7 @@ namespace WebApplication1.DataAccess.Repository
         {
            if(user!= null && !IsUserExistingInDB(user))
             {
+                user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
                 _context.User.Add(user);
                 await _context.SaveChangesAsync();
                 return true;
@@ -36,8 +38,8 @@ namespace WebApplication1.DataAccess.Repository
 
         public bool IsUserExistingInDB(User user)
         {
-            var email = GetAll().Result.Where(x=>x.Email == user.Email).FirstOrDefault();
-            if(email != null)
+            var userFromDb = GetAll().Result.Where(x=>x.Email == user.Email && BCrypt.Net.BCrypt.Verify(user.Password,x.Password)).FirstOrDefault();
+            if(userFromDb != null)
             {
                 return true;
             }

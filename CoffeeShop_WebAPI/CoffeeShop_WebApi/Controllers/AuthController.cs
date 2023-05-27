@@ -33,13 +33,13 @@ namespace WebApplication1.Controllers
             return Ok("Register Success");
         }
 
+        [AllowAnonymous]
         [HttpGet("Authenticate")]
-        public ActionResult<AuthenticateResponse> Login([FromQuery] AuthenticateRequest authenticateRequest)
+        public ActionResult<AuthenticateResponse> Login([FromBody] AuthenticateRequest authenticateRequest)
         {
-            var findUser = _services.GetAllUsers().SingleOrDefault(x => x.Email == authenticateRequest.Email);
             var response = _services.Authenticate(authenticateRequest);
 
-            if (!BCrypt.Net.BCrypt.Verify(authenticateRequest.Password, findUser.Password) && response == null && findUser == null)
+            if (response == null)
             {
                 return BadRequest("Username or password is incorrect");
             }
@@ -49,9 +49,9 @@ namespace WebApplication1.Controllers
 
         [AllowAnonymous]
         [HttpGet("GetUserInfo"), Authorize]
-        public ActionResult<UserDto> GetUserInfo([FromQuery] AuthenticateRequest loginUser)
+        public ActionResult<UserDto> GetUserInfo([FromBody] AuthenticateRequest authenticateRequest)
         {
-            return Ok(_services.GetInfo(loginUser));
+            return Ok(_services.GetInfo(authenticateRequest));
         }
 
         [AllowAnonymous]

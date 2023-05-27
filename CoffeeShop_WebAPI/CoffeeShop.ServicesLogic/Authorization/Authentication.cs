@@ -1,19 +1,24 @@
 ﻿using CoffeeShop_WebApi.Authorization.Models;
+using CoffeeShop_WebApi.DataAccess.ModelDB;
+using CoffeeShop_WebApi.Services.AutoMapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using WebApplication1.DataAccess.Repository;
 
 namespace CoffeeShop_WebApi.Authorization
 {
     public class Authentication : IAuthentication
     {
         private readonly IConfiguration _configuration;
+        private readonly ICoffeeShopRepository<User> _repository;
 
-        public Authentication(IConfiguration configuration) 
+        public Authentication(IConfiguration configuration, ICoffeeShopRepository<User> repository) 
         {
             _configuration = configuration;
+            _repository = repository;
         }
 
         public string CreateToken(AuthenticateRequest request, DateTime expiresDate)
@@ -26,7 +31,6 @@ namespace CoffeeShop_WebApi.Authorization
             
             var key = new SymmetricSecurityKey(Encoding.UTF32.GetBytes(_configuration.GetSection("AppSettings:Token").Value!));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-
             var token = new JwtSecurityToken(
                     claims: claims,
                     expires: expiresDate,
@@ -36,16 +40,21 @@ namespace CoffeeShop_WebApi.Authorization
 
         public AuthenticateResponse Authorization(AuthenticateRequest request, DateTime expiresDate)
         {
-            var token = CreateToken(request, expiresDate);
-            if (token == null)
+            var user = MapperConfig<AuthenticateRequest, User>.InitializeAutomapper().Map<AuthenticateRequest, User>(request);
+            if (_repository.IsUserExistingInDB(user))
             {
-                return null;
+                var token = CreateToken(request, expiresDate);
+                if (token == null)
+                {
+                    return null;
+                }
+                AuthenticateResponse authenticateResponse = new AuthenticateResponse(request, token);
+                authenticateResponse.Email = request.Email;
+                authenticateResponse.CreatedDate = DateTime.Now;
+                authenticateResponse.ExpiresDate = expiresDate;
+                return authenticateResponse;
             }
-            AuthenticateResponse authenticateResponse = new AuthenticateResponse(request, token);
-            authenticateResponse.Email= request.Email;
-            authenticateResponse.CreatedDate = DateTime.Now;
-            authenticateResponse.ExpiresDate = expiresDate;
-            return authenticateResponse;
+            return null;
         }
     }
 }

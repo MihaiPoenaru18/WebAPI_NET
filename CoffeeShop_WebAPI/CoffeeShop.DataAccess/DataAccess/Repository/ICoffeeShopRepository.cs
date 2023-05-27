@@ -1,4 +1,6 @@
-﻿namespace WebApplication1.DataAccess.Repository
+﻿using CoffeeShop_WebApi.DataAccess.ModelDB;
+
+namespace WebApplication1.DataAccess.Repository
 {
     public interface ICoffeeShopRepository<T> where T : class
     {
@@ -11,5 +13,7 @@
         Task Update(T item);
 
         void Delete(Guid id);
+
+        bool IsUserExistingInDB(T item);
     }
 }
