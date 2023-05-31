@@ -2,7 +2,7 @@
 using CoffeeShop_WebApi.Authorization;
 using CoffeeShop_WebApi.Authorization.Models;
 using CoffeeShop_WebApi.DataAccess.ModelDB;
-using CoffeeShop_WebApi.Models;
+using CoffeeShop_WebApi.EntiteModels;
 using CoffeeShop_WebApi.Services.AutoMapper;
 using WebApplication1.DataAccess.Repository;
 
@@ -25,18 +25,18 @@ namespace CoffeeShop_WebApi.Services
         public UserDto GetInfo(AuthenticateRequest loginUser)
         {
             var findUser = _usersRepository.GetAll().Result.SingleOrDefault(x => x.Email == loginUser.Email);
-         
+            var mapperUser = MapperConfig<UserDto, User>.InitializeAutomapper();
             if (findUser == null)
             {
                 return null;
             }
-            var s = _mapper.Map<User, UserDto>(findUser);
+            var s = mapperUser.Map<User,UserDto>(findUser);
             return s;
         }
 
         public IEnumerable<UserDto> GetAllUsers()
         {
-            var mapperUser =  MapperConfig.InitializeAutomapper();
+            var mapperUser = MapperConfig<UserDto, User>.InitializeAutomapper();
             var users = new List<UserDto>();
             foreach(var user in _usersRepository.GetAll().Result)
             {
@@ -45,16 +45,13 @@ namespace CoffeeShop_WebApi.Services
             return users;
         }
 
-        public async Task<bool> IsUserRegistered(UserDto user)
+        public async Task<bool> IsUserRegistered(UserDto userDto)
         {
-            if (user.Role != "User" || user.Role != "Admin")
+            var mapperUser = MapperConfig<UserDto,User>.InitializeAutomapper();
+            if (userDto.Role != "User" || userDto.Role != "Admin")
             {
-                string passwordHash = BCrypt.Net.BCrypt.HashPassword(user.Password);
-                Guid g = Guid.NewGuid();
-                ServicesAuth.user.Id = g;
-                ServicesAuth.user = _mapper.Map<User>(user);
-                ServicesAuth.user.Password = passwordHash;
-                return await _usersRepository.Insert(ServicesAuth.user);
+                user = mapperUser.Map(userDto, user);
+                return await _usersRepository.Insert(user);
             }
             return false;
         }

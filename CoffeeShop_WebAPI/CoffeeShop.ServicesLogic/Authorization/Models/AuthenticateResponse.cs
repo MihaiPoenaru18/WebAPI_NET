@@ -1,6 +1,4 @@
-﻿using CoffeeShop_WebApi.Models;
-
-namespace CoffeeShop_WebApi.Authorization.Models
+﻿namespace CoffeeShop_WebApi.Authorization.Models
 {
     public class AuthenticateResponse
     {

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace CoffeeShop_WebApi.Models
+namespace CoffeeShop_WebApi.EntiteModels
 {
     public class UserDto
     {
