@@ -1,8 +1,8 @@
 # CoffeeShop with webapi(backend)
 #### The general architecture of this project is:
-![image](https://github.com/MihaiPoenaru18/WebAPI_NET/assets/45234856/1ca52145-1bf7-4445-9c49-b7b0e4867f47)<br>
+![image](https://github.com/MihaiPoenaru18/WebAPI_NET/assets/45234856/cf27022d-afae-488e-affa-b4081c2216ec)<br>
 ### The backend architecture is:<br>
-![image](https://github.com/MihaiPoenaru18/WebAPI_NET/assets/45234856/97c9f68f-5992-46f7-8267-7dbb631faf26)<br>
+![image](https://github.com/MihaiPoenaru18/WebAPI_NET/assets/45234856/415431f6-8080-454f-ad11-f84356e9f225)<br>
 ### This web api can be testing with tools like Postman
 ![image](https://github.com/MihaiPoenaru18/WebAPI_NET/assets/45234856/e50327d0-e732-4a2c-848b-72c22ef24900)<br>
 ### In next tables will you see the information about api reqests:
