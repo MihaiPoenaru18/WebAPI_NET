@@ -6,17 +6,15 @@
 ### This web api can be testing with tools like Postman
 ![image](https://github.com/MihaiPoenaru18/WebAPI_NET/assets/45234856/e50327d0-e732-4a2c-848b-72c22ef24900)<br>
 ### In next tables will you see the information about api reqests:
-| Request Name | Type Request   | Body |   Observation|
-|----------|:-------------------:|:------:|:---------------------:|
-| Register |  Post               | {  "email": "",  "firstName": "",  "lastName": "",  "role": "",  "password": ""} | The role can be <b>User</b> or <b>Admin</b>|
-| Authenticate |    Get    |  {  "Email": "",  "Role": "",  "Password": ""} | This work for about types of role and the user need to be register|
-| GetInfoUser | Get |   {  "Email": "",  "Role": "",  "Password": ""} | For this request the role need to be <b>Admin</b> and the user need to be firs login for this request |
-| GetAllUsersInfo | Get |   {  "Email": "",  "Role": "",  "Password": ""} | For this request the role need to be <b>Admin</b> and the user need to be firs login for this request|
+| Request Name | Type Request   |       Body        |   Observation|
+|----------|:-------------------:|:------------:|:---------------------:|
+| Register |  Post               | `{  "email": "",  `<br> ``` "firstName": "", ```<br> ```  "lastName": "", ```<br> ```  "role": "", ```<br> ```   "password": ""}  ``` | The role can be <b>User</b> or <b>Admin</b>|
+| Authenticate |    Get    |   ``` {"Email": "", ```<br> ``` "Role": "", ```<br> ```  "Password": ""} ```| This work for about types of role and the user need to be register|
+| GetInfoUser | Get |    ```{ "Email": "", ```<br> ``` "Role": "", ```<br> ``` "Password": ""}  ```| For this request the role need to be <b>Admin</b> and the user need to be firs login for this request |
+| GetAllUsersInfo | Get |   ``` { "Email": "",```<br> ```  "Role": "", ```<br> ``` "Password": ""}  ```| For this request the role need to be <b>Admin</b> and the user need to be firs login for this request|
 
 
 ### The table with link for every reqest:
-
-
 
 | Reuest Name  |  Link | 
 |:--------------:|:---:|
@@ -24,3 +22,5 @@
 | Authenticate | https://localhost:7282/api/AuthController/Auth/Authenticate |  
 | GetInfoUser | https://localhost:7282/api/AuthController/Auth/GetUserInfo|
 | GetAllUsersInfo |https://localhost:7282/api/AuthController/Auth/GetAllUsersInfo|
+### For testing faster this requets you can use the next scripts:
+
