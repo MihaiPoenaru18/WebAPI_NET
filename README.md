@@ -1,4 +1,5 @@
 # CoffeeShop with webapi(backend)
+
 #### The general architecture of this project is:
 ![image](https://github.com/MihaiPoenaru18/WebAPI_NET/assets/45234856/cf27022d-afae-488e-affa-b4081c2216ec)<br>
 ### The backend architecture is:<br>
