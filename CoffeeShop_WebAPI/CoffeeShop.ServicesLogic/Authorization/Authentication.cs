@@ -13,12 +13,12 @@ namespace CoffeeShop_WebApi.Authorization
     public class Authentication : IAuthentication
     {
         private readonly IConfiguration _configuration;
-        private readonly ICoffeeShopRepository<User> _repository;
+        private readonly ICoffeeShopRepository<User> _usersRepository;
 
-        public Authentication(IConfiguration configuration, ICoffeeShopRepository<User> repository) 
+        public Authentication(IConfiguration configuration, ICoffeeShopRepository<User> _usersRepository) 
         {
             _configuration = configuration;
-            _repository = repository;
+            this._usersRepository = _usersRepository;
         }
 
         public string CreateToken(AuthenticateRequest request, DateTime expiresDate)
@@ -41,7 +41,7 @@ namespace CoffeeShop_WebApi.Authorization
         public AuthenticateResponse Authorization(AuthenticateRequest request, DateTime expiresDate)
         {
             var user = MapperConfig<AuthenticateRequest, User>.InitializeAutomapper().Map<AuthenticateRequest, User>(request);
-            if (_repository.IsUserExistingInDB(user))
+            if (_usersRepository.IsUserExistingInDB(user))
             {
                 var token = CreateToken(request, expiresDate);
                 if (token == null)

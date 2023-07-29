@@ -1,8 +1,10 @@
 using CoffeeShop.DataAccess.DataAccess.DataBaseContext;
 using CoffeeShop_WebApi.Authorization;
+using CoffeeShop_WebApi.Authorization.Models;
 using CoffeeShop_WebApi.DataAccess.ModelDB;
 using CoffeeShop_WebApi.EntiteModels;
 using CoffeeShop_WebApi.Services;
+using CoffeeShop_WebApi.Services.AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.DataAccess.Repository;
 
@@ -26,6 +28,9 @@ builder.Services.AddScoped<ICoffeeShopRepository<User>, CoffeeShopUserRepository
 builder.Services.AddScoped<IServices<UserDto>, ServicesAuth>();
 builder.Services.AddScoped<IAuthentication, Authentication>();
 #endregion
+builder.Services.AddScoped<MapperConfig<User,UserDto>>();
+builder.Services.AddScoped<MapperConfig<UserDto, User>>();
+builder.Services.AddScoped<MapperConfig<AuthenticateRequest, User>>();
 
 builder.Services.AddCors(options => options.AddPolicy(name: "NgOrigins",
     policy =>

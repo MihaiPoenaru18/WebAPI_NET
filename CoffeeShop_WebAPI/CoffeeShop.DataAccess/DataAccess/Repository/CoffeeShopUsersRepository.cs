@@ -41,6 +41,8 @@ namespace WebApplication1.DataAccess.Repository
             var userFromDb = GetAll().Result.Where(x=>x.Email == user.Email && BCrypt.Net.BCrypt.Verify(user.Password,x.Password)).FirstOrDefault();
             if(userFromDb != null)
             {
+                user.FirstName = userFromDb.FirstName;
+                user.LastName = userFromDb.LastName;
                 return true;
             }
             return false;

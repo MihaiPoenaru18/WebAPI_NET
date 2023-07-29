@@ -51,6 +51,10 @@ namespace WebApplication1.Controllers
         [HttpGet("GetUserInfo"), Authorize]
         public ActionResult<UserDto> GetUserInfo([FromBody] AuthenticateRequest authenticateRequest)
         {
+            if (_services.GetInfo(authenticateRequest) == null)
+            {
+                return BadRequest("User doesn't exit!! \n You need to register this user");
+            }
             return Ok(_services.GetInfo(authenticateRequest));
         }
 
@@ -60,13 +64,12 @@ namespace WebApplication1.Controllers
         {
             if (loginUser.Role == "Admin")
             {
-                if (_services.GetAllUsers() == null)
+                if (_services.GetInfo(loginUser) == null)
                 {
-                    return BadRequest("Database is empty!!!");
+                    return BadRequest("User doesn't exit!! \n You need to register this user");
                 }
-                return Ok(_services.GetAllUsers().OrderBy(x => x.FirstName).ToList());
+                return Ok(_services.GetInfo(loginUser));
             }
-
             return BadRequest("You are not authorised for this request!!!");
         }
     }

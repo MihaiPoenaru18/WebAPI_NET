@@ -5,14 +5,14 @@ using CoffeeShop_WebApi.EntiteModels;
 
 namespace CoffeeShop_WebApi.Services.AutoMapper
 {
-    public class MapperConfig<T1, T2>
+    public class MapperConfig<Source, Destination>
     {
         public static Mapper InitializeAutomapper()
         {
             MapperConfiguration config;
-            if (typeof(T1) != typeof(T2))
+            if (typeof(Source) != typeof(Destination))
             {
-                if (typeof(User) == typeof(T1) && typeof(UserDto) == typeof(T2))
+                if (typeof(User) == typeof(Source) && typeof(UserDto) == typeof(Destination))
                 {
                     config = new MapperConfiguration(cfg =>
                     {
@@ -26,7 +26,7 @@ namespace CoffeeShop_WebApi.Services.AutoMapper
                     return new Mapper(config);
                 }
 
-                if (typeof(UserDto) == typeof(T1) && typeof(User) == typeof(T2))
+                if (typeof(UserDto) == typeof(Source) && typeof(User) == typeof(Destination))
                 {
                     config = new MapperConfiguration(cfg =>
                     {
@@ -41,11 +41,23 @@ namespace CoffeeShop_WebApi.Services.AutoMapper
                     return new Mapper(config);
                 }
 
-                if (typeof(AuthenticateRequest) == typeof(T1) && typeof(User) == typeof(T2))
+                if (typeof(AuthenticateRequest) == typeof(Source) && typeof(User) == typeof(Destination))
                 {
                     config = new MapperConfiguration(cfg =>
                     {
                         cfg.CreateMap<AuthenticateRequest, User>().ForMember(dest => dest.Password, act => act.MapFrom(src => src.Password))
+                                                                  .ForMember(dest => dest.Email, act => act.MapFrom(src => src.Email))
+                                                                  .ForMember(dest => dest.Role, act => act.MapFrom(src => src.Role));
+                    });
+
+                    return new Mapper(config);
+                }
+
+                if (typeof(AuthenticateRequest) == typeof(Source) && typeof(UserDto) == typeof(Destination))
+                {
+                    config = new MapperConfiguration(cfg =>
+                    {
+                        cfg.CreateMap<AuthenticateRequest, UserDto>().ForMember(dest => dest.Password, act => act.MapFrom(src => src.Password))
                                                                   .ForMember(dest => dest.Email, act => act.MapFrom(src => src.Email))
                                                                   .ForMember(dest => dest.Role, act => act.MapFrom(src => src.Role));
                     });

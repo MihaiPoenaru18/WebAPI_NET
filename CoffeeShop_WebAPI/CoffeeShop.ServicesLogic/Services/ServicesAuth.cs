@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Azure.Core;
 using CoffeeShop_WebApi.Authorization;
 using CoffeeShop_WebApi.Authorization.Models;
 using CoffeeShop_WebApi.DataAccess.ModelDB;
@@ -24,21 +25,20 @@ namespace CoffeeShop_WebApi.Services
 
         public UserDto GetInfo(AuthenticateRequest loginUser)
         {
-            var findUser = _usersRepository.GetAll().Result.SingleOrDefault(x => x.Email == loginUser.Email);
-            var mapperUser = MapperConfig<UserDto, User>.InitializeAutomapper();
-            if (findUser == null)
+            var user = MapperConfig<AuthenticateRequest, User>.InitializeAutomapper().Map<AuthenticateRequest, User>(loginUser);
+           
+            if (_usersRepository.IsUserExistingInDB(user))
             {
-                return null;
+                return MapperConfig<User, UserDto>.InitializeAutomapper().Map<User, UserDto>(user);
             }
-            var s = mapperUser.Map<User,UserDto>(findUser);
-            return s;
+            return null;
         }
 
         public IEnumerable<UserDto> GetAllUsers()
         {
             var mapperUser = MapperConfig<UserDto, User>.InitializeAutomapper();
             var users = new List<UserDto>();
-            foreach(var user in _usersRepository.GetAll().Result)
+            foreach (var user in _usersRepository.GetAll().Result)
             {
                 users.Add(mapperUser.Map<User, UserDto>(user));
             }
@@ -47,7 +47,7 @@ namespace CoffeeShop_WebApi.Services
 
         public async Task<bool> IsUserRegistered(UserDto userDto)
         {
-            var mapperUser = MapperConfig<UserDto,User>.InitializeAutomapper();
+            var mapperUser = MapperConfig<UserDto, User>.InitializeAutomapper();
             if (userDto.Role != "User" || userDto.Role != "Admin")
             {
                 user = mapperUser.Map(userDto, user);
@@ -57,7 +57,7 @@ namespace CoffeeShop_WebApi.Services
         }
         public AuthenticateResponse? Authenticate(AuthenticateRequest request)
         {
-            var response = _authorization.Authorization(request,DateTime.Now.AddDays(1));
+            var response = _authorization.Authorization(request, DateTime.Now.AddDays(1));
             if (response == null)
             {
                 return null;
