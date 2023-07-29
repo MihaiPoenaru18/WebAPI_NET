@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using CoffeeShop_WebApi.DataAccess.ModelDB;
 using Microsoft.AspNetCore.Http;
 
-namespace CoffeeShop_WebApi.Authorization
+namespace CoffeeShop.ServicesLogic.Authorization
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class AuthorizeAttribute : Attribute, IAuthorizationFilter

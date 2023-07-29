@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using CoffeeShop_WebApi.Authorization.Models;
 using CoffeeShop_WebApi.DataAccess.ModelDB;
-using CoffeeShop_WebApi.EntiteModels;
+using CoffeeShop.ServicesLogic.EntiteModels;
 
 namespace CoffeeShop_WebApi.Services.AutoMapper
 {

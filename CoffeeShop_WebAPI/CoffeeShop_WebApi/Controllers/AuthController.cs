@@ -1,8 +1,8 @@
-﻿using CoffeeShop_WebApi.Authorization;
+﻿using CoffeeShop.ServicesLogic.Authorization;
 using CoffeeShop_WebApi.Authorization.Models;
 using CoffeeShop_WebApi.DataAccess.ModelDB;
-using CoffeeShop_WebApi.EntiteModels;
-using CoffeeShop_WebApi.Services;
+using CoffeeShop.ServicesLogic.EntiteModels;
+using CoffeeShop.ServicesLogic.Services;
 using Microsoft.AspNetCore.Mvc;
 
 

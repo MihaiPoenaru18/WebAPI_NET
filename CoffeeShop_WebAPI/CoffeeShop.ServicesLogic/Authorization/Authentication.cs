@@ -8,7 +8,7 @@ using System.Security.Claims;
 using System.Text;
 using WebApplication1.DataAccess.Repository;
 
-namespace CoffeeShop_WebApi.Authorization
+namespace CoffeeShop.ServicesLogic.Authorization
 {
     public class Authentication : IAuthentication
     {

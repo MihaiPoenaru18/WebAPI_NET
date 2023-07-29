@@ -1,6 +1,6 @@
 ﻿using CoffeeShop_WebApi.Authorization.Models;
 
-namespace CoffeeShop_WebApi.Services
+namespace CoffeeShop.ServicesLogic.Services
 {
     public interface IServices<T> where T : class
     {

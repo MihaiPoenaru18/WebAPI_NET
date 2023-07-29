@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using CoffeeShop_WebApi.DataAccess.ModelDB;
-using CoffeeShop_WebApi.EntiteModels;
+using CoffeeShop.ServicesLogic.EntiteModels;
 
-namespace CoffeeShop_WebApi.Services.AutoMapper
+namespace CoffeeShop.ServicesLogic.Services.AutoMapper
 {
     public class AutoMapperUser : Profile
     {

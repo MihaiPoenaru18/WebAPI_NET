@@ -1,5 +1,6 @@
 ﻿using CoffeeShop_WebApi.Authorization.Models;
-namespace CoffeeShop_WebApi.Authorization
+
+namespace CoffeeShop.ServicesLogic.Authorization
 {
     public interface IAuthentication
     {

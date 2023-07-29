@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
-using Azure.Core;
-using CoffeeShop_WebApi.Authorization;
+using CoffeeShop.ServicesLogic.Authorization;
 using CoffeeShop_WebApi.Authorization.Models;
 using CoffeeShop_WebApi.DataAccess.ModelDB;
-using CoffeeShop_WebApi.EntiteModels;
+using CoffeeShop.ServicesLogic.EntiteModels;
 using CoffeeShop_WebApi.Services.AutoMapper;
 using WebApplication1.DataAccess.Repository;
 
-namespace CoffeeShop_WebApi.Services
+namespace CoffeeShop.ServicesLogic.Services
 {
     public class ServicesAuth : IServices<UserDto>
     {
