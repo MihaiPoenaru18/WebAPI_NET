@@ -1,6 +1,7 @@
 # Coffee Shop with webapi(backend)
-## Web REST API - Coffee Shop
-![image](https://github.com/MihaiPoenaru18/WebAPI_NET/assets/45234856/bff32c31-ad2b-42fb-ade5-9415292bc02e)
+### Web REST API - Coffee Shop
+![image](https://github.com/MihaiPoenaru18/WebAPI_NET/assets/45234856/277aee9e-9d08-4dc1-b54e-c7edf758ecf3)
+
 
 #### The general architecture of this project is:
 ![image](https://github.com/MihaiPoenaru18/WebAPI_NET/assets/45234856/cf27022d-afae-488e-affa-b4081c2216ec)<br>
