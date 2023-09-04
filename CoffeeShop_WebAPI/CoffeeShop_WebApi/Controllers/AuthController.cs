@@ -60,7 +60,7 @@ namespace WebApplication1.Controllers
 
         [AllowAnonymous]
         [HttpGet("GetAllUsersInfo"), Authorize]
-        public ActionResult<IEnumerable<User>> GetAllUsersInfoo([FromQuery] AuthenticateRequest loginUser)
+        public ActionResult<IEnumerable<User>> GetAllUsersInfo([FromQuery] AuthenticateRequest loginUser)
         {
             if (loginUser.Role == "Admin")
             {

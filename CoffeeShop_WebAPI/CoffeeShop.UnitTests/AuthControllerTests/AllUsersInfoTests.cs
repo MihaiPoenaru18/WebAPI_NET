@@ -1,0 +1,81 @@
+﻿using CoffeeShop.ServicesLogic.EntiteModels;
+using CoffeeShop.ServicesLogic.Services;
+using CoffeeShop_WebApi.Authorization.Models;
+using CoffeeShop_WebApi.DataAccess.ModelDB;
+using FakeItEasy;
+using Microsoft.AspNetCore.Mvc;
+using WebApplication1.Controllers;
+using Xunit;
+
+namespace CoffeeShop.UnitTests.AuthControllerTests
+{
+    public class AllUsersInfoTests
+    {
+        [Fact]
+        public void HavingAdminLogin_WhenGetAllUsersInfo_IsSuccess()
+        {
+            //arrange
+            var authenticateRequest = new AuthenticateRequest()
+            {
+                Email = "Poenaru@gmail",
+                Password = "21",
+                Role = "Admin"
+            };
+            var fakeUsers = A.CollectionOfDummy<UserDto>(5).AsEnumerable();
+            var services = A.Fake<IServices<UserDto>>();
+            A.CallTo(() => services.GetAllUsers()).Returns(fakeUsers);
+            var controller = new AuthController(services);
+            //act
+            var actionResult = controller.GetAllUsersInfo(authenticateRequest);
+
+            //assert
+            var result = actionResult.Result as OkObjectResult;
+            var resultInfo = result.Value as IEnumerable<User>;
+            Assert.Equal(5, resultInfo.Count());
+        }
+
+        [Fact]
+        public void HavingAdminLogin_WhenGetAllUsersInfo_IsFailes()
+        {
+            //arrange
+            var authenticateRequest = new AuthenticateRequest()
+            {
+                Email = "Poenaru@gmail",
+                Password = "21",
+                Role = "Admin"
+            };
+            var services = A.Fake<IServices<UserDto>>();
+            A.CallTo(() => services.GetAllUsers()).Returns(null);
+            var controller = new AuthController(services);
+            //act
+            var actionResult = controller.GetAllUsersInfo(authenticateRequest);
+
+            //assert
+            var result = actionResult.Result as BadRequestObjectResult;
+            var resultMessage = result.Value as string;
+            Assert.Equal("User doesn't exit!! \n You need to register this user", resultMessage);
+        }
+
+        [Fact]
+        public void HavingUserLogin_WhenGetAllUsersInfo_returnBadRequest()
+        {
+            //arrange
+            var authenticateRequest = new AuthenticateRequest()
+            {
+                Email = "Poenaru@gmail",
+                Password = "21",
+                Role = "User"
+            };
+            var services = A.Fake<IServices<UserDto>>();
+            A.CallTo(() => services.GetAllUsers()).Returns(null);
+            var controller = new AuthController(services);
+            //act
+            var actionResult = controller.GetAllUsersInfo(authenticateRequest);
+
+            //assert
+            var result = actionResult.Result as BadRequestObjectResult;
+            var resultMessage = result.Value as string;
+            Assert.Equal("You are not authorised for this request!!!", resultMessage);
+        }
+    }
+}

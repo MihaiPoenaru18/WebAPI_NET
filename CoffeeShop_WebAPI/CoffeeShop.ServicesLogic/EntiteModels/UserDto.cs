@@ -5,6 +5,7 @@ namespace CoffeeShop.ServicesLogic.EntiteModels
 {
     public class UserDto
     {
+        
         [EmailAddress]
         public required string Email { get; set; } 
         public required string FirstName { get; set; } 

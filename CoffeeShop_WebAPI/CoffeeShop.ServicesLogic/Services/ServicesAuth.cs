@@ -47,7 +47,7 @@ namespace CoffeeShop.ServicesLogic.Services
         public async Task<bool> IsUserRegistered(UserDto userDto)
         {
             var mapperUser = MapperConfig<UserDto, User>.InitializeAutomapper();
-            if (userDto.Role != "User" || userDto.Role != "Admin")
+            if ((userDto.Role != "User" || userDto.Role != "Admin") && userDto != null)
             {
                 user = mapperUser.Map(userDto, user);
                 return await _usersRepository.Insert(user);
