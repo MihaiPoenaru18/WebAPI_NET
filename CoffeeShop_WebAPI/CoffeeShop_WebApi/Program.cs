@@ -1,3 +1,4 @@
+
 using CoffeeShop.DataAccess.DataAccess.DataBaseContext;
 using CoffeeShop.ServicesLogic.Authorization;
 using CoffeeShop_WebApi.Authorization.Models;
@@ -7,6 +8,7 @@ using CoffeeShop.ServicesLogic.Services;
 using CoffeeShop_WebApi.Services.AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.DataAccess.Repository;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +27,7 @@ builder.Services.AddDbContext<CoffeeShopContext>(options =>
 #region Repositories
 
 builder.Services.AddScoped<ICoffeeShopRepository<User>, CoffeeShopUserRepository>();
+
 builder.Services.AddScoped<IServices<UserDto>, ServicesAuth>();
 builder.Services.AddScoped<IAuthentication, Authentication>();
 #endregion
@@ -60,7 +63,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
 app.UseCors("NgOrigins");
+
 
 app.UseHttpsRedirection();
 
