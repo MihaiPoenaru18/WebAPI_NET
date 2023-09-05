@@ -1,11 +1,10 @@
-﻿using AutoMapper;
-using Azure.Core;
+﻿using CoffeeShop.ServicesLogic.Authorization;
+using CoffeeShop_WebApi.Authorization.Models;
 using CoffeeShop_WebApi.DataAccess.ModelDB;
-using CoffeeShop_WebApi.Models;
-using CoffeeShop_WebApi.Services;
-using Microsoft.AspNetCore.Authorization;
+using CoffeeShop.ServicesLogic.EntiteModels;
+using CoffeeShop.ServicesLogic.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
+
 
 namespace WebApplication1.Controllers
 {
@@ -20,7 +19,7 @@ namespace WebApplication1.Controllers
             _services = services;
         }
 
-        [HttpPost("Register")]
+        [HttpPost("RegisterUser")]
         public ActionResult<User> Register(UserDto request)
         {
             if (request == null)
@@ -34,51 +33,43 @@ namespace WebApplication1.Controllers
             return Ok("Register Success");
         }
 
-        [HttpGet("GetToken")]
-        public ActionResult<ResposeToken> Login([FromQuery] LoginUser loginUser)
+        [AllowAnonymous]
+        [HttpGet("Authenticate")]
+        public ActionResult<AuthenticateResponse> Login([FromBody] AuthenticateRequest authenticateRequest)
         {
-            var findUser = _services.GetAllUsers().Where(x => x.Email == loginUser.Email).FirstOrDefault();
-            if (findUser == null)
+            var response = _services.Authenticate(authenticateRequest);
+
+            if (response == null)
             {
-                return BadRequest("User not found.");
+                return BadRequest("Username or password is incorrect");
             }
 
-            if (!BCrypt.Net.BCrypt.Verify(loginUser.Password, findUser.Password))
-            {
-                return BadRequest("Wrong password.");
-            }
-
-            return Ok(_services.CreateToken(loginUser));
+            return Ok(response);
         }
 
-        [HttpGet("GetUserInfo") ,]
-        public ActionResult<UserDto> GetUserInfo([FromQuery] LoginUser loginUser)
+        [AllowAnonymous]
+        [HttpGet("GetUserInfo"), Authorize]
+        public ActionResult<UserDto> GetUserInfo([FromBody] AuthenticateRequest authenticateRequest)
         {
-            //_services.GetInfo(loginUser);
-            //var userName = User?.Identity?.Name;
-            //var roleClaims = User?.FindAll(ClaimTypes.Role);
-            //var roles = roleClaims?.Select(c => c.Value).ToList();
-            //var roles2 = User?.Claims
-            //    .Where(c => c.Type == ClaimTypes.Role)
-            //    .Select(c => c.Value)
-            //    .ToList();
-            //return Ok(new { userName, roles, roles2 });
-            //var s = _mapper.Map<User,UserDto>(findUser);
-            return Ok(_services.GetInfo(loginUser));
+            if (_services.GetInfo(authenticateRequest) == null)
+            {
+                return BadRequest("User doesn't exit!! \n You need to register this user");
+            }
+            return Ok(_services.GetInfo(authenticateRequest));
         }
 
+        [AllowAnonymous]
         [HttpGet("GetAllUsersInfo"), Authorize]
-        public ActionResult<IEnumerable<User>> GetAllUsersInfoo([FromQuery] LoginUser loginUser)
+        public ActionResult<IEnumerable<User>> GetAllUsersInfo([FromQuery] AuthenticateRequest loginUser)
         {
             if (loginUser.Role == "Admin")
             {
                 if (_services.GetAllUsers() == null)
                 {
-                    return BadRequest("Database is empty!!!");
+                    return BadRequest("User doesn't exit!! \n You need to register this user");
                 }
-                return Ok(_services.GetAllUsers().OrderBy(x => x.FirstName).ToList());
+                return Ok(_services.GetAllUsers());
             }
-
             return BadRequest("You are not authorised for this request!!!");
         }
     }

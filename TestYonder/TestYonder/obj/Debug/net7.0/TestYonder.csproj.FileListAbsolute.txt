@@ -1,0 +1,15 @@
+D:\Repository\ASP.Net\Web API-Angular&React\WebAPI_NET\TestYonder\TestYonder\bin\Debug\net7.0\TestYonder.exe
+D:\Repository\ASP.Net\Web API-Angular&React\WebAPI_NET\TestYonder\TestYonder\bin\Debug\net7.0\TestYonder.deps.json
+D:\Repository\ASP.Net\Web API-Angular&React\WebAPI_NET\TestYonder\TestYonder\bin\Debug\net7.0\TestYonder.runtimeconfig.json
+D:\Repository\ASP.Net\Web API-Angular&React\WebAPI_NET\TestYonder\TestYonder\bin\Debug\net7.0\TestYonder.dll
+D:\Repository\ASP.Net\Web API-Angular&React\WebAPI_NET\TestYonder\TestYonder\bin\Debug\net7.0\TestYonder.pdb
+D:\Repository\ASP.Net\Web API-Angular&React\WebAPI_NET\TestYonder\TestYonder\obj\Debug\net7.0\TestYonder.csproj.AssemblyReference.cache
+D:\Repository\ASP.Net\Web API-Angular&React\WebAPI_NET\TestYonder\TestYonder\obj\Debug\net7.0\TestYonder.GeneratedMSBuildEditorConfig.editorconfig
+D:\Repository\ASP.Net\Web API-Angular&React\WebAPI_NET\TestYonder\TestYonder\obj\Debug\net7.0\TestYonder.AssemblyInfoInputs.cache
+D:\Repository\ASP.Net\Web API-Angular&React\WebAPI_NET\TestYonder\TestYonder\obj\Debug\net7.0\TestYonder.AssemblyInfo.cs
+D:\Repository\ASP.Net\Web API-Angular&React\WebAPI_NET\TestYonder\TestYonder\obj\Debug\net7.0\TestYonder.csproj.CoreCompileInputs.cache
+D:\Repository\ASP.Net\Web API-Angular&React\WebAPI_NET\TestYonder\TestYonder\obj\Debug\net7.0\TestYonder.dll
+D:\Repository\ASP.Net\Web API-Angular&React\WebAPI_NET\TestYonder\TestYonder\obj\Debug\net7.0\refint\TestYonder.dll
+D:\Repository\ASP.Net\Web API-Angular&React\WebAPI_NET\TestYonder\TestYonder\obj\Debug\net7.0\TestYonder.pdb
+D:\Repository\ASP.Net\Web API-Angular&React\WebAPI_NET\TestYonder\TestYonder\obj\Debug\net7.0\TestYonder.genruntimeconfig.cache
+D:\Repository\ASP.Net\Web API-Angular&React\WebAPI_NET\TestYonder\TestYonder\obj\Debug\net7.0\ref\TestYonder.dll
