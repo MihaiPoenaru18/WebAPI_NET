@@ -64,11 +64,11 @@ namespace WebApplication1.Controllers
         {
             if (loginUser.Role == "Admin")
             {
-                if (_services.GetInfo(loginUser) == null)
+                if (_services.GetAllUsers() == null)
                 {
                     return BadRequest("User doesn't exit!! \n You need to register this user");
                 }
-                return Ok(_services.GetInfo(loginUser));
+                return Ok(_services.GetAllUsers());
             }
             return BadRequest("You are not authorised for this request!!!");
         }

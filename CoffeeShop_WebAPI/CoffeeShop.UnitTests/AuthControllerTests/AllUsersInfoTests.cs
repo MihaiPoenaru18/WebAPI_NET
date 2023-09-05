@@ -21,7 +21,15 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
                 Password = "21",
                 Role = "Admin"
             };
-            var fakeUsers = A.CollectionOfDummy<UserDto>(5).AsEnumerable();
+
+            var fakeUsers = new List<UserDto>() 
+            { new UserDto()
+            { Email = "Poenaru@gmail", 
+             FirstName = "Test",
+             LastName = "Test",
+             Password = "123",
+             Role = "User"
+            } };
             var services = A.Fake<IServices<UserDto>>();
             A.CallTo(() => services.GetAllUsers()).Returns(fakeUsers);
             var controller = new AuthController(services);
@@ -30,8 +38,8 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
 
             //assert
             var result = actionResult.Result as OkObjectResult;
-            var resultInfo = result.Value as IEnumerable<User>;
-            Assert.Equal(5, resultInfo.Count());
+            var resultInfo = result.Value as List<UserDto>;
+            Assert.Equal(1, resultInfo.Count);
         }
 
         [Fact]
