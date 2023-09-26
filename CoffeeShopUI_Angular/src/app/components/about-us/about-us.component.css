@@ -1,0 +1,36 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    width: 600px;
+    border-radius: 8px;
+    border: 1px solid  #D1D9E6;
+    background:  #fbfbec;
+    box-shadow: 8px 8px 24px 0px rgba(0, 0, 0, 0.08);
+    padding: 32px 48px;
+}
+img{
+    width: 65px;
+    height: 75px;
+   object-fit: contain;
+}
+h3{
+    padding: 19px 12px;
+    font-size: 24px;
+    color: #494d2b;
+    font-weight: bold;
+}
+p{
+    font: "Montserrat";
+    text-align: justify;
+    color: #494d2b;
+    font-size: 20px;
+}
+@media (max-width:414px) {
+    .container{
+        height:auto;
+        width: 340px;
+        margin: 5% 0;
+        text-align: none;
+    }
+  }
