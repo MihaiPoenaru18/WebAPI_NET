@@ -1,8 +1,8 @@
 .container{
     display: flex;
     flex-direction: column;
-    height: auto;
-    width: 600px;
+    height: 500px;
+    width: 1600px;
     border-radius: 8px;
     border: 1px solid  #D1D9E6;
     background:  #fbfbec;
@@ -12,19 +12,30 @@
 img{
     width: 65px;
     height: 75px;
-   object-fit: contain;
+    object-fit: cover;
 }
 h3{
-    padding: 19px 12px;
+    padding: 19px 25px;
+    font-size: 35px;
+    color: #676d3c;
+    font-weight: bold;
+}
+.logo-title{
+     display: flex;
+     flex-direction: row;
+}
+.text{
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0;
     font-size: 24px;
-    color: #494d2b;
     font-weight: bold;
 }
 p{
     font: "Montserrat";
     text-align: justify;
-    color: #494d2b;
-    font-size: 20px;
+    color: #979b7c;
+    
 }
 @media (max-width:414px) {
     .container{
@@ -33,4 +44,11 @@ p{
         margin: 5% 0;
         text-align: none;
     }
+    .text{
+        font-size: 14px;
+    }
+    h3{
+        font-size: 20px;
+    }
+    
   }

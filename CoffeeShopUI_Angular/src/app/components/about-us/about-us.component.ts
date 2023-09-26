@@ -28,7 +28,7 @@ export class AboutUsComponent {
     if (this.timeoutId) {
       window.clearTimeout(this.timeoutId);
     }
-    this.timeoutId = window.setTimeout(() => this.goToNext(), 10000);
+    this.timeoutId = window.setTimeout(() => this.goToNext(), 9000);
   }
  
   goToNext(): void {

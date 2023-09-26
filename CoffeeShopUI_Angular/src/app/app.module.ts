@@ -8,6 +8,7 @@ import { ImageSliderModule } from './components/image-slider/imageSlider.module'
 import { NewsLetterContainerComponent } from './components/news-letter-container/news-letter-container.component';
 import { AboutUsComponent } from './components/about-us/about-us.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { SocialMediaComponent } from './components/social-media/social-media.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { FooterComponent } from './components/footer/footer.component';
     NewsLetterContainerComponent,
     AboutUsComponent,
     FooterComponent,
+    SocialMediaComponent,
   ],
   imports: [
     AppRoutingModule,
