@@ -8,9 +8,9 @@ import { Component, HostListener, Input, OnDestroy, OnInit } from '@angular/core
 })
 export class ImageSliderComponent implements OnInit, OnDestroy {
   @Input() slides: SlideInterface[] =  [
-    { url: '/assets/images/img2.jpg', title: 'boat' },
-    { url: '/assets/images/img4.jpg', title: 'city' },
-    { url: '/assets/images/img5.jpg', title: 'italy' },
+    { url: '/assets/images/img1.jpg', title: 'boat' },
+    { url: '/assets/images/img2.jpg', title: 'city' },
+    { url: '/assets/images/img3.jpg', title: 'italy' },
   ];
    currentDot: boolean = false;
     currentIndex: number = 0;
