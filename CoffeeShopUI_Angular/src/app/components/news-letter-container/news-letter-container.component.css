@@ -53,6 +53,17 @@ input[type=submit]{
     margin: 10px 0;
  
 }
+.invalid{
+    border: 2px solid red;
+}
+.disabled{
+    pointer-events: none;
+    color: #eaebe1;
+    background-color:#1b1f02; 
+}
+.valid{
+    border: 2px solid green;
+}
 @media (max-width:414px) {
     .container{
     
@@ -80,10 +91,6 @@ input[type=submit]{
     input[type=submit]{
         width: 250px;
         margin: 20px 5px;
-       
-        
         padding: 0px 3px;
-        
-    
     }
   }

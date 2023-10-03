@@ -11,8 +11,7 @@ img {
   display: flex;
   justify-content: start;
 }
-.news-letter-container {
-}
+
 @media (max-width: 414px) {
   .container-footer {
     padding: 19px 13px;
