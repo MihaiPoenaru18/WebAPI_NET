@@ -7,18 +7,21 @@
 svg{
     width: 35px;
     height: 35px;
-    color: #93abca;;
+    color: #93abca;
 }
 a{ 
     text-decoration: none;
-    padding: 15px 0;
+    padding: 5px 0;
     display: flex;
+    justify-content: center;
     flex-direction: row;
 }
 p{
-    font-size: 18px;
+    font-size: 15px;
     font-weight: bold;
     padding: 0px 10px;
     color: #676d3c;
 }
-@media (max-width:414px) {}
+@media (max-width:414px) {
+
+}

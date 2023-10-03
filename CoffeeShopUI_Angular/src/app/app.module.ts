@@ -9,6 +9,7 @@ import { NewsLetterContainerComponent } from './components/news-letter-container
 import { AboutUsComponent } from './components/about-us/about-us.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { SocialMediaComponent } from './components/social-media/social-media.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,9 @@ import { SocialMediaComponent } from './components/social-media/social-media.com
     AppRoutingModule,
     BrowserModule,
     HttpClientModule,
-    ImageSliderModule
+    ImageSliderModule,
+    ReactiveFormsModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]

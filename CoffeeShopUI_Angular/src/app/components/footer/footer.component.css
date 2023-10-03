@@ -1,6 +1,6 @@
-img{
+img {
   position: relative;
-  bottom: -70px;
+  bottom: -30px;
   padding: 14px 13px;
   border-radius: 150px;
   width: 200px;
@@ -11,7 +11,22 @@ img{
   display: flex;
   justify-content: start;
 }
-.news-letter-container{
- 
+.news-letter-container {
 }
-@media (max-width:414px) {}
+@media (max-width: 414px) {
+  .container-footer {
+    padding: 19px 13px;
+    display: flex;
+    flex-direction: column;
+  }
+  img {
+    
+    position: relative;
+    bottom: 10px;
+    left: 80px;
+    padding: 14px 13px;
+    border-radius: 150px;
+    width: 180px;
+    height: 180px;
+  }
+}
