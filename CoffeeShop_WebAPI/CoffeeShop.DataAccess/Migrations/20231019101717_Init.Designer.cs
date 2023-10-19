@@ -12,18 +12,36 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoffeeShop.DataAccess.Migrations
 {
     [DbContext(typeof(CoffeeShopContext))]
-    [Migration("20230527131004_InitialDBCreate")]
-    partial class InitialDBCreate
+    [Migration("20231019101717_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.5")
+                .HasAnnotation("ProductVersion", "7.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.UserWithNewsLetter", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsNewsLetterActive")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("News");
+                });
 
             modelBuilder.Entity("CoffeeShop_WebApi.DataAccess.ModelDB.User", b =>
                 {
@@ -39,6 +57,9 @@ namespace CoffeeShop.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("IdUserNewsLetter")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -53,7 +74,20 @@ namespace CoffeeShop.DataAccess.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("IdUserNewsLetter");
+
                     b.ToTable("User");
+                });
+
+            modelBuilder.Entity("CoffeeShop_WebApi.DataAccess.ModelDB.User", b =>
+                {
+                    b.HasOne("CoffeeShop.DataAccess.DataAccess.ModelDB.UserWithNewsLetter", "UserWithNewsLetter")
+                        .WithMany()
+                        .HasForeignKey("IdUserNewsLetter")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserWithNewsLetter");
                 });
 #pragma warning restore 612, 618
         }

@@ -7,6 +7,8 @@ using CoffeeShop.ServicesLogic.Services;
 using CoffeeShop_WebApi.Services.AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.DataAccess.Repository;
+using CoffeeShop.DataAccess.DataAccess.ModelDB;
+using CoffeeShop.DataAccess.DataAccess.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,12 +27,16 @@ builder.Services.AddDbContext<CoffeeShopContext>(options =>
 #region Repositories
 
 builder.Services.AddScoped<ICoffeeShopRepository<User>, CoffeeShopUserRepository>();
-builder.Services.AddScoped<IServices<UserDto>, ServicesAuth>();
+builder.Services.AddScoped<ICoffeeShopRepository<UserWithNewsLetter>, NewsLetterRepository>();
+builder.Services.AddScoped<IServicesAuth<UserDto>, ServicesAuth>();
+builder.Services.AddScoped<IServicesNewsLetter<UserWithNewsLetterDto>, ServicesNewsLetter>();
 builder.Services.AddScoped<IAuthentication, Authentication>();
 #endregion
 builder.Services.AddScoped<MapperConfig<User,UserDto>>();
 builder.Services.AddScoped<MapperConfig<UserDto, User>>();
 builder.Services.AddScoped<MapperConfig<AuthenticateRequest, User>>();
+builder.Services.AddScoped<MapperConfig<UserWithNewsLetter, UserWithNewsLetterDto>>();
+builder.Services.AddScoped<MapperConfig<UserWithNewsLetterDto, UserWithNewsLetter>>();
 
 builder.Services.AddCors(options => options.AddPolicy(name: "NgOrigins",
     policy =>

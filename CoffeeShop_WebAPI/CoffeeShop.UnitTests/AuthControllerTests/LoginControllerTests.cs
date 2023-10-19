@@ -24,7 +24,7 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
                 Password = "21",
                 Role = "User"
             };
-            var services = A.Fake<IServices<UserDto>>();
+            var services = A.Fake<IServicesAuth<UserDto>>();
             A.CallTo(() => services.Authenticate(authenticateRequest)).Returns(null);
             var controller =new AuthController(services);
             //act
@@ -64,7 +64,7 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
                 ExpiresDate = DateTime.Now.AddDays(1),
                 Token = token.ToString(),
              };
-            var services = A.Fake<IServices<UserDto>>();
+            var services = A.Fake<IServicesAuth<UserDto>>();
             A.CallTo(() => services.Authenticate(authenticateRequest)).Returns(authenticateResponse);
             var controller = new AuthController(services);
 

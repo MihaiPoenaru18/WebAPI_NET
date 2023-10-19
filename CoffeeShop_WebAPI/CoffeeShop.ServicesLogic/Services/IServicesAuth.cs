@@ -2,7 +2,7 @@
 
 namespace CoffeeShop.ServicesLogic.Services
 {
-    public interface IServices<T> where T : class
+    public interface IServicesAuth<T> where T : class
     {
         T GetInfo(AuthenticateRequest loginUse);
 

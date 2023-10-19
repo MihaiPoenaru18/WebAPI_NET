@@ -12,9 +12,9 @@ namespace WebApplication1.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private IServices<UserDto> _services;
+        private IServicesAuth<UserDto> _services;
 
-        public AuthController(IServices<UserDto> services)
+        public AuthController(IServicesAuth<UserDto> services)
         {
             _services = services;
         }
@@ -41,7 +41,7 @@ namespace WebApplication1.Controllers
 
             if (response == null)
             {
-                return BadRequest("Username or password is incorrect");
+                return BadRequest("Email or password is incorrect");
             }
 
             return Ok(response);
@@ -60,7 +60,7 @@ namespace WebApplication1.Controllers
 
         [AllowAnonymous]
         [HttpGet("GetAllUsersInfo"), Authorize]
-        public ActionResult<IEnumerable<User>> GetAllUsersInfo([FromQuery] AuthenticateRequest loginUser)
+        public ActionResult<IEnumerable<User>> GetAllUsersInfo([FromBody] AuthenticateRequest loginUser)
         {
             if (loginUser.Role == "Admin")
             {

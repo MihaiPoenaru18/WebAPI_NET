@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CoffeeShop_WebApi.DataAccess.ModelDB;
 using CoffeeShop.ServicesLogic.EntiteModels;
+using CoffeeShop.DataAccess.DataAccess.ModelDB;
 
 namespace CoffeeShop.ServicesLogic.Services.AutoMapper
 {
@@ -12,6 +13,9 @@ namespace CoffeeShop.ServicesLogic.Services.AutoMapper
 
             CreateMap<User, UserDto>();
 
+            CreateMap<UserWithNewsLetter, UserWithNewsLetterDto>();
+
+            CreateMap<UserWithNewsLetterDto, UserWithNewsLetter>();
         }
     }
 }

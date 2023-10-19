@@ -8,7 +8,7 @@ using WebApplication1.DataAccess.Repository;
 
 namespace CoffeeShop.ServicesLogic.Services
 {
-    public class ServicesAuth : IServices<UserDto>
+    public class ServicesAuth : IServicesAuth<UserDto>
     {
         private readonly IMapper _mapper;
         private readonly IAuthentication _authorization;
@@ -39,7 +39,7 @@ namespace CoffeeShop.ServicesLogic.Services
             var users = new List<UserDto>();
             foreach (var user in _usersRepository.GetAll().Result)
             {
-                users.Add(mapperUser.Map<User, UserDto>(user));
+                users.Add(MapperConfig<User, UserDto>.InitializeAutomapper().Map<User, UserDto>(user));
             }
             return users;
         }
@@ -47,7 +47,7 @@ namespace CoffeeShop.ServicesLogic.Services
         public async Task<bool> IsUserRegistered(UserDto userDto)
         {
             var mapperUser = MapperConfig<UserDto, User>.InitializeAutomapper();
-            if ((userDto.Role != "User" || userDto.Role != "Admin") && userDto != null)
+            if ((userDto.Role != "User" || userDto.Role != "Admin") && userDto != null )
             {
                 user = mapperUser.Map(userDto, user);
                 return await _usersRepository.Insert(user);

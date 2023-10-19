@@ -13,6 +13,7 @@ namespace CoffeeShop.ServicesLogic.EntiteModels
         public required string Role { get; set; }
         [PasswordPropertyText]
         public required string Password { get; set; }
+        public UserWithNewsLetterDto NewsLetter { get; set; }
 
     }
 }

@@ -1,5 +1,6 @@
 ﻿using BCrypt.Net;
 using CoffeeShop.DataAccess.DataAccess.DataBaseContext;
+using CoffeeShop.DataAccess.DataAccess.ModelDB;
 using CoffeeShop_WebApi.DataAccess.ModelDB;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,7 +18,7 @@ namespace WebApplication1.DataAccess.Repository
         {
             return await _context.User.ToListAsync();
         }
-
+      
         public async Task<bool> Insert(User user)
         {
            if(user!= null && !IsUserExistingInDB(user))
@@ -47,15 +48,18 @@ namespace WebApplication1.DataAccess.Repository
             }
             return false;
         }
-
+     
         public async Task<User> GetById(Guid id)
         {
            return await _context.User.FindAsync(id);
         }
 
-        public Task Update(User item)
+        public async Task Update(User item)
         {
-            throw new NotImplementedException();
+            if (item != null)
+            {
+              _context.User.Update(item);
+            }
         }
     }
 }

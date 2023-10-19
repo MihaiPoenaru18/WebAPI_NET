@@ -30,7 +30,7 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
              Password = "123",
              Role = "User"
             } };
-            var services = A.Fake<IServices<UserDto>>();
+            var services = A.Fake<IServicesAuth<UserDto>>();
             A.CallTo(() => services.GetAllUsers()).Returns(fakeUsers);
             var controller = new AuthController(services);
             //act
@@ -52,7 +52,7 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
                 Password = "21",
                 Role = "Admin"
             };
-            var services = A.Fake<IServices<UserDto>>();
+            var services = A.Fake<IServicesAuth<UserDto>>();
             A.CallTo(() => services.GetAllUsers()).Returns(null);
             var controller = new AuthController(services);
             //act
@@ -74,7 +74,7 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
                 Password = "21",
                 Role = "User"
             };
-            var services = A.Fake<IServices<UserDto>>();
+            var services = A.Fake<IServicesAuth<UserDto>>();
             A.CallTo(() => services.GetAllUsers()).Returns(null);
             var controller = new AuthController(services);
             //act

@@ -22,7 +22,7 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
                 Password = "123"
             };
             var messageOk = "Register Success";
-            var services = A.Fake<IServices<UserDto>>();
+            var services = A.Fake<IServicesAuth<UserDto>>();
             A.CallTo(() => services.IsUserRegistered(requestUser)).Returns(true);
             var controller = new AuthController(services);
             //act
@@ -46,7 +46,7 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
                 Password = "123"
             };
             var badMessage = "The user already exist!!!";
-            var services = A.Fake<IServices<UserDto>>();
+            var services = A.Fake<IServicesAuth<UserDto>>();
             A.CallTo(() => services.IsUserRegistered(requestUser)).Returns(false);
             var controller = new AuthController(services);
 
@@ -64,7 +64,7 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
         {
             //arrange
             var badMessage = "The fiels are emplty!!!";
-            var services = A.Fake<IServices<UserDto>>();
+            var services = A.Fake<IServicesAuth<UserDto>>();
             A.CallTo(() => services.IsUserRegistered(null)).Returns(false);
             var controller = new AuthController(services);
 
