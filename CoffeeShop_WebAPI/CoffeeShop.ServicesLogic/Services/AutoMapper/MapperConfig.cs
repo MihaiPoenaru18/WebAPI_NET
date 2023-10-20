@@ -23,6 +23,7 @@ namespace CoffeeShop_WebApi.Services.AutoMapper
                                                       .ForMember(dest => dest.LastName, act => act.MapFrom(src => src.LastName))
                                                       .ForMember(dest => dest.Role, act => act.MapFrom(src => src.Role))
                                                       .ForPath(dest => dest.NewsLetter.Email, act => act.MapFrom(src => src.UserWithNewsLetter.Email))
+                                                      .ForPath(dest => dest.NewsLetter.Name, act => act.MapFrom(src => src.UserWithNewsLetter.Name))
                                                       .ForPath(dest => dest.NewsLetter.IsActived, act => act.MapFrom(src => src.UserWithNewsLetter.IsNewsLetterActive));
                     });
 
@@ -40,6 +41,7 @@ namespace CoffeeShop_WebApi.Services.AutoMapper
                                                      .ForMember(dest => dest.LastName, act => act.MapFrom(src => src.LastName))
                                                      .ForMember(dest => dest.Role, act => act.MapFrom(src => src.Role))
                                                      .ForPath(dest => dest.UserWithNewsLetter.Email, act => act.MapFrom(src => src.NewsLetter.Email))
+                                                     .ForPath(dest => dest.UserWithNewsLetter.Name, act => act.MapFrom(src => src.NewsLetter.Name))
                                                      .ForPath(dest => dest.UserWithNewsLetter.IsNewsLetterActive, act => act.MapFrom(src => src.NewsLetter.IsActived));
                     });
 

@@ -7,6 +7,7 @@ namespace CoffeeShop.ServicesLogic.EntiteModels
     {
         [EmailAddress]
         public string Email { get; set; }
+        public string Name { get; set; } 
         public bool IsActived { get; set; }
     }
 }

@@ -54,6 +54,7 @@ namespace CoffeeShop.ServicesLogic.Services
                                    NewsLetter = new UserWithNewsLetterDto()
                                    {
                                        Email= user.Email,
+                                       Name = userWithNewsLetter.Name,
                                        IsActived = userWithNewsLetter.IsNewsLetterActive
                                    }
                                }).ToList();
