@@ -45,7 +45,7 @@ export class NewsLetterContainerComponent {
 
     // Make the POST request
     this.http
-    .post('https://localhost:7282/api/NewsLetterController/NewsLetter/AddUserToNewsLetter', requestBody)
+    .post('https://localhost:7282/api/AddUserToNewsLetter', requestBody)
     .subscribe({
       next: (response) => {
         console.log('POST request successful', response);

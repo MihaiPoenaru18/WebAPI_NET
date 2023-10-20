@@ -1,12 +1,10 @@
-﻿using CoffeeShop.ServicesLogic.Authorization;
-using CoffeeShop.ServicesLogic.EntiteModels;
+﻿using CoffeeShop.ServicesLogic.EntiteModels;
 using CoffeeShop.ServicesLogic.Services;
-using CoffeeShop_WebApi.DataAccess.ModelDB;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoffeeShop_WebApi.Controllers
 {
-    [Route("api/NewsLetterController/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class NewsLetterController : ControllerBase
     {
