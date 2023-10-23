@@ -64,19 +64,13 @@ export class NewsLetterContainerComponent {
     this.isSubmitted = inputText === '';
   }
 
-  MessagePlaceholderFullName(): string {
-    return this.newsLetterForm.get('fullName')?.invalid &&
-      (this.newsLetterForm.get('fullName')?.dirty ||
-      this.newsLetterForm.get('fullName')?.touched)
-      ? ' Required'
-      : ' Full Name';
-  }
-
-  MessagePlaceholderEmail(): string {
-    return this.newsLetterForm.get('email')?.invalid &&
-      (this.newsLetterForm.get('email')?.dirty ||
-      this.newsLetterForm.get('email')?.touched)
-      ? 'Email Required'
-      : 'Email';
+  MessagePlaceholder(labelname: string): string {
+    const control = this.newsLetterForm.get(labelname);
+  
+    if (control?.invalid && (control?.dirty || control?.touched)) {
+      return 'Required';
+    }
+  
+    return labelname;
   }
 }

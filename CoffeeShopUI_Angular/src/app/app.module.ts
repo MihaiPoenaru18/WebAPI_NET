@@ -10,6 +10,18 @@ import { AboutUsComponent } from './components/about-us/about-us.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { SocialMediaComponent } from './components/social-media/social-media.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { Route, RouterModule, Routes } from '@angular/router';
+import { SignUpComponent } from './components/sign-up/sign-up.component';
+import { HomeComponent } from './components/home/home.component';
+import { SignInComponent } from './components/sign-in/sign-in.component';
+
+const appRoutes: Routes = [
+  { path: 'sign-up',  component: SignUpComponent },
+  { path: 'sign-in', component: SignInComponent },
+  { path: '', component: HomeComponent },
+  { path: '', redirectTo: 'Home', pathMatch:'full' },
+  { path: '**', component: HomeComponent }
+];
 
 @NgModule({
   declarations: [
@@ -19,6 +31,10 @@ import { ReactiveFormsModule } from '@angular/forms';
     AboutUsComponent,
     FooterComponent,
     SocialMediaComponent,
+    SignUpComponent,
+     HomeComponent,
+     SignInComponent,
+    
   ],
   imports: [
     AppRoutingModule,
@@ -26,10 +42,10 @@ import { ReactiveFormsModule } from '@angular/forms';
     HttpClientModule,
     ImageSliderModule,
     ReactiveFormsModule,
-    HttpClientModule
-
+    HttpClientModule,
+    RouterModule.forRoot(appRoutes, { enableTracing: true }),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
