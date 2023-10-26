@@ -4,7 +4,7 @@ using CoffeeShop_WebApi.DataAccess.ModelDB;
 using CoffeeShop.ServicesLogic.EntiteModels;
 using CoffeeShop.ServicesLogic.Services;
 using Microsoft.AspNetCore.Mvc;
-
+using CoffeeShop_WebApi.Controllers;
 
 namespace WebApplication1.Controllers
 {
@@ -20,17 +20,17 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost("RegisterUser")]
-        public ActionResult<User> Register(UserDto request)
+        public ActionResult Register(UserDto request)
         {
             if (request == null)
             {
-                return BadRequest("The fiels are emplty!!!");
+                return Ok(new ApiResponse { Success = false, Message = "The fiels are emplty!!!" });
             }
             if (!_services.IsUserRegistered(request).Result)
             {
-                return BadRequest("The user already exist!!!");
+                return Ok(new ApiResponse { Success = false, Message = "The user already exist!!!" });
             }
-            return Ok("Register Success");
+            return Ok(new ApiResponse { Success = true, Message = "Register Success"});
         }
 
         [AllowAnonymous]
@@ -41,7 +41,7 @@ namespace WebApplication1.Controllers
 
             if (response == null)
             {
-                return BadRequest("Email or password is incorrect");
+                return Ok(new ApiResponse { Success = false, Message = "Email or password is incorrect" });
             }
 
             return Ok(response);
@@ -53,7 +53,7 @@ namespace WebApplication1.Controllers
         {
             if (_services.GetInfo(authenticateRequest) == null)
             {
-                return BadRequest("User doesn't exit!! \n You need to register this user");
+                return Ok(new ApiResponse { Success = false, Message = "User doesn't exit!! \n You need to register this user" });
             }
             return Ok(_services.GetInfo(authenticateRequest));
         }
@@ -66,11 +66,11 @@ namespace WebApplication1.Controllers
             {
                 if (_services.GetAllUsers() == null)
                 {
-                    return BadRequest("User doesn't exit!! \n You need to register this user");
+                    return Ok(new ApiResponse { Success = false, Message = "User doesn't exit!! \n You need to register this user" });
                 }
                 return Ok(_services.GetAllUsers());
             }
-            return BadRequest("You are not authorised for this request!!!");
+            return Ok(new ApiResponse { Success = false, Message = "You are not authorised for this request!!!" });
         }
     }
 }

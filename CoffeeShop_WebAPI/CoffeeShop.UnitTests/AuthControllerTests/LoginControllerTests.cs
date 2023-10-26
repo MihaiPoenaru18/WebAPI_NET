@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using CoffeeShop_WebApi.Controllers;
 
 namespace CoffeeShop.UnitTests.AuthControllerTests
 {
@@ -22,7 +23,8 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
             {
                 Email = "Poenaru@gmail",
                 Password = "21",
-                Role = "User"
+                Role = "User",
+
             };
             var services = A.Fake<IServicesAuth<UserDto>>();
             A.CallTo(() => services.Authenticate(authenticateRequest)).Returns(null);
@@ -30,9 +32,10 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
             //act
             var actionResult = controller.Login(authenticateRequest);
             //assert
-            var result = actionResult.Result as BadRequestObjectResult;
-            var resultMessage = result.Value as string;
-            Assert.Equal("Username or password is incorrect",resultMessage);
+            var result = actionResult.Result as OkObjectResult;
+            var resultMessage = result.Value as ApiResponse;
+
+            Assert.False(resultMessage.Success);
         }
 
         [Fact]

@@ -1,6 +1,7 @@
 ﻿using CoffeeShop.ServicesLogic.EntiteModels;
 using CoffeeShop.ServicesLogic.Services;
 using CoffeeShop_WebApi.Authorization.Models;
+using CoffeeShop_WebApi.Controllers;
 using FakeItEasy;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Controllers;
@@ -26,7 +27,13 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
                 FirstName = "Maria",
                 LastName = "Ion",
                 Role = "User",
-                Password = "123"
+                Password = "123",
+                NewsLetter = new UserWithNewsLetterDto
+                {
+                    Name = "Test",
+                    Email = "Maria.Ion@yahoo.com",
+                    IsActived = true
+                }
             };
             var services = A.Fake<IServicesAuth<UserDto>>();
             A.CallTo(() => services.GetInfo(authenticateRequest)).Returns(response);
@@ -58,9 +65,9 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
             var actionResult = controller.GetUserInfo(authenticateRequest);
 
             //assert
-            var result = actionResult.Result as BadRequestObjectResult;
-            var resultMessage = result.Value as string;
-            Assert.Equal("User doesn't exit!! \n You need to register this user", resultMessage);
+            var result = actionResult.Result as OkObjectResult;
+            var resultMessage = result.Value as ApiResponse;
+            Assert.False(resultMessage.Success);
         }
     }
 }

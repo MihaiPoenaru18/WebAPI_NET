@@ -4,6 +4,15 @@
       <div>
          <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
             <div class="fields">
+               <div *ngIf="signUpForm.get('password')?.invalid &&
+               (signUpForm.get('password')?.dirty || signUpForm.get('password')?.touched)" class="alert alert-danger"
+                  role="alert">
+                  <b>The Passsword should have min 8 characters, one symbol, mine one uppercase, min one lowercase and on
+                  digit or number!</b>
+               </div>
+               <div *ngIf="isSubmitted" class="alert alert-success" role="alert">
+                  <b>You register with success!</b>
+               </div>
                <div class="icon">
                   <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                      <path d="M1 12C1 12 0 12 0 11C0 10 1 7 6 7C11 7 12 10 12 11C12 12 11 12 11 12H1Z" fill="#676d3c"
@@ -83,6 +92,10 @@
                   (signUpForm.get('password')?.dirty || signUpForm.get('password')?.touched)"
                      [class.valid]="signUpForm.get('password')?.valid" type="password"
                      placeholder="{{MessagePlaceholder('Password')}}">
+                  </div>
+                  <div class="checkbox-newsletter">
+                  <input  formControlName="isSubscripToNewsletter" type="checkbox" >
+                  <label for="vehicle1"> Subscribe to our newsletter to stay in touch with us!</label>
                </div>
                <div><input type="submit" value="Sign up"></div>
             </div>

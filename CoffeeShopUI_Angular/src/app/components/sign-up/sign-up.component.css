@@ -32,14 +32,32 @@ input{
     padding: 12px 44px;
     text-align: start;
 }
+.checkbox-newsletter{
+     display: flex;
+     flex-direction: row;
+     align-items: center;
+}
+input[type=checkbox]{
+    width: 15px;
+    margin-right: 10px;
+}
+input[type=checkbox] ::after{
+    border: 1px solid #676d3c;
+    background:  #FFF;
+    border-width: 0 3px 3px 0;
+}
+label{
+    font-size: 18px;
+}
 input[type=submit]{
-    margin: 48px 15px;
+    margin: 20px 15px;
     color: #eaebe1;
     font-weight: bold;
     padding: 0px 3px;
     background-color:#676d3c; 
     text-align: center;
 }
+
 .icon{
     margin-right: 10px;
 }

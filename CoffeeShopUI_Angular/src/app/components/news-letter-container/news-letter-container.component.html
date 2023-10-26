@@ -12,12 +12,12 @@
             <div class="fields">
                 <input formControlName="fullName" (input)="onUserInput($event)" [class.invalid]="newsLetterForm.get('fullName')?.invalid &&
                 (newsLetterForm.get('fullName')?.dirty ||
-                newsLetterForm.get('fullName')?.touched)" type="text" placeholder="{{ MessagePlaceholder('Full Name')}}"
+                newsLetterForm.get('fullName')?.touched)" type="text" placeholder="{{ MessagePlaceholder('fullName')}}"
                     [class.valid]="newsLetterForm.get('fullName')?.valid">
                 <input formControlName="email" (input)="onUserInput($event)" [class.invalid]="newsLetterForm.get('email')?.invalid &&
                   (newsLetterForm.get('email')?.dirty || newsLetterForm.get('email')?.touched )"
                     [class.valid]="newsLetterForm.get('email')?.valid" type="text"
-                    placeholder="{{MessagePlaceholder('Email')}}">
+                    placeholder="{{MessagePlaceholder('email')}}">
             </div>
             <input type="submit" [class.disabled]="isSubmitted" value="Submit">
         </form>

@@ -30,12 +30,12 @@ input{
     text-align: left;
     font-size: 20px;
 }
-.icon-email svg{
+.icon svg{
    position: relative;
    left: 35px;
    bottom:3px;
 }
-.icon-password svg{
+.icon svg{
     position: relative;
     left: 35px;
     bottom:3px;
@@ -59,6 +59,8 @@ a{
 }
 .invalid{
     border: 2px solid red;
+    fill: red;
 }.valid{
     border: 2px solid green;
+    fill: green;
 }

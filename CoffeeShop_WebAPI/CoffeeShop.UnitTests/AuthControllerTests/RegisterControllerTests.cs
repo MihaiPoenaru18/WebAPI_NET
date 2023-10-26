@@ -4,6 +4,7 @@ using CoffeeShop.ServicesLogic.Services;
 using CoffeeShop.ServicesLogic.EntiteModels;
 using WebApplication1.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using CoffeeShop_WebApi.Controllers;
 
 namespace CoffeeShop.UnitTests.AuthControllerTests
 {
@@ -19,7 +20,13 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
                 FirstName = "ion",
                 LastName = "maria",
                 Role = "User",
-                Password = "123"
+                Password = "123",
+                NewsLetter = new UserWithNewsLetterDto
+                {
+                    Name = "Test",
+                    Email = "Mihai@gm",
+                    IsActived = true
+                }
             };
             var messageOk = "Register Success";
             var services = A.Fake<IServicesAuth<UserDto>>();
@@ -28,9 +35,9 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
             //act
             var actionResult = controller.Register(requestUser);
             //Assert
-            var result = actionResult.Result as OkObjectResult;
-            var resultMessage = result.Value as string;
-            Assert.Equal(messageOk, resultMessage);
+            var result = actionResult as OkObjectResult;
+            var resultMessage = result.Value as ApiResponse;
+            Assert.True(resultMessage.Success);
         }
 
         [Fact]
@@ -43,7 +50,14 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
                 FirstName = "Maria",
                 LastName = "Ion",
                 Role = "User",
-                Password = "123"
+                Password = "123",
+                NewsLetter = new UserWithNewsLetterDto
+                {
+                    Name = "Test",
+                    Email = "Mihai@gm",
+                    IsActived = true
+                }
+
             };
             var badMessage = "The user already exist!!!";
             var services = A.Fake<IServicesAuth<UserDto>>();
@@ -54,9 +68,9 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
             var actionResult = controller.Register(requestUser);
 
             //Assert
-            var result = actionResult.Result as BadRequestObjectResult;
-            var resultMessage = result.Value as string;
-            Assert.Equal(badMessage, resultMessage);
+            var result = actionResult as OkObjectResult;
+            var resultMessage = result.Value as ApiResponse;
+            Assert.False(resultMessage.Success);
         }
 
         [Fact]
@@ -72,9 +86,9 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
             var actionResult = controller.Register(null);
 
             //Assert
-            var result = actionResult.Result as BadRequestObjectResult;
-            var resultMessage = result.Value as string;
-            Assert.Equal(badMessage, resultMessage);
+            var result = actionResult as OkObjectResult;
+            var resultMessage = result.Value as ApiResponse;
+            Assert.False(resultMessage.Success);
         }
 
     }

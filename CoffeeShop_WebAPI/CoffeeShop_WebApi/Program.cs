@@ -51,13 +51,13 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 {
-    // global cors policy
-    app.UseCors(x => x
-        .AllowAnyOrigin()
-        .AllowAnyMethod()
-        .AllowAnyHeader());
+// global cors policy
+app.UseCors(x => x
+    .AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader());
 
-    app.MapControllers();
+app.MapControllers();
 }
 
 // Configure the HTTP request pipeline.
@@ -65,9 +65,9 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+    }
 
-app.UseCors("NgOrigins");
+    app.UseCors("NgOrigins");
 
 app.UseHttpsRedirection();
 

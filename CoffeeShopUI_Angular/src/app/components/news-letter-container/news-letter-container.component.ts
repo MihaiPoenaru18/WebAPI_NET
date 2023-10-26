@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'news-letter-container',
@@ -45,17 +46,22 @@ export class NewsLetterContainerComponent {
 
     // Make the POST request
     this.http
-    .post('https://localhost:7282/api/AddUserToNewsLetter', requestBody)
-    .subscribe({
-      next: (response) => {
-        console.log('POST request successful', response);
-        this.isSubmitted = true;
-        this.newsLetterForm.reset();
-      },
-      error: (error) => {
-        console.error('POST request failed', error);
+  .post<any>('https://localhost:7282/api/AddUserToNewsLetter', requestBody)
+  .subscribe({
+    next: (response) => {
+      console.log('POST request successful', response);
+      if (response.Success) {
+        console.log('Subscriber Success', response.Message);
+      } else if (response.Message) {
+        console.error('Subscriber Failed', response.Message);
       }
-    });
+      this.isSubmitted = true;
+      this.newsLetterForm.reset();
+    },
+    error: (error) => {
+      console.error('POST request failed', error);
+    }
+  });
     
   }
 
