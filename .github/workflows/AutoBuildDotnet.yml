@@ -27,8 +27,6 @@ jobs:
       run: dotnet restore CoffeeShop_WebAPI/CoffeeShop_WebAPI.sln
     - name: Build the solution
       run: dotnet build CoffeeShop_WebAPI/CoffeeShop_WebAPI.sln
-    - name: Restore dependencies for unit test
-      run: dotnet restore CoffeeShop.UnitTests/CoffeeShop.UnitTests/CoffeeShop.UnitTests.csproj
     - name: Run xUnit Tests
       run: dotnet test CoffeeShop.UnitTests/CoffeeShop.UnitTests/CoffeeShop.UnitTests.csproj
   
