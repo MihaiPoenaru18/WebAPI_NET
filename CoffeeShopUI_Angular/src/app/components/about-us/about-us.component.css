@@ -1,0 +1,54 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    height: 500px;
+    width: 1600px;
+    border-radius: 8px;
+    border: 1px solid  #D1D9E6;
+    background:  #fbfbec;
+    box-shadow: 8px 8px 24px 0px rgba(0, 0, 0, 0.08);
+    padding: 32px 48px;
+}
+img{
+    width: 65px;
+    height: 75px;
+    object-fit: cover;
+}
+h3{
+    padding: 19px 25px;
+    font-size: 35px;
+    color: #676d3c;
+    font-weight: bold;
+}
+.logo-title{
+     display: flex;
+     flex-direction: row;
+}
+.text{
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0;
+    font-size: 24px;
+    font-weight: bold;
+}
+p{
+    font: "Montserrat";
+    text-align: justify;
+    color: #979b7c;
+    
+}
+@media (max-width:414px) {
+    .container{
+        height:auto;
+        width: 340px;
+        margin: 5% 0;
+        text-align: none;
+    }
+    .text{
+        font-size: 14px;
+    }
+    h3{
+        font-size: 20px;
+    }
+    
+  }
