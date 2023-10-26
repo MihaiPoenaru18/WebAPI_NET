@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\CoffeeShop_WebApi.props" />
+</Project>
