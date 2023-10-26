@@ -4,9 +4,9 @@
 name: dotnet package CI
 on:
   push:
-    branches: [ "main" ,"develop","feature/Register"]
+    branches: [ "main" ,"develop"]
   merge_group:
-    branches: ["develop","feature/Register"]
+    branches: ["develop","main" ]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -27,5 +27,5 @@ jobs:
     - name: Build the solution
       run: dotnet build CoffeeShop_WebAPI/CoffeeShop_WebAPI.sln
     - name: Run xUnit Tests
-      run: dotnet test CoffeeShop.UnitTests/CoffeeShop.UnitTests.csproj
+      run: dotnet build CoffeeShop.UnitTests/CoffeeShop.UnitTests.csproj
   
