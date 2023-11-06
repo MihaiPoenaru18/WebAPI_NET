@@ -1,0 +1,104 @@
+.container {
+  width: 850px;
+  height: 250px;
+  border-right: 1px solid rgba(102, 116, 52, 0.5);
+  border-left: 1px solid rgba(102, 116, 52, 0.5);
+  padding: 20px 28px;
+  font: "Montserrat";
+  font-size: 24px;
+  font-style: normal;
+}
+
+.svg {
+  width: 35px;
+  height: 35px;
+}
+
+.title {
+  display: flex;
+  flex: row;
+}
+
+h3 {
+  padding: 0px 15px;
+  color: #676d3c;
+}
+
+.form {
+  padding: 10px 20px;
+  height: 200px;
+}
+
+input {
+  border-radius: 60px;
+  border: 1px solid #676d3c;
+  background: #fff;
+  height: 48px;
+  padding: 8px 10px 8px 24px;
+  text-align: center;
+}
+
+input[type="text"] {
+  width: 450px;
+  margin: 0 15px;
+}
+
+input[type="submit"] {
+  width: 720px;
+  margin: 30px 15px;
+  color: #eaebe1;
+  font-weight: bold;
+  padding: 0px 3px;
+  background-color: #676d3c;
+}
+
+.fields {
+  display: flex;
+  margin: 10px 0;
+}
+
+.invalid {
+  border: 2px solid red;
+}
+
+.valid {
+  border: 2px solid green;
+}
+
+.disabled {
+  pointer-events: none;
+  color: #eaebe1;
+  background-color: #1b1f02;
+}
+
+@media (max-width: 414px) {
+  .container {
+    width: 350px;
+    height: 350px;
+    border-top: 1px solid rgba(102, 116, 52, 0.5);
+    border-bottom: 1px solid rgba(102, 116, 52, 0.5);
+    border-right: none;
+    border-left: none;
+    padding: 10px 18px;
+    font: "Montserrat";
+    font-size: 24px;
+    font-style: normal;
+  }
+  
+  .fields {
+    display: flex;
+    flex-direction: column;
+    margin: 5px 0;
+  }
+  
+  input[type="text"] {
+    width: 250px;
+    margin: 10px 0px;
+  }
+  
+  input[type="submit"] {
+    width: 250px;
+    margin: 20px 5px;
+    padding: 0px 3px;
+  }
+}
