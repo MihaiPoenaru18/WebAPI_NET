@@ -1,6 +1,6 @@
 <div class="container">
     <div class="title">
-        <cs-svg-icon class="svg" [svgName]="'newsletterSVG'" ></cs-svg-icon>
+        <cs-svg-footer class="svg" [svgName]="'newsletterSVG'" ></cs-svg-footer>
         <h3><b>Subscribe to our Newsletter</b></h3>
     </div>
     <div class="form">
@@ -8,12 +8,12 @@
             <div class="fields">
                 <input formControlName="fullName" (input)="onUserInput($event)" [class.invalid]="newsLetterForm.get('fullName')?.invalid &&
                 (newsLetterForm.get('fullName')?.dirty ||
-                newsLetterForm.get('fullName')?.touched)" type="text" placeholder="{{ MessagePlaceholder('fullName')}}"
+                newsLetterForm.get('fullName')?.touched)" type="text" placeholder="{{ MessagePlaceholder('fullName','Full Name')}}"
                     [class.valid]="newsLetterForm.get('fullName')?.valid">
                 <input formControlName="email" (input)="onUserInput($event)" [class.invalid]="newsLetterForm.get('email')?.invalid &&
                   (newsLetterForm.get('email')?.dirty || newsLetterForm.get('email')?.touched )"
                     [class.valid]="newsLetterForm.get('email')?.valid" type="text"
-                    placeholder="{{MessagePlaceholder('email')}}">
+                    placeholder="{{MessagePlaceholder('email','Email')}}">
             </div>
             <input type="submit" [class.disabled]="isSubmitted" value="Submit">
         </form>

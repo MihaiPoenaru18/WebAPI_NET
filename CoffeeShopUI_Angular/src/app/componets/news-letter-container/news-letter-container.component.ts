@@ -70,13 +70,12 @@ export class NewsLetterContainerComponent {
     this.isSubmitted = inputText === '';
   }
 
-  MessagePlaceholder(labelname: string): string {
+  MessagePlaceholder(labelname: string,placeholder:string): string {
     const control = this.newsLetterForm.get(labelname);
-  
+
     if (control?.invalid && (control?.dirty || control?.touched)) {
       return 'Required';
     }
-  
-    return labelname;
+    return placeholder;
   }
 }

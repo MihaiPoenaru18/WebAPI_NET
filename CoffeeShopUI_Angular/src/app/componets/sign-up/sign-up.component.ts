@@ -7,10 +7,12 @@ import {
 } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { isSubscription } from 'rxjs/internal/Subscription';
+
 @Component({
   selector: 'cs-sign-up',
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.css'],
+
 })
 export class SignUpComponent {
   constructor(private fb: FormBuilder, private http: HttpClient) {}
@@ -31,6 +33,7 @@ export class SignUpComponent {
     ],
     isSubscripToNewsletter: false,
   });
+  
   onSubmit(): void {
     {
       console.log(
@@ -78,16 +81,30 @@ export class SignUpComponent {
         });
     }
   }
+
+  validationField(fieldname:string):string{
+    const control = this.signUpForm.get(fieldname);
+
+    if (control?.invalid && (control?.dirty || control?.touched)) {
+      return 'invalid';
+    }
+    if(control?.valid){
+      return 'valid';
+    }
+    return 'normal';
+                    
+  }
+  
   onUserInput(event: any) {
     let inputText = event.target.value;
   }
 
-  MessagePlaceholder(labelname: string): string {
+  MessagePlaceholder(labelname: string,placeholder:string): string {
     const control = this.signUpForm.get(labelname);
 
     if (control?.invalid && (control?.dirty || control?.touched)) {
       return 'Required';
     }
-    return labelname;
+    return placeholder;
   }
 }

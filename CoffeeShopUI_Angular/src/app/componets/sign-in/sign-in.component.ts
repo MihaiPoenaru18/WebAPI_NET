@@ -75,15 +75,27 @@ export class SignInComponent {
         }
       });
   }
+  validationField(fieldname:string):string{
+    const control = this.signInForm.get(fieldname);
+
+    if (control?.invalid && (control?.dirty || control?.touched)) {
+      return 'invalid';
+    }
+    if(control?.valid){
+      return 'valid';
+    }
+    return 'normal';
+                    
+  }
   onUserInput(event: any) {
     let inputText = event.target.value;
     this.isSubmitted = inputText === '';
   }
-  MessagePlaceholder(labelname: string): string {
+  MessagePlaceholder(labelname: string,placeholder:string): string {
     return this.signInForm.get(labelname)?.invalid &&
       (this.signInForm.get(labelname)?.dirty ||
         this.signInForm.get(labelname)?.touched)
       ? ' Required'
-      : labelname;
+      : placeholder;
   }
 }

@@ -14,14 +14,15 @@ import { Route, RouterModule, Routes } from '@angular/router';
 import { SignUpComponent } from './componets/sign-up/sign-up.component';
 import { HomeComponent } from './componets/home/home.component';
 import { SignInComponent } from './componets/sign-in/sign-in.component';
-import { SvgIconComponent } from './componets/svg-icon/svg-icon.component';
+import { SvgSignUpComponent } from './componets/svg-sign-up/svg-sign-up.component';
+import { SvgFooterComponent } from './componets/footer/svg-footer/svg-footer.component';
 
 const appRoutes: Routes = [
-  { path: 'sign-up',  component: SignUpComponent },
+  { path: 'sign-up', component: SignUpComponent },
   { path: 'sign-in', component: SignInComponent },
   { path: '', component: HomeComponent },
-  { path: '', redirectTo: 'Home', pathMatch:'full' },
-  { path: '**', component: HomeComponent }
+  { path: '', redirectTo: 'Home', pathMatch: 'full' },
+  { path: '**', component: HomeComponent },
 ];
 
 @NgModule({
@@ -33,10 +34,11 @@ const appRoutes: Routes = [
     FooterComponent,
     SocialMediaComponent,
     SignUpComponent,
-     HomeComponent,
-     SignInComponent,
-     SvgIconComponent,
-    
+    HomeComponent,
+    SignInComponent,
+    SvgSignUpComponent,
+    SvgFooterComponent,
+   
   ],
   imports: [
     AppRoutingModule,
