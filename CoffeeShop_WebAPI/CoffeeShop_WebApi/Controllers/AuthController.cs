@@ -22,15 +22,22 @@ namespace WebApplication1.Controllers
         [HttpPost("RegisterUser")]
         public ActionResult Register(UserDto request)
         {
-            if (request == null)
+            try
             {
-                return Ok(new ApiResponse { Success = false, Message = "The fiels are emplty!!!" });
+                if (request == null)
+                {
+                    return BadRequest( "The fiels are emplty!!!" );
+                }
+                if (!_services.IsUserRegistered(request).Result)
+                {
+                    return BadRequest("The user already exist!!!" );
+                }
+                return Ok(new ApiResponse { Success = true, Message = "Register Success" });
             }
-            if (!_services.IsUserRegistered(request).Result)
+            catch (Exception ex)
             {
-                return Ok(new ApiResponse { Success = false, Message = "The user already exist!!!" });
+                return BadRequest(ex.Message);
             }
-            return Ok(new ApiResponse { Success = true, Message = "Register Success"});
         }
 
         [AllowAnonymous]
@@ -38,13 +45,20 @@ namespace WebApplication1.Controllers
         public ActionResult<AuthenticateResponse> Login([FromBody] AuthenticateRequest authenticateRequest)
         {
             var response = _services.Authenticate(authenticateRequest);
-
-            if (response == null)
+            try
             {
-                return Ok(new ApiResponse { Success = false, Message = "Email or password is incorrect" });
+                if (response == null)
+                {
+                    return Ok(new ApiResponse { Success = false, Message = "Email or password is incorrect" });
+                }
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
 
-            return Ok(response);
         }
 
         [AllowAnonymous]

@@ -20,17 +20,24 @@ namespace CoffeeShop_WebApi.Controllers
         [HttpPost("AddUserToNewsLetter")]
         public IActionResult AddUserToNewsLetter(UserWithNewsLetterDto body)
         {
-            if (body == null)
+            try
             {
-                return Ok(new ApiResponse { Success = false, Message = "The fields are empty!!!" });
-            }
+                if (body == null)
+                {
+                    return Ok(new ApiResponse { Success = false, Message = "The fields are empty!!!" });
+                }
 
-            if (!_servicesNewsLetter.IsUserRegisteredWithNewsLetter(body).Result)
+                if (!_servicesNewsLetter.IsUserRegisteredWithNewsLetter(body).Result)
+                {
+                    return Ok(new ApiResponse { Success = false, Message = "The user already subscribed to the newsletter!!!" });
+                }
+
+                return Ok(new ApiResponse { Success = true, Message = "Subscriber Success" });
+            }catch (Exception ex)
             {
-                return Ok(new ApiResponse { Success = false, Message = "The user already subscribed to the newsletter!!!" });
+                return BadRequest(ex.Message);
             }
-
-            return Ok(new ApiResponse { Success = true, Message = "Subscriber Success" });
+            
         }
 
         [HttpGet("GetNewsLetterInfo")]

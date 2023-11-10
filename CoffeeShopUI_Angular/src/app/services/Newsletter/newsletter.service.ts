@@ -7,8 +7,8 @@ import { Injectable } from '@angular/core';
 export class NewsletterService {
 
   constructor(private http: HttpClient) { }
-
+   
   addUserToNewsletter(){
-    
+    return 'https://localhost:7282/api/AddUserToNewsLetter'
   }
 }

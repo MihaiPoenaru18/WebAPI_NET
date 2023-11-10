@@ -16,6 +16,8 @@ import { HomeComponent } from './componets/home/home.component';
 import { SignInComponent } from './componets/sign-in/sign-in.component';
 import { SvgSignUpComponent } from './componets/svg-sign-up/svg-sign-up.component';
 import { SvgFooterComponent } from './componets/footer/svg-footer/svg-footer.component';
+//services
+import { NewsletterService } from './services/Newsletter/newsletter.service';
 
 const appRoutes: Routes = [
   { path: 'sign-up', component: SignUpComponent },
@@ -49,7 +51,7 @@ const appRoutes: Routes = [
     HttpClientModule,
     RouterModule.forRoot(appRoutes, { enableTracing: true }),
   ],
-  providers: [],
+  providers: [NewsletterService ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

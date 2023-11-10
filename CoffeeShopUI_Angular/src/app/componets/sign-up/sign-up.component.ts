@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,NgZone } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -15,7 +15,7 @@ import { isSubscription } from 'rxjs/internal/Subscription';
 
 })
 export class SignUpComponent {
-  constructor(private fb: FormBuilder, private http: HttpClient) {}
+  constructor(private fb: FormBuilder, private http: HttpClient,private zone: NgZone) {}
   isSubmitted = false;
 
   signUpForm = this.fb.group({
@@ -41,11 +41,15 @@ export class SignUpComponent {
         this.signUpForm.value,
         this.signUpForm.valid
       );
+      this.zone.run(() => {
+        // Your problematic code here, such as XMLHttpRequest or asynchronous operations
+      });
       const headers = new HttpHeaders({
         'Content-Type': 'application/json',
         'Content-Length': '<calculated when request is sent>',
         'User-Agent': 'PostmanRuntime/7.33.0',
         'Accept-Encoding': 'gzip, deflate, br',
+        Authorization: 'no Auth',
         Connection: 'keep-alive',
       });
 
@@ -53,7 +57,7 @@ export class SignUpComponent {
         email: this.signUpForm.get('email')?.value,
         firstName: this.signUpForm.get('firstName')?.value,
         lastName: this.signUpForm.get('lastName')?.value,
-        role: this.signUpForm.get('role')?.value,
+        role: "User",
         password: this.signUpForm.get('password')?.value,
         newsLetter: {
           email: this.signUpForm.get('email')?.value,
@@ -66,19 +70,19 @@ export class SignUpComponent {
       };
 
       this.http
-        .post<any>('https://localhost:7282/api/Auth/RegisterUser', requestBody)
-        .subscribe({
-          next: (response) => {
-            console.log('POST request successful', response);
-            if (response.Success) {
-              console.log('Sign up with Success', response.Message);
-            } else if (response.Message) {
-              console.error('Sign up Failed', response.Message);
-            }
-            this.isSubmitted = true;
-            this.signUpForm.reset();
-          },
-        });
+      .post<any>('https://localhost:7282/api/Auth/RegisterUser', requestBody)
+      .subscribe({
+        next: (response) => {
+          console.log('POST request successful', response);
+          if (response.Success) {
+            console.log('Sign up with Success', response.Message);
+          } else if (response.Message) {
+            console.error('Sign up Failed', response.Message);
+          }
+          this.isSubmitted = true;
+          this.signUpForm.reset();
+        }
+      });
     }
   }
 
