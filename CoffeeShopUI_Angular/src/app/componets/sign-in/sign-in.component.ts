@@ -6,14 +6,20 @@ import {
   Validators,
 } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AuthenticatorService } from 'src/app/services/Auth/authenticator.service';
 
 @Component({
   selector: 'cs-sign-in',
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.css'],
+  providers: [AuthenticatorService],
 })
 export class SignInComponent {
-  constructor(private fb: FormBuilder, private http: HttpClient) {}
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private auth: AuthenticatorService
+  ) {}
   isSubmitted = true;
 
   signInForm = this.fb.group({
@@ -22,7 +28,9 @@ export class SignInComponent {
       '',
       [
         Validators.required,
-        Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[.,@$!%*#?&^_-]).{8,99}/),
+        Validators.pattern(
+          /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[.,@$!%*#?&^_-]).{8,99}/
+        ),
       ],
     ],
   });
@@ -44,11 +52,10 @@ export class SignInComponent {
     );
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Content-Length':'<calculated when request is sent>',
-      'User-Agent':'PostmanRuntime/7.33.0',
-      'Accept-Encoding':'gzip, deflate, br',
-      'Connection': 'keep-alive',
-
+      'Content-Length': '<calculated when request is sent>',
+      'User-Agent': 'PostmanRuntime/7.33.0',
+      'Accept-Encoding': 'gzip, deflate, br',
+      Connection: 'keep-alive',
     });
 
     const requestBody = {
@@ -56,42 +63,25 @@ export class SignInComponent {
       role: this.roleUser,
       password: this.signInForm.get('password')?.value,
     };
-
-    this.http
-      .post<any>('https://localhost:7282/api/Auth/Authenticate', requestBody)
-      .subscribe({
-        next: (response) => {
-          console.log('POST request successful', response);
-          if (response.Success) {
-            console.log('Sign in with Success', response.Message);
-          } else if (response.Message) {
-            console.error('Sign in Failed', response.Message);
-          }
-          this.isSubmitted = true;
-          this.signInForm.reset();
-        },
-        error: (error) => {
-          console.error('POST request failed', error);
-        }
-      });
+    this.auth.login(requestBody, this.isSubmitted, this.signInForm);
+    
   }
-  validationField(fieldname:string):string{
+  validationField(fieldname: string): string {
     const control = this.signInForm.get(fieldname);
 
     if (control?.invalid && (control?.dirty || control?.touched)) {
       return 'invalid';
     }
-    if(control?.valid){
+    if (control?.valid) {
       return 'valid';
     }
     return 'normal';
-                    
   }
   onUserInput(event: any) {
     let inputText = event.target.value;
     this.isSubmitted = inputText === '';
   }
-  MessagePlaceholder(labelname: string,placeholder:string): string {
+  MessagePlaceholder(labelname: string, placeholder: string): string {
     return this.signInForm.get(labelname)?.invalid &&
       (this.signInForm.get(labelname)?.dirty ||
         this.signInForm.get(labelname)?.touched)

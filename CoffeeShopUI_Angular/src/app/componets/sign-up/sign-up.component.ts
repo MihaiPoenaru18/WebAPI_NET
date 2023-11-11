@@ -1,4 +1,4 @@
-import { Component, OnInit,NgZone } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -7,15 +7,20 @@ import {
 } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { isSubscription } from 'rxjs/internal/Subscription';
+import { AuthenticatorService } from 'src/app/services/Auth/authenticator.service';
 
 @Component({
   selector: 'cs-sign-up',
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.css'],
-
+  providers: [AuthenticatorService],
 })
 export class SignUpComponent {
-  constructor(private fb: FormBuilder, private http: HttpClient,private zone: NgZone) {}
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private auth: AuthenticatorService
+  ) {}
   isSubmitted = false;
 
   signUpForm = this.fb.group({
@@ -33,7 +38,7 @@ export class SignUpComponent {
     ],
     isSubscripToNewsletter: false,
   });
-  
+
   onSubmit(): void {
     {
       console.log(
@@ -41,9 +46,7 @@ export class SignUpComponent {
         this.signUpForm.value,
         this.signUpForm.valid
       );
-      this.zone.run(() => {
-        // Your problematic code here, such as XMLHttpRequest or asynchronous operations
-      });
+
       const headers = new HttpHeaders({
         'Content-Type': 'application/json',
         'Content-Length': '<calculated when request is sent>',
@@ -57,7 +60,7 @@ export class SignUpComponent {
         email: this.signUpForm.get('email')?.value,
         firstName: this.signUpForm.get('firstName')?.value,
         lastName: this.signUpForm.get('lastName')?.value,
-        role: "User",
+        role: 'User',
         password: this.signUpForm.get('password')?.value,
         newsLetter: {
           email: this.signUpForm.get('email')?.value,
@@ -69,41 +72,28 @@ export class SignUpComponent {
         },
       };
 
-      this.http
-      .post<any>('https://localhost:7282/api/Auth/RegisterUser', requestBody)
-      .subscribe({
-        next: (response) => {
-          console.log('POST request successful', response);
-          if (response.Success) {
-            console.log('Sign up with Success', response.Message);
-          } else if (response.Message) {
-            console.error('Sign up Failed', response.Message);
-          }
-          this.isSubmitted = true;
-          this.signUpForm.reset();
-        }
-      });
+      this.auth.register(requestBody, this.isSubmitted, this.signUpForm);
+      
     }
   }
 
-  validationField(fieldname:string):string{
+  validationField(fieldname: string): string {
     const control = this.signUpForm.get(fieldname);
 
     if (control?.invalid && (control?.dirty || control?.touched)) {
       return 'invalid';
     }
-    if(control?.valid){
+    if (control?.valid) {
       return 'valid';
     }
     return 'normal';
-                    
   }
-  
+
   onUserInput(event: any) {
     let inputText = event.target.value;
   }
 
-  MessagePlaceholder(labelname: string,placeholder:string): string {
+  MessagePlaceholder(labelname: string, placeholder: string): string {
     const control = this.signUpForm.get(labelname);
 
     if (control?.invalid && (control?.dirty || control?.touched)) {

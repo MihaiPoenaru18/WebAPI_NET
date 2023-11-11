@@ -40,8 +40,7 @@ namespace WebApplication1.Controllers
             }
         }
 
-        [AllowAnonymous]
-        [HttpGet("Authenticate")]
+        [HttpPost("Authenticate")]
         public ActionResult<AuthenticateResponse> Login([FromBody] AuthenticateRequest authenticateRequest)
         {
             var response = _services.Authenticate(authenticateRequest);

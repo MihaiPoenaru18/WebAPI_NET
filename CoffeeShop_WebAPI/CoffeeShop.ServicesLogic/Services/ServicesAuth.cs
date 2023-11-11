@@ -74,7 +74,7 @@ namespace CoffeeShop.ServicesLogic.Services
         }
         public AuthenticateResponse? Authenticate(AuthenticateRequest request)
         {
-            var response = _authorization.Authorization(request, DateTime.Now.AddDays(1));
+            var response = _authorization.Authorization(request, DateTime.Now.AddDays(7));
             if (response == null)
             {
                 return null;

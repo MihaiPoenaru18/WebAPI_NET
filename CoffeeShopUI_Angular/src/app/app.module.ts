@@ -18,6 +18,7 @@ import { SvgSignUpComponent } from './componets/svg-sign-up/svg-sign-up.componen
 import { SvgFooterComponent } from './componets/footer/svg-footer/svg-footer.component';
 //services
 import { NewsletterService } from './services/Newsletter/newsletter.service';
+import { AuthenticatorService } from './services/Auth/authenticator.service';
 
 const appRoutes: Routes = [
   { path: 'sign-up', component: SignUpComponent },
@@ -51,7 +52,7 @@ const appRoutes: Routes = [
     HttpClientModule,
     RouterModule.forRoot(appRoutes, { enableTracing: true }),
   ],
-  providers: [NewsletterService ],
+  providers: [NewsletterService,AuthenticatorService ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

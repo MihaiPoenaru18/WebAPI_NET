@@ -16,4 +16,7 @@
   <ul *ngIf="menuType==='Home'" class="signUP" [class.menuClass]="hamburgerVariabel">
     <li><a [routerLink]="['/sign-up']">Sign Up</a></li>
   </ul>
+  <ul *ngIf="auth.isAuthenticated" class="signUP" [class.menuClass]="hamburgerVariabel">
+    <li><a >Welcome {{auth.getEmail}}</a></li>
+  </ul>
 </nav>
