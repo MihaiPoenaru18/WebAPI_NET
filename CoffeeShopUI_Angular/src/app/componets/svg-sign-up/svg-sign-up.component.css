@@ -1,0 +1,14 @@
+svg{
+
+    position: relative;
+    top: 34px;
+    left: 20px;
+    width: 15px;
+  }
+  .invalid {
+    fill:  red;
+  }
+  
+  .valid {
+    fill:  green;
+  }

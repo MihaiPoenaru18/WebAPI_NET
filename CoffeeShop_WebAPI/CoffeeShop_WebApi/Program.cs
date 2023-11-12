@@ -39,10 +39,10 @@ builder.Services.AddScoped<MapperConfig<AuthenticateRequest, User>>();
 builder.Services.AddScoped<MapperConfig<UserWithNewsLetter, UserWithNewsLetterDto>>();
 builder.Services.AddScoped<MapperConfig<UserWithNewsLetterDto, UserWithNewsLetter>>();
 
-builder.Services.AddCors(options => options.AddPolicy(name: "NgOrigins",
+builder.Services.AddCors(options => options.AddPolicy(name: "corspolicy",
     policy =>
     {
-        policy.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();
+        policy.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
     }));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -51,13 +51,13 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 {
-    // global cors policy
-    app.UseCors(x => x
-        .AllowAnyOrigin()
-        .AllowAnyMethod()
-        .AllowAnyHeader());
+// global cors policy
+app.UseCors(x => x
+    .AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader());
 
-    app.MapControllers();
+app.MapControllers();
 }
 
 // Configure the HTTP request pipeline.
@@ -65,9 +65,9 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+    }
 
-app.UseCors("NgOrigins");
+app.UseCors("corspolicy");
 
 app.UseHttpsRedirection();
 

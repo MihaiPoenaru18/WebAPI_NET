@@ -15,25 +15,31 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
 
         public async Task<IEnumerable<UserWithNewsLetter>> GetAll()
         {
-            return await _context.News.ToListAsync();
+            return await _context.Newsletters.ToListAsync();
         }
 
         public void Delete(Guid id)
         {
             var user = GetById(id).Result;
-            _context.News.Remove(user);
+            _context.Newsletters.Remove(user);
         }
 
         public async Task<UserWithNewsLetter> GetById(Guid id)
         {
-            return await _context.News.FindAsync(id);
+            return await _context.Newsletters.FindAsync(id);
         }
 
         public async Task<bool> Insert(UserWithNewsLetter userWithNews)
         {
             if (!IsUserExistingInDB(userWithNews) && userWithNews != null)
-            {
-                _context.Add(userWithNews);
+            {    
+                _context.Add(new UserWithNewsLetter
+                {
+                    Id = Guid.NewGuid(),
+                    Email = userWithNews.Email,
+                    IsNewsLetterActive = userWithNews.IsNewsLetterActive,
+                    Name = userWithNews.Name, 
+                });
                 await _context.SaveChangesAsync();
                 return true;
             }
@@ -56,9 +62,13 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
         {
             if (item != null)
             {
-                _context.News.Update(item);
+                _context.Newsletters.Update(item);
             }
         }
-        
+
+        public string GetNameByEmail(string email)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

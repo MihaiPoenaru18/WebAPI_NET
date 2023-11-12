@@ -1,4 +1,6 @@
 ﻿
+using CoffeeShop_WebApi.DataAccess.ModelDB;
+
 namespace CoffeeShop.DataAccess.DataAccess.ModelDB
 {
     public class UserWithNewsLetter
@@ -8,5 +10,6 @@ namespace CoffeeShop.DataAccess.DataAccess.ModelDB
         public string Name { get; set; }
         public string Email { get; set; }
         public bool IsNewsLetterActive { get; set; }
+        public User User { get; set; }
     }
 }

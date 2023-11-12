@@ -55,6 +55,8 @@ namespace CoffeeShop_WebApi.Services.AutoMapper
                         cfg.CreateMap<AuthenticateRequest, User>().ForMember(dest => dest.Password, act => act.MapFrom(src => src.Password))
                                                                   .ForMember(dest => dest.Email, act => act.MapFrom(src => src.Email))
                                                                   .ForMember(dest => dest.Role, act => act.MapFrom(src => src.Role));
+                  
+                      
                     });
 
                     return new Mapper(config);

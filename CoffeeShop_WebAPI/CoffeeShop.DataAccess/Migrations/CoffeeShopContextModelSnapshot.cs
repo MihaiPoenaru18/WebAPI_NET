@@ -26,7 +26,8 @@ namespace CoffeeShop.DataAccess.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -41,14 +42,15 @@ namespace CoffeeShop.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("News");
+                    b.ToTable("Newsletters");
                 });
 
             modelBuilder.Entity("CoffeeShop_WebApi.DataAccess.ModelDB.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -75,20 +77,27 @@ namespace CoffeeShop.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdUserNewsLetter");
+                    b.HasIndex("IdUserNewsLetter")
+                        .IsUnique();
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("CoffeeShop_WebApi.DataAccess.ModelDB.User", b =>
                 {
                     b.HasOne("CoffeeShop.DataAccess.DataAccess.ModelDB.UserWithNewsLetter", "UserWithNewsLetter")
-                        .WithMany()
-                        .HasForeignKey("IdUserNewsLetter")
+                        .WithOne("User")
+                        .HasForeignKey("CoffeeShop_WebApi.DataAccess.ModelDB.User", "IdUserNewsLetter")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("UserWithNewsLetter");
+                });
+
+            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.UserWithNewsLetter", b =>
+                {
+                    b.Navigation("User")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

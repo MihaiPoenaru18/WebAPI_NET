@@ -1,6 +1,7 @@
 ﻿using CoffeeShop.ServicesLogic.EntiteModels;
 using CoffeeShop.ServicesLogic.Services;
 using CoffeeShop_WebApi.Authorization.Models;
+using CoffeeShop_WebApi.Controllers;
 using CoffeeShop_WebApi.DataAccess.ModelDB;
 using FakeItEasy;
 using Microsoft.AspNetCore.Mvc;
@@ -50,7 +51,8 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
             {
                 Email = "Poenaru@gmail",
                 Password = "21",
-                Role = "Admin"
+                Role = "Admin",
+                
             };
             var services = A.Fake<IServicesAuth<UserDto>>();
             A.CallTo(() => services.GetAllUsers()).Returns(null);
@@ -58,10 +60,12 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
             //act
             var actionResult = controller.GetAllUsersInfo(authenticateRequest);
 
-            //assert
-            var result = actionResult.Result as BadRequestObjectResult;
-            var resultMessage = result.Value as string;
-            Assert.Equal("User doesn't exit!! \n You need to register this user", resultMessage);
+            
+            // Assert
+            var result = actionResult.Result as OkObjectResult;
+            var resultMessage = result.Value as ApiResponse;
+
+            Assert.False(resultMessage.Success);
         }
 
         [Fact]
@@ -81,9 +85,9 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
             var actionResult = controller.GetAllUsersInfo(authenticateRequest);
 
             //assert
-            var result = actionResult.Result as BadRequestObjectResult;
-            var resultMessage = result.Value as string;
-            Assert.Equal("You are not authorised for this request!!!", resultMessage);
+            var result = actionResult.Result as OkObjectResult;
+            var resultMessage = result.Value as ApiResponse;
+            Assert.False(resultMessage.Success);
         }
     }
 }
