@@ -65,6 +65,10 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
                 _context.Newsletters.Update(item);
             }
         }
-        
+
+        public string GetNameByEmail(string email)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -18,9 +18,9 @@ export class SignInComponent {
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private auth: AuthenticatorService
+    public auth: AuthenticatorService
   ) {}
-  isSubmitted = true;
+  @Input() isSubmitted = true;
 
   signInForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -63,8 +63,8 @@ export class SignInComponent {
       role: this.roleUser,
       password: this.signInForm.get('password')?.value,
     };
-    this.auth.login(requestBody, this.isSubmitted, this.signInForm);
-    
+    this.auth.login(requestBody, this.signInForm);
+    this.isSubmitted = this.auth.isSubmitted;
   }
   validationField(fieldname: string): string {
     const control = this.signInForm.get(fieldname);
@@ -88,4 +88,5 @@ export class SignInComponent {
       ? ' Required'
       : placeholder;
   }
+ 
 }

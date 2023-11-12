@@ -1,4 +1,6 @@
-﻿namespace CoffeeShop_WebApi.Authorization.Models
+﻿using System.Globalization;
+
+namespace CoffeeShop_WebApi.Authorization.Models
 {
     public class AuthenticateRequest
     {

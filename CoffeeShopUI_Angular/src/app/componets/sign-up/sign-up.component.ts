@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit, NgZone, Input } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -21,7 +21,7 @@ export class SignUpComponent {
     private http: HttpClient,
     private auth: AuthenticatorService
   ) {}
-  isSubmitted = false;
+  @Input() isSubmitted = false;
 
   signUpForm = this.fb.group({
     firstName: ['', Validators.required],
@@ -71,9 +71,9 @@ export class SignUpComponent {
           isActived: this.signUpForm.get('isSubscripToNewsletter')?.value,
         },
       };
-
-      this.auth.register(requestBody, this.isSubmitted, this.signUpForm);
-      
+      this.auth.register(requestBody,this.signUpForm);
+      this.isSubmitted = this.auth.isRegistered
+      console.log('isSubmitted =', this.isSubmitted);
     }
   }
 

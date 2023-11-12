@@ -48,7 +48,7 @@ namespace WebApplication1.Controllers
             {
                 if (response == null)
                 {
-                    return Ok(new ApiResponse { Success = false, Message = "Email or password is incorrect" });
+                    return BadRequest( "Email or password is incorrect" );
                 }
 
                 return Ok(response);

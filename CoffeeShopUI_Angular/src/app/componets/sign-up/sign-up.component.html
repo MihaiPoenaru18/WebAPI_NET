@@ -3,17 +3,22 @@
       <h1>Sign Up</h1>
       <div>
          <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
-            <div class="fields">
+            <div *ngIf="isSubmitted" class="alert alert-success" role="alert">
+               <b>You register with success!</b>
+            </div>
+            <div *ngIf="!isSubmitted" class="fields" >
                <div *ngIf="signUpForm.get('password')?.invalid &&
                (signUpForm.get('password')?.dirty || signUpForm.get('password')?.touched)" class="alert alert-danger"
                   role="alert">
-                  <b>The Passsword should have min 8 characters, one symbol, mine one uppercase, min one lowercase and
-                     on
-                     digit or number!</b>
+                  <ul>
+                     <li>The password should have a minimum of 8 characters.</li>
+                     <li>It should contain at least one symbol.</li>
+                     <li>It should have at least one uppercase letter.</li>
+                     <li>It should have at least one lowercase letter.</li>
+                     <li>It should include at least one digit or number.</li>
+                   </ul>
                </div>
-               <div *ngIf="isSubmitted" class="alert alert-success" role="alert">
-                  <b>You register with success!</b>
-               </div>
+               
                <div class="icon">
                   <cs-svg-sign-up  [svgName]="'nameSVG'"
                      [validForm]="validationField('firstName')" [invalidForm]="validationField('firstName') ">
@@ -54,8 +59,13 @@
                   <input formControlName="isSubscripToNewsletter" type="checkbox">
                   <label for="vehicle1"> Subscribe to our newsletter to stay in touch with us!</label>
                </div>
-               <div><input type="submit" value="Sign up"></div>
+               <div *ngIf="isSubmitted" class="alert alert-success"
+               role="alert">
+              <b>Register success</b>
             </div>
+               <div><input type="submit" value="Sign up"  ></div>
+            </div>
+           
             <p><b>Already have an account.<a [routerLink]="['/sign-in']"> Sign In</a></b></p>
          </form>
       </div>

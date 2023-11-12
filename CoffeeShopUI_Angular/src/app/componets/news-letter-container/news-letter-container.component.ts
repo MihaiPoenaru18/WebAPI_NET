@@ -53,24 +53,6 @@ export class NewsLetterContainerComponent {
       Connection: 'keep-alive',
     });
     this.newsletterServices.addUserToNewsletter(requestBody,this.isSubmitted,this.newsLetterForm)
-    // Make the POST request
-    // this.http
-    //   .post<any>('https://localhost:7282/api/AddUserToNewsLetter', requestBody)
-    //   .subscribe({
-    //     next: (response) => {
-    //       console.log('POST request successful', response);
-    //       if (response.Success) {
-    //         console.log('Subscriber Success', response.Message);
-    //       } else if (response.Message) {
-    //         console.error('Subscriber Failed', response.Message);
-    //       }
-    //       this.isSubmitted = true;
-    //       this.newsLetterForm.reset();
-    //     },
-    //     error: (error) => {
-    //       console.error('POST request failed', error);
-    //     },
-    //   });
   }
 
   onUserInput(event: any) {

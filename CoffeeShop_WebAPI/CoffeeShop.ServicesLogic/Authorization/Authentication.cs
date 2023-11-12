@@ -52,6 +52,7 @@ namespace CoffeeShop.ServicesLogic.Authorization
                 authenticateResponse.Email = request.Email;
                 authenticateResponse.CreatedDate = DateTime.Now;
                 authenticateResponse.ExpiresDate = expiresDate;
+                authenticateResponse.Name = _usersRepository.GetNameByEmail(request.Email);
                 return authenticateResponse;
             }
             return null;

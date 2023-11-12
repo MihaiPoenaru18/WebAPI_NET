@@ -4,9 +4,11 @@
     {
         public AuthenticateResponse(AuthenticateRequest request, string token)
         {
+           
             Email = request.Email;
             Token = token;
         }
+        public string Name { get; set; }= string.Empty;
         public string Email { get; set; } = string.Empty;
         public string Token { get; set; } = string.Empty;
         public DateTime CreatedDate { get; set; } = DateTime.Now;

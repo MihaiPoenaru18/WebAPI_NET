@@ -8,6 +8,8 @@ namespace WebApplication1.DataAccess.Repository
 
         Task<T> GetById(Guid id);
 
+        string GetNameByEmail(string email);
+
         Task<bool>Insert(T item);
 
         Task Update(T item);

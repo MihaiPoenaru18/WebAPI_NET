@@ -13,10 +13,13 @@
     <li><a href="#Products">Products</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  <ul *ngIf="menuType==='Home'" class="signUP" [class.menuClass]="hamburgerVariabel">
-    <li><a [routerLink]="['/sign-up']">Sign Up</a></li>
-  </ul>
-  <ul *ngIf="auth.isAuthenticated" class="signUP" [class.menuClass]="hamburgerVariabel">
-    <li><a >Welcome {{auth.getEmail}}</a></li>
+  <div *ngIf="!auth.isAuthenticated">
+    <ul *ngIf="menuType==='Home'" class="signUP" [class.menuClass]="hamburgerVariabel">
+      <li><a [routerLink]="['/sign-in']">Sign In</a></li>
+    </ul>
+  </div>
+  <ul *ngIf="auth.isAuthenticated" [class.welcome]="auth.isAuthenticated" [class.menuClass]="hamburgerVariabel">
+    <li ><a>Welcome {{auth.getName}}</a></li>
+    <li><button (click)="auth.logout()">Logout </button></li>
   </ul>
 </nav>
