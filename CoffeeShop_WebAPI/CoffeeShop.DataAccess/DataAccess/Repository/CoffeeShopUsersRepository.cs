@@ -87,19 +87,7 @@ namespace WebApplication1.DataAccess.Repository
             }
             catch (Exception ex)
             {
-                // Log the outer exception
                 Console.WriteLine($"Outer Exception: {ex.Message}");
-
-                // Check for inner exceptions
-                Exception innerException = ex.InnerException;
-                while (innerException != null)
-                {
-                    Console.WriteLine($"Inner Exception: {innerException.Message}");
-                    innerException = innerException.InnerException;
-                }
-
-                // You might also consider logging the entire stack trace
-                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
             }
             return false;
         }

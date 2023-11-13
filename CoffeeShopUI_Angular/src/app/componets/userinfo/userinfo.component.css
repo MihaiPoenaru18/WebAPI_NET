@@ -1,0 +1,58 @@
+.box{
+    width: 600px;
+    padding: 24px 32px;
+    border-radius: 30px;
+    background-color: #fafbec;
+    border: 1px solid #d1d9e6;
+    box-shadow: 8px 8px 24px 0px rgba(0, 0, 0, 0.08);
+}
+h1{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px ;
+}
+.info-form{
+    display: flex;
+    flex-direction: column;
+    gap:6px;
+    color: #676d3c;
+    font-size: 25px;
+    box-sizing: border-box;
+}
+input{
+  
+    color: black;
+    width: 350px;
+    font-size: 16px;
+    border-radius: 60px;
+    border: 1px solid #676d3c;
+    background:  #FFF;
+    height: 48px;
+    padding: 12px 44px;
+    text-align: left;
+    font-size: 20px;
+}
+cs-svg-sign-up{
+    position: relative;
+    right: 170px;
+    top: 13px;
+}
+.password{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+gap:14px
+}
+button{
+    background-color: #676d3c;
+    border: none;
+    border-radius: 25px;
+    color: white;
+    padding: 5px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px 2px;
+    cursor: pointer;
+}

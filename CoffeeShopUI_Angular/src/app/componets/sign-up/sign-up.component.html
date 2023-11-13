@@ -6,22 +6,12 @@
             <div *ngIf="isSubmitted" class="alert alert-success" role="alert">
                <b>You register with success!</b>
             </div>
-            <div *ngIf="!isSubmitted" class="fields" >
-               <div *ngIf="signUpForm.get('password')?.invalid &&
-               (signUpForm.get('password')?.dirty || signUpForm.get('password')?.touched)" class="alert alert-danger"
-                  role="alert">
-                  <ul>
-                     <li>The password should have a minimum of 8 characters.</li>
-                     <li>It should contain at least one symbol.</li>
-                     <li>It should have at least one uppercase letter.</li>
-                     <li>It should have at least one lowercase letter.</li>
-                     <li>It should include at least one digit or number.</li>
-                   </ul>
-               </div>
-               
+            <div *ngIf="!isSubmitted" class="fields">
+              
+
                <div class="icon">
-                  <cs-svg-sign-up  [svgName]="'nameSVG'"
-                     [validForm]="validationField('firstName')" [invalidForm]="validationField('firstName') ">
+                  <cs-svg-sign-up [svgName]="'nameSVG'" [validForm]="validationField('firstName')"
+                     [invalidForm]="validationField('firstName') ">
                   </cs-svg-sign-up>
                   <input formControlName="firstName" (input)="onUserInput($event)" [class.invalid]="signUpForm.get('firstName')?.invalid &&
                   (signUpForm.get('firstName')?.dirty || signUpForm.get('firstName')?.touched)"
@@ -29,17 +19,17 @@
                      placeholder="{{MessagePlaceholder('firstName','First Name')}}">
                </div>
                <div class="icon">
-                  <cs-svg-sign-up  [svgName]="'nameSVG'"
-                  [validForm]="validationField('lastName')" [invalidForm]="validationField('lastName') ">
-               </cs-svg-sign-up>
+                  <cs-svg-sign-up [svgName]="'nameSVG'" [validForm]="validationField('lastName')"
+                     [invalidForm]="validationField('lastName') ">
+                  </cs-svg-sign-up>
                   <input formControlName="lastName" (input)="onUserInput($event)" [class.invalid]="signUpForm.get('lastName')?.invalid &&
                   (signUpForm.get('lastName')?.dirty || signUpForm.get('lastName')?.touched)" type="text"
                      [class.valid]="signUpForm.get('lastName')?.valid" type="text"
                      placeholder="{{MessagePlaceholder('lastName','Last Name')}}">
                </div>
                <div class="icon">
-                  <cs-svg-sign-up  [svgName]="'emailSVG'"
-                     [validForm]="validationField('email')" [invalidForm]="validationField('email') ">
+                  <cs-svg-sign-up [svgName]="'emailSVG'" [validForm]="validationField('email')"
+                     [invalidForm]="validationField('email') ">
                   </cs-svg-sign-up>
                   <input formControlName="email" (input)="onUserInput($event)" [class.invalid]="signUpForm.get('email')?.invalid &&
                   (signUpForm.get('email')?.dirty || signUpForm.get('email')?.touched)"
@@ -47,8 +37,8 @@
                      placeholder="{{MessagePlaceholder('email','Email')}}">
                </div>
                <div class="icon">
-                  <cs-svg-sign-up  [svgName]="'passwordSVG'"
-                     [validForm]="validationField('password')" [invalidForm]="validationField('password') ">
+                  <cs-svg-sign-up [svgName]="'passwordSVG'" [validForm]="validationField('password')"
+                     [invalidForm]="validationField('password') ">
                   </cs-svg-sign-up>
                   <input formControlName="password" (input)="onUserInput($event)" [class.invalid]="signUpForm.get('password')?.invalid &&
                   (signUpForm.get('password')?.dirty || signUpForm.get('password')?.touched)"
@@ -59,13 +49,21 @@
                   <input formControlName="isSubscripToNewsletter" type="checkbox">
                   <label for="vehicle1"> Subscribe to our newsletter to stay in touch with us!</label>
                </div>
-               <div *ngIf="isSubmitted" class="alert alert-success"
-               role="alert">
-              <b>Register success</b>
+               <div *ngIf="signUpForm.get('password')?.invalid &&
+               (signUpForm.get('password')?.dirty || signUpForm.get('password')?.touched)" class="alert alert-danger"
+                  role="alert">
+                  <ul>
+                     <li>Your password must contain:</li>
+                     <li>At least 8 characters</li>
+                     <li>t least 3 of the following:</li>
+                     <li>Lower case letters (a-z)</li>
+                     <li>Upper case letters (A-Z)</li>
+                     <li>Special characters (e.g. !@#$%^&*)</li>
+                  </ul>
+               </div>
+               <div><input type="submit" value="Sign up"></div>
             </div>
-               <div><input type="submit" value="Sign up"  ></div>
-            </div>
-           
+
             <p><b>Already have an account.<a [routerLink]="['/sign-in']"> Sign In</a></b></p>
          </form>
       </div>

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { UserInfoInterface } from './userInfo.interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -9,6 +10,7 @@ import { Router } from '@angular/router';
 export class AuthenticatorService {
   @Input() isSubmitted = false;
   @Input() isRegistered =false;
+  @Input() info :UserInfoInterface;
   constructor(private http: HttpClient, private router: Router) {}
 
   register(requestBody: any, form: FormGroup) {
@@ -63,20 +65,36 @@ export class AuthenticatorService {
         },
       });
   }
-
+  userInfo(credentials:any){
+    this.http
+    .post<any>('https://localhost:7282/api/Auth/GetUserInfo', credentials)
+    .subscribe({
+      next: (response) => {
+        console.log('POST request successful', response);
+        if (response.Success) {
+          console.log('Sign in with Success', response.Message);
+        } else if (response.Message) {
+          console.error('Sign in Failed', response.Message);
+        }
+        this.info = {email:response.email, firstName:response.firstName,lastName:response.lastName, isActiveNewsletter: response.newsLetter.isActived } ;
+      },
+      error: (error) => {
+        this.isSubmitted = false;
+        console.error('POST request failed', error);
+      },
+    });
+   
+  }
   get getName() {
     return localStorage.getItem('name');
   }
-
+  get getEmail() {
+    return localStorage.getItem("email");
+  }
   get isAuthenticated() {
     return !!localStorage.getItem('token_valid');
   }
-  // goToHomePage() {
-  //   if (this.isSubmitted==true) {
-  //     this.router.navigateByUrl('http://localhost:4200/');
-  //     console.log('go to home page')
-  //   }
-  // }
+  
 
   logout() {
     localStorage.clear;
@@ -84,4 +102,5 @@ export class AuthenticatorService {
     localStorage.removeItem('token_valid');
     this.isSubmitted = false;
   }
+  
 }

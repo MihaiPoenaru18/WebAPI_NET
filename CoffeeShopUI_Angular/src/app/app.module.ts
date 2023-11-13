@@ -19,10 +19,12 @@ import { SvgFooterComponent } from './componets/footer/svg-footer/svg-footer.com
 //services
 import { NewsletterService } from './services/Newsletter/newsletter.service';
 import { AuthenticatorService } from './services/Auth/authenticator.service';
+import { UserinfoComponent } from './componets/userinfo/userinfo.component';
 
 const appRoutes: Routes = [
   { path: 'sign-up', component: SignUpComponent },
   { path: 'sign-in', component: SignInComponent },
+  { path: 'userInfo', component: UserinfoComponent },
   { path: '', component: HomeComponent },
   { path: '', redirectTo: 'Home', pathMatch: 'full' },
   { path: '**', component: HomeComponent },
@@ -41,6 +43,7 @@ const appRoutes: Routes = [
     SignInComponent,
     SvgSignUpComponent,
     SvgFooterComponent,
+    UserinfoComponent,
    
   ],
   imports: [

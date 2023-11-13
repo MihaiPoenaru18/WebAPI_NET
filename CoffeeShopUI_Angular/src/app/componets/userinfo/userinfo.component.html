@@ -1,0 +1,27 @@
+<div style="display: flex; justify-content: center; margin: 7% 0px;">
+    <div class="box">
+        <h1> Account information</h1>
+        <div *ngIf="email != null" class="info-form">
+            <label for="Email">Email: {{email}}</label>
+            <output></output>
+            <label for="name">Name: {{name}}</label>
+            <output></output>
+            <label *ngIf="newsletterActived == true" for="newsletter">Thank you for subscribe our newsletter</label>
+            <label *ngIf="!newsletterActived" for="newsletter">Would you to subscribe to our newsletter?</label>
+            
+            <output></output>
+        </div>
+        <div *ngIf="email == null" [formGroup]="form" class="password">
+            <cs-svg-sign-up [svgName]="'passwordSVG'" [validForm]="validationField('password')"
+                [invalidForm]="validationField('password') ">s
+            </cs-svg-sign-up>
+            <input formControlName="password" 
+            [class.invalid]="form.get('password')?.invalid &&
+            (form.get('password')?.dirty || 
+            form.get('password')?.touched)" 
+            [class.valid]="form.get('password')?.valid"
+            type="password" placeholder="{{MessagePlaceholder('password','Password')}}">
+            <button (click)="getInfo()"> Show my account information</button>
+        </div>
+
+    </div>

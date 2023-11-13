@@ -26,11 +26,11 @@ namespace WebApplication1.Controllers
             {
                 if (request == null)
                 {
-                    return BadRequest( "The fiels are emplty!!!" );
+                    return BadRequest("The fiels are emplty!!!");
                 }
                 if (!_services.IsUserRegistered(request).Result)
                 {
-                    return BadRequest("The user already exist!!!" );
+                    return BadRequest("The user already exist!!!");
                 }
                 return Ok(new ApiResponse { Success = true, Message = "Register Success" });
             }
@@ -48,7 +48,7 @@ namespace WebApplication1.Controllers
             {
                 if (response == null)
                 {
-                    return BadRequest( "Email or password is incorrect" );
+                    return BadRequest("Email or password is incorrect");
                 }
 
                 return Ok(response);
@@ -60,30 +60,43 @@ namespace WebApplication1.Controllers
 
         }
 
-        [AllowAnonymous]
-        [HttpGet("GetUserInfo"), Authorize]
+        [HttpPost("GetUserInfo")]
         public ActionResult<UserDto> GetUserInfo([FromBody] AuthenticateRequest authenticateRequest)
         {
-            if (_services.GetInfo(authenticateRequest) == null)
+            try
             {
-                return Ok(new ApiResponse { Success = false, Message = "User doesn't exit!! \n You need to register this user" });
+                if (_services.GetInfo(authenticateRequest) == null)
+                {
+                    return BadRequest("User doesn't exit!! \n You need to register this user");
+                }
+                return Ok(_services.GetInfo(authenticateRequest));
             }
-            return Ok(_services.GetInfo(authenticateRequest));
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [AllowAnonymous]
         [HttpGet("GetAllUsersInfo"), Authorize]
         public ActionResult<IEnumerable<User>> GetAllUsersInfo([FromBody] AuthenticateRequest loginUser)
         {
-            if (loginUser.Role == "Admin")
+            try
             {
-                if (_services.GetAllUsers() == null)
+                if (loginUser.Role == "Admin")
                 {
-                    return Ok(new ApiResponse { Success = false, Message = "User doesn't exit!! \n You need to register this user" });
+                    if (_services.GetAllUsers() == null)
+                    {
+                        return BadRequest("User doesn't exit!! \n You need to register this user");
+                    }
+                    return Ok(_services.GetAllUsers());
                 }
-                return Ok(_services.GetAllUsers());
+                return BadRequest("You are not authorised for this request!!!");
             }
-            return Ok(new ApiResponse { Success = false, Message = "You are not authorised for this request!!!" });
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

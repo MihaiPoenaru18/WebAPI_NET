@@ -19,7 +19,7 @@
     </ul>
   </div>
   <ul *ngIf="auth.isAuthenticated" [class.welcome]="auth.isAuthenticated" [class.menuClass]="hamburgerVariabel">
-    <li ><a>Welcome {{auth.getName}}</a></li>
+    <li ><a routerLink="userInfo">Welcome {{auth.getName}}</a></li>
     <li><button (click)="auth.logout()">Logout </button></li>
   </ul>
 </nav>
