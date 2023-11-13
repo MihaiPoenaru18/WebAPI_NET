@@ -1,0 +1,29 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: dotnet package CI
+on:
+  push:
+    branches: [ "main" ,"develop","feature/Register"]
+  merge_group:
+    branches: ["develop","feature/Register"]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+      #setup nuget
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1.2.0
+    - name: RestoreNuget packages 
+      run: nuget restore CoffeeShop_WebAPI/CoffeeShop_WebAPI.sln
+    - name: Restore dependencies
+      run: dotnet restore CoffeeShop_WebAPI/CoffeeShop_WebAPI.sln
+    - name: Build the solution
+      run: dotnet build CoffeeShop_WebAPI/CoffeeShop_WebAPI.sln
+  
