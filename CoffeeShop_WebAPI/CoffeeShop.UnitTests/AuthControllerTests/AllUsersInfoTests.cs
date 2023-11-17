@@ -1,8 +1,6 @@
 ﻿using CoffeeShop.ServicesLogic.EntiteModels;
 using CoffeeShop.ServicesLogic.Services;
 using CoffeeShop_WebApi.Authorization.Models;
-using CoffeeShop_WebApi.Controllers;
-using CoffeeShop_WebApi.DataAccess.ModelDB;
 using FakeItEasy;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Controllers;
@@ -60,34 +58,38 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
             //act
             var actionResult = controller.GetAllUsersInfo(authenticateRequest);
 
-            
-            // Assert
-            var result = actionResult.Result as OkObjectResult;
-            var resultMessage = result.Value as ApiResponse;
 
-            Assert.False(resultMessage.Success);
+            // Assert
+            //assert
+            var result = actionResult.Result as BadRequestObjectResult;
+            var resultMessage = result.Value as string;
+            Assert.Equal("User doesn't exit!! \n You need to register this user", resultMessage);
         }
 
         [Fact]
-        public void HavingUserLogin_WhenGetAllUsersInfo_returnBadRequest()
+        public void GetAllUsersInfo_WhenNoUsers_ReturnsBadRequest()
         {
-            //arrange
+            // Arrange
             var authenticateRequest = new AuthenticateRequest()
             {
-                Email = "Poenaru@gmail",
+                Email = "Poenarugmail",
                 Password = "21",
                 Role = "User"
             };
+
             var services = A.Fake<IServicesAuth<UserDto>>();
             A.CallTo(() => services.GetAllUsers()).Returns(null);
+
             var controller = new AuthController(services);
-            //act
+
+            // Act
             var actionResult = controller.GetAllUsersInfo(authenticateRequest);
 
-            //assert
-            var result = actionResult.Result as OkObjectResult;
-            var resultMessage = result.Value as ApiResponse;
-            Assert.False(resultMessage.Success);
+            // Assert
+            var result = actionResult.Result as BadRequestObjectResult;
+            var resultMessage = result.Value as string;
+            Assert.Equal("You are not authorised for this request!!!", resultMessage);
         }
+
     }
 }

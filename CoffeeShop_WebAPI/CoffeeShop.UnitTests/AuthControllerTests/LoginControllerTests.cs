@@ -32,10 +32,9 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
             //act
             var actionResult = controller.Login(authenticateRequest);
             //assert
-            var result = actionResult.Result as OkObjectResult;
-            var resultMessage = result.Value as ApiResponse;
-
-            Assert.False(resultMessage.Success);
+            var result = actionResult.Result as BadRequestObjectResult;
+            var resultMessage = result.Value as string;
+            Assert.Equal("Email or password is incorrect", resultMessage);
         }
 
         [Fact]

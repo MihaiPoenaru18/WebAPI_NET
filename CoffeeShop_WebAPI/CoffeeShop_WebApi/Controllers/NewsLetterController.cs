@@ -18,37 +18,38 @@ namespace CoffeeShop_WebApi.Controllers
         }
 
         [HttpPost("AddUserToNewsLetter")]
-        public IActionResult AddUserToNewsLetter(UserWithNewsLetterDto body)
+        public ActionResult<string> AddUserToNewsLetter(UserWithNewsLetterDto body)
         {
             try
             {
-                if (body == null)
+                if (body.Email == null && body.Name == null)
                 {
-                    return Ok(new ApiResponse { Success = false, Message = "The fields are empty!!!" });
+                    return BadRequest("The fields are empty!!!" );
+                }
+                var x = _servicesNewsLetter.IsUserRegisteredWithNewsLetter(body).Result;
+                if (!x)
+                {
+                    return BadRequest("The user already subscribed to the newsletter!!!" );
                 }
 
-                if (!_servicesNewsLetter.IsUserRegisteredWithNewsLetter(body).Result)
-                {
-                    return Ok(new ApiResponse { Success = false, Message = "The user already subscribed to the newsletter!!!" });
-                }
-
-                return Ok(new ApiResponse { Success = true, Message = "Subscriber Success" });
-            }catch (Exception ex)
+                return Ok("Subscriber Success" );
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-            
+
         }
 
-        [HttpGet("GetNewsLetterInfo")]
-        public ActionResult<bool> GetAllUsersInfo([FromBody] UserWithNewsLetterDto body)
-        {
+        //[HttpGet("GetNewsLetterInfo")]
+        //public ActionResult<bool> GetAllUsersInfo([FromBody] UserWithNewsLetterDto body)
+        //{
 
-            if (body == null)
-            {
-                return Ok(new ApiResponse { Success = false, Message = "The fiels are emplty!!!" });
-            }
-            return Ok(_servicesNewsLetter.GetStatusOfNewsLetter(body));
-        }
+        //    if (body == null)
+        //    {
+        //        return Ok(new ApiResponse { Success = false, Message = "The fiels are emplty!!!" });
+        //    }
+        //    return Ok(_servicesNewsLetter.GetStatusOfNewsLetter(body));
+        //}
     }
 }

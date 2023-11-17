@@ -65,9 +65,9 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
             var actionResult = controller.GetUserInfo(authenticateRequest);
 
             //assert
-            var result = actionResult.Result as OkObjectResult;
-            var resultMessage = result.Value as ApiResponse;
-            Assert.False(resultMessage.Success);
+            var result = actionResult.Result as BadRequestObjectResult;
+            var resultMessage = result.Value as string;
+            Assert.Equal("User doesn't exit!! \n You need to register this user", resultMessage);
         }
     }
 }

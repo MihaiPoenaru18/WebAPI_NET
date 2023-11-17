@@ -1,5 +1,6 @@
 ﻿
 using CoffeeShop_WebApi.DataAccess.ModelDB;
+using System.Text.Json.Serialization;
 
 namespace CoffeeShop.DataAccess.DataAccess.ModelDB
 {
@@ -10,6 +11,7 @@ namespace CoffeeShop.DataAccess.DataAccess.ModelDB
         public string Name { get; set; }
         public string Email { get; set; }
         public bool IsNewsLetterActive { get; set; }
+        [JsonIgnore]
         public User User { get; set; }
     }
 }

@@ -36,8 +36,8 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
             var actionResult = controller.Register(requestUser);
             //Assert
             var result = actionResult as OkObjectResult;
-            var resultMessage = result.Value as ApiResponse;
-            Assert.True(resultMessage.Success);
+            var resultMessage = result.Value as string;
+            Assert.Equal(messageOk, resultMessage);
         }
 
         [Fact]
@@ -68,9 +68,9 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
             var actionResult = controller.Register(requestUser);
 
             //Assert
-            var result = actionResult as OkObjectResult;
-            var resultMessage = result.Value as ApiResponse;
-            Assert.False(resultMessage.Success);
+            var result = actionResult as BadRequestObjectResult;
+            var resultMessage = result.Value as string;
+            Assert.Equal(badMessage, resultMessage);
         }
 
         [Fact]
@@ -86,9 +86,9 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
             var actionResult = controller.Register(null);
 
             //Assert
-            var result = actionResult as OkObjectResult;
-            var resultMessage = result.Value as ApiResponse;
-            Assert.False(resultMessage.Success);
+            var result = actionResult as BadRequestObjectResult;
+            var resultMessage = result.Value as string;
+            Assert.Equal(badMessage, resultMessage);
         }
 
     }

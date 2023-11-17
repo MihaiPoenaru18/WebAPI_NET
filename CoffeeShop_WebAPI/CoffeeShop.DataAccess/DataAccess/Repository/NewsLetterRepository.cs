@@ -51,8 +51,7 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
             var userWithNewsLetterDB = GetAll().Result.Where(x => x.Email.Equals(userWithNews.Email)).FirstOrDefault();
             if (userWithNewsLetterDB != null)
             {
-                userWithNews.Email = userWithNewsLetterDB.Email;
-                userWithNews.IsNewsLetterActive = true;
+                
                 return true;
             }
             return false;

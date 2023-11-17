@@ -32,7 +32,7 @@ namespace WebApplication1.Controllers
                 {
                     return BadRequest("The user already exist!!!");
                 }
-                return Ok(new ApiResponse { Success = true, Message = "Register Success" });
+                return Ok( "Register Success" );
             }
             catch (Exception ex)
             {
@@ -85,11 +85,12 @@ namespace WebApplication1.Controllers
             {
                 if (loginUser.Role == "Admin")
                 {
-                    if (_services.GetAllUsers() == null)
+                    var users = _services.GetAllUsers();
+                    if (users == null)
                     {
                         return BadRequest("User doesn't exit!! \n You need to register this user");
                     }
-                    return Ok(_services.GetAllUsers());
+                    return Ok(users);
                 }
                 return BadRequest("You are not authorised for this request!!!");
             }
