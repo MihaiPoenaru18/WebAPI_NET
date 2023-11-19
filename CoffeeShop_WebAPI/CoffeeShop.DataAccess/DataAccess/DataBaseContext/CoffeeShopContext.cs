@@ -9,6 +9,7 @@ namespace CoffeeShop.DataAccess.DataAccess.DataBaseContext
         public CoffeeShopContext(DbContextOptions<CoffeeShopContext> options) : base(options) { }
         public DbSet<User> Users { get; set; }
         public DbSet<UserWithNewsLetter> Newsletters { get; set; }
+        public DbSet<Product> Products { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

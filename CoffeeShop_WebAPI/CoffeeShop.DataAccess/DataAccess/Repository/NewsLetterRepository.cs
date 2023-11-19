@@ -1,11 +1,11 @@
 ﻿using CoffeeShop.DataAccess.DataAccess.DataBaseContext;
 using CoffeeShop.DataAccess.DataAccess.ModelDB;
+using CoffeeShop.DataAccess.DataAccess.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using WebApplication1.DataAccess.Repository;
 
 namespace CoffeeShop.DataAccess.DataAccess.Repository
 {
-    public class NewsLetterRepository : ICoffeeShopRepository<UserWithNewsLetter>
+    public class NewsLetterRepository : ICoffeeShopUserRepository<UserWithNewsLetter>
     {
         private readonly CoffeeShopContext _context;
         public NewsLetterRepository(CoffeeShopContext context)

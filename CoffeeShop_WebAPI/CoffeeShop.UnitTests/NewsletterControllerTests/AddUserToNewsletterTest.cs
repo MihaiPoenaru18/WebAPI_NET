@@ -1,9 +1,9 @@
 ﻿using CoffeeShop.ServicesLogic.EntiteModels;
-using CoffeeShop.ServicesLogic.Services;
 using Xunit;
 using FakeItEasy;
 using Microsoft.AspNetCore.Mvc;
 using CoffeeShop_WebApi.Controllers;
+using CoffeeShop.ServicesLogic.Services.Interfaces;
 
 namespace CoffeeShop.UnitTests.NewsletterControllerTests
 {

@@ -1,5 +1,4 @@
-﻿
-using CoffeeShop_WebApi.DataAccess.ModelDB;
+﻿using CoffeeShop_WebApi.DataAccess.ModelDB;
 using System.Text.Json.Serialization;
 
 namespace CoffeeShop.DataAccess.DataAccess.ModelDB

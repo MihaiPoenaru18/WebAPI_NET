@@ -4,8 +4,9 @@ using CoffeeShop_WebApi.Authorization.Models;
 using CoffeeShop_WebApi.DataAccess.ModelDB;
 using CoffeeShop.ServicesLogic.EntiteModels;
 using CoffeeShop_WebApi.Services.AutoMapper;
-using WebApplication1.DataAccess.Repository;
 using CoffeeShop.DataAccess.DataAccess.ModelDB;
+using CoffeeShop.DataAccess.DataAccess.Repository.Interfaces;
+using CoffeeShop.ServicesLogic.Services.Interfaces;
 
 namespace CoffeeShop.ServicesLogic.Services
 {
@@ -13,13 +14,15 @@ namespace CoffeeShop.ServicesLogic.Services
     {
         private readonly IMapper _mapper;
         private readonly IAuthentication _authorization;
-        private ICoffeeShopRepository<User> _usersRepository;
-        private ICoffeeShopRepository<UserWithNewsLetter> _usersWithNewsLetterRepository;
+        private ICoffeeShopUserRepository<User> _usersRepository;
+        private ICoffeeShopUserRepository<UserWithNewsLetter> _usersWithNewsLetterRepository;
         private static User user = new User();
 
-        public ServicesAuth(ICoffeeShopRepository<User> usersRepository, IMapper mapper, IAuthentication authorization, ICoffeeShopRepository<UserWithNewsLetter> usersWithNewsLetterRepository)
+        public ICoffeeShopUserRepository<User> UsersRepository { get => _usersRepository; set => _usersRepository = value; }
+
+        public ServicesAuth(ICoffeeShopUserRepository<User> usersRepository, IMapper mapper, IAuthentication authorization, ICoffeeShopUserRepository<UserWithNewsLetter> usersWithNewsLetterRepository)
         {
-            _usersRepository = usersRepository;
+            UsersRepository = usersRepository;
             _mapper = mapper;
             _authorization = authorization;
             _usersWithNewsLetterRepository = usersWithNewsLetterRepository;
@@ -29,7 +32,7 @@ namespace CoffeeShop.ServicesLogic.Services
         {
             var user = MapperConfig<AuthenticateRequest, User>.InitializeAutomapper().Map<AuthenticateRequest, User>(loginUser);
 
-            if (_usersRepository.IsUserExistingInDB(user))
+            if (UsersRepository.IsUserExistingInDB(user))
             {
                 return MapperConfig<User, UserDto>.InitializeAutomapper().Map<User, UserDto>(user);
             }
@@ -38,7 +41,7 @@ namespace CoffeeShop.ServicesLogic.Services
 
         public IEnumerable<UserDto> GetAllUsers()
         {
-            var users = _usersRepository.GetAll().Result;
+            var users = UsersRepository.GetAll().Result;
             var userWithNewsLetters = _usersWithNewsLetterRepository.GetAll().Result;
 
             var usersFromDb = (from user in users
@@ -68,7 +71,7 @@ namespace CoffeeShop.ServicesLogic.Services
             if ((userDto.Role != "User" || userDto.Role != "Admin") && userDto != null)
             {
                 user = mapperUser.Map(userDto, user);
-                return await _usersRepository.Insert(user);
+                return await UsersRepository.Insert(user);
             }
             return false;
         }

@@ -1,5 +1,5 @@
 ﻿using CoffeeShop.ServicesLogic.EntiteModels;
-using CoffeeShop.ServicesLogic.Services;
+using CoffeeShop.ServicesLogic.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 

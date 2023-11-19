@@ -1,5 +1,5 @@
 ﻿using CoffeeShop.ServicesLogic.EntiteModels;
-using CoffeeShop.ServicesLogic.Services;
+using CoffeeShop.ServicesLogic.Services.Interfaces;
 using CoffeeShop_WebApi.Authorization.Models;
 using CoffeeShop_WebApi.Controllers;
 using FakeItEasy;

@@ -1,6 +1,5 @@
 ﻿using Xunit;
 using FakeItEasy;
-using CoffeeShop.ServicesLogic.Services;
 using CoffeeShop.ServicesLogic.EntiteModels;
 using WebApplication1.Controllers;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +9,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using CoffeeShop_WebApi.Controllers;
+using CoffeeShop.ServicesLogic.Services.Interfaces;
 
 namespace CoffeeShop.UnitTests.AuthControllerTests
 {

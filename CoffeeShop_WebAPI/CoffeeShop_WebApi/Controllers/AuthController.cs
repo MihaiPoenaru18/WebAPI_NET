@@ -2,9 +2,9 @@
 using CoffeeShop_WebApi.Authorization.Models;
 using CoffeeShop_WebApi.DataAccess.ModelDB;
 using CoffeeShop.ServicesLogic.EntiteModels;
-using CoffeeShop.ServicesLogic.Services;
 using Microsoft.AspNetCore.Mvc;
 using CoffeeShop_WebApi.Controllers;
+using CoffeeShop.ServicesLogic.Services.Interfaces;
 
 namespace WebApplication1.Controllers
 {

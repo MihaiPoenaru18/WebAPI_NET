@@ -1,12 +1,12 @@
-﻿using BCrypt.Net;
-using CoffeeShop.DataAccess.DataAccess.DataBaseContext;
+﻿using CoffeeShop.DataAccess.DataAccess.DataBaseContext;
 using CoffeeShop.DataAccess.DataAccess.ModelDB;
+using CoffeeShop.DataAccess.DataAccess.Repository.Interfaces;
 using CoffeeShop_WebApi.DataAccess.ModelDB;
 using Microsoft.EntityFrameworkCore;
 
 namespace WebApplication1.DataAccess.Repository
 {
-    public class CoffeeShopUserRepository : ICoffeeShopRepository<User>
+    public class CoffeeShopUserRepository : ICoffeeShopUserRepository<User>
     {
         private readonly CoffeeShopContext _context;
         public CoffeeShopUserRepository(CoffeeShopContext context)
@@ -21,48 +21,29 @@ namespace WebApplication1.DataAccess.Repository
 
         public async Task<bool> Insert(User user)
         {
-            try
+            if (user != null && !IsUserExistingInDB(user))
             {
-                if (user != null && !IsUserExistingInDB(user))
+                user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+                user.Id = Guid.NewGuid();
+                _context.Users.Add(new User
                 {
-                    user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
-                    user.Id = Guid.NewGuid();
-                    _context.Users.Add(new User
+                    Id = Guid.NewGuid(),
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    IdUserNewsLetter = Guid.NewGuid(),
+                    Password = user.Password,
+                    Role = user.Role,
+                    UserWithNewsLetter = new UserWithNewsLetter
                     {
-                        Id = Guid.NewGuid(),
-                        FirstName = user.FirstName,
-                        LastName = user.LastName,
                         Email = user.Email,
-                        IdUserNewsLetter = Guid.NewGuid(),
-                        Password = user.Password,
-                        Role = user.Role,
-                        UserWithNewsLetter = new UserWithNewsLetter
-                        {
-                            Email = user.Email,
-                            Id = Guid.NewGuid(),
-                            IsNewsLetterActive = user.UserWithNewsLetter.IsNewsLetterActive,
-                            Name = user.FirstName + user.LastName
-                        }
-                    });
-                    await _context.SaveChangesAsync();
-                    return true;
-                }
-            }
-            catch (Exception ex)
-            {
-                // Log the outer exception
-                Console.WriteLine($"Outer Exception: {ex.Message}");
-
-                // Check for inner exceptions
-                Exception innerException = ex.InnerException;
-                while (innerException != null)
-                {
-                    Console.WriteLine($"Inner Exception: {innerException.Message}");
-                    innerException = innerException.InnerException;
-                }
-
-                // You might also consider logging the entire stack trace
-                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                        Id = Guid.NewGuid(),
+                        IsNewsLetterActive = user.UserWithNewsLetter.IsNewsLetterActive,
+                        Name = user.FirstName + user.LastName
+                    }
+                });
+                await _context.SaveChangesAsync();
+                return true;
             }
             return false;
         }

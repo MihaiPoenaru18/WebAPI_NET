@@ -1,5 +1,4 @@
 ﻿using CoffeeShop.DataAccess.DataAccess.ModelDB;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoffeeShop_WebApi.DataAccess.ModelDB

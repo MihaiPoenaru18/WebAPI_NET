@@ -9,6 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using WebApplication1.DataAccess.Repository;
 using CoffeeShop.DataAccess.DataAccess.ModelDB;
 using CoffeeShop.DataAccess.DataAccess.Repository;
+using CoffeeShop.DataAccess.DataAccess.Repository.Interfaces;
+using CoffeeShop.ServicesLogic.Services.Interfaces;
+using CoffeeShop.ServicesLogic.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,9 +29,10 @@ builder.Services.AddDbContext<CoffeeShopContext>(options =>
 #endregion 
 
 #region Repositories
+builder.Services.AddScoped<ICoffeeShopRepository<Product>,CoffeeShopProductsRepository>();
 
-builder.Services.AddScoped<ICoffeeShopRepository<User>, CoffeeShopUserRepository>();
-builder.Services.AddScoped<ICoffeeShopRepository<UserWithNewsLetter>, NewsLetterRepository>();
+builder.Services.AddScoped<ICoffeeShopUserRepository<User>, CoffeeShopUserRepository>();
+builder.Services.AddScoped<ICoffeeShopUserRepository<UserWithNewsLetter>, NewsLetterRepository>();
 builder.Services.AddScoped<IServicesAuth<UserDto>, ServicesAuth>();
 builder.Services.AddScoped<IServicesNewsLetter<UserWithNewsLetterDto>, ServicesNewsLetter>();
 builder.Services.AddScoped<IAuthentication, Authentication>();

@@ -1,4 +1,6 @@
-﻿using CoffeeShop_WebApi.Authorization.Models;
+﻿
+using CoffeeShop.DataAccess.DataAccess.Repository.Interfaces;
+using CoffeeShop_WebApi.Authorization.Models;
 using CoffeeShop_WebApi.DataAccess.ModelDB;
 using CoffeeShop_WebApi.Services.AutoMapper;
 using Microsoft.Extensions.Configuration;
@@ -6,16 +8,15 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using WebApplication1.DataAccess.Repository;
 
 namespace CoffeeShop.ServicesLogic.Authorization
 {
     public class Authentication : IAuthentication
     {
         private readonly IConfiguration _configuration;
-        private readonly ICoffeeShopRepository<User> _usersRepository;
+        private readonly ICoffeeShopUserRepository<User> _usersRepository;
 
-        public Authentication(IConfiguration configuration, ICoffeeShopRepository<User> _usersRepository) 
+        public Authentication(IConfiguration configuration, ICoffeeShopUserRepository<User> _usersRepository) 
         {
             _configuration = configuration;
             this._usersRepository = _usersRepository;

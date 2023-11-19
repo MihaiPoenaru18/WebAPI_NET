@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
 using CoffeeShop.DataAccess.DataAccess.ModelDB;
+using CoffeeShop.DataAccess.DataAccess.Repository.Interfaces;
 using CoffeeShop.ServicesLogic.Authorization;
 using CoffeeShop.ServicesLogic.EntiteModels;
+using CoffeeShop.ServicesLogic.Services.Interfaces;
 using CoffeeShop_WebApi.Services.AutoMapper;
-using WebApplication1.DataAccess.Repository;
 
 namespace CoffeeShop.ServicesLogic.Services
 {
@@ -11,10 +12,10 @@ namespace CoffeeShop.ServicesLogic.Services
     {
         private readonly IMapper _mapper;
         private readonly IAuthentication _authorization;
-        private ICoffeeShopRepository<UserWithNewsLetter> _usersWithNewsLetterRepository;
+        private ICoffeeShopUserRepository<UserWithNewsLetter> _usersWithNewsLetterRepository;
         private static UserWithNewsLetter userWithNews = new UserWithNewsLetter();
 
-        public ServicesNewsLetter(ICoffeeShopRepository<UserWithNewsLetter> usersRepository, IMapper mapper, IAuthentication authorization)
+        public ServicesNewsLetter(ICoffeeShopUserRepository<UserWithNewsLetter> usersRepository, IMapper mapper, IAuthentication authorization)
         {
             _usersWithNewsLetterRepository = usersRepository;
             _mapper = mapper;
