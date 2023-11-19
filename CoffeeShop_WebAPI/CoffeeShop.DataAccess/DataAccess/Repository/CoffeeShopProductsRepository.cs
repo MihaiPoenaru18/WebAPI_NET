@@ -8,6 +8,7 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
     public class CoffeeShopProductsRepository : ICoffeeShopRepository<Product>
     {
         private CoffeeShopContext _context;
+
         public CoffeeShopProductsRepository(CoffeeShopContext context)
         {
             _context = context;
@@ -25,6 +26,14 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
         public async Task<Product> GetById(Guid id)
         {
             return await _context.Products.FindAsync(id);
+        }
+
+        public async Task Update(Product item)
+        {
+            if (item != null)
+            {
+                _context.Update(item);
+            }
         }
 
         public async Task<bool> Insert(Product item)
@@ -60,13 +69,6 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
             }
             return false;
         }
-
-        public async Task Update(Product item)
-        {
-            if (item != null)
-            {
-                _context.Update(item);
-            }
-        }
+        
     }
 }

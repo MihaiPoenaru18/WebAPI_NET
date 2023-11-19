@@ -3,6 +3,7 @@ using CoffeeShop_WebApi.Authorization.Models;
 using CoffeeShop_WebApi.DataAccess.ModelDB;
 using CoffeeShop.ServicesLogic.EntiteModels;
 using CoffeeShop.DataAccess.DataAccess.ModelDB;
+using CoffeeShop.ServicesLogic.EntiteModels.ModelsForProducts;
 
 namespace CoffeeShop_WebApi.Services.AutoMapper
 {
@@ -15,36 +16,46 @@ namespace CoffeeShop_WebApi.Services.AutoMapper
             {
                 if (typeof(User) == typeof(Source) && typeof(UserDto) == typeof(Destination))
                 {
-                    return MapperBetweeUserAndUserDto();
+                    return MapperBetweenUserAndUserDto();
                 }
 
                 if (typeof(UserDto) == typeof(Source) && typeof(User) == typeof(Destination))
                 {
-                    return MapperBetweeUserDtoAndUser();
+                    return MapperBetweenUserDtoAndUser();
                 }
 
                 if (typeof(AuthenticateRequest) == typeof(Source) && typeof(User) == typeof(Destination))
                 {
-                    return MapperBetweeAuthenticateRequestAndUser();
+                    return MapperBetweenAuthenticateRequestAndUser();
                 }
 
                 if (typeof(AuthenticateRequest) == typeof(Source) && typeof(UserDto) == typeof(Destination))
                 {
-                    return MapperBetweeAuthenticateRequestAndUserDto();
+                    return MapperBetweenAuthenticateRequestAndUserDto();
                 }
+
                 if (typeof(UserWithNewsLetter) == typeof(Source) && typeof(UserWithNewsLetterDto) == typeof(Destination))
                 {
-                    return MapperBetweeUserWithNewsLetterAndUserWithNewsLetterDto();
+                    return MapperBetweenUserWithNewsLetterAndUserWithNewsLetterDto();
                 }
+
                 if (typeof(UserWithNewsLetterDto) == typeof(Source) && typeof(UserWithNewsLetter) == typeof(Destination))
                 {
-                    return MapperBetweeUserWithNewsLetterDtoAndUserWithNewsLetter();
+                    return MapperBetweenUserWithNewsLetterDtoAndUserWithNewsLetter();
+                }
+                if (typeof(Product) == typeof(Source) && typeof(ProductDto) == typeof(Destination))
+                {
+                    return MapperBetweenProductDtoAndProduct();
+                }
+                if (typeof(ProductDto) == typeof(Source) && typeof(Product) == typeof(Destination))
+                {
+                    return MapperBetweenProductAndProductDto();
                 }
             }
             return null;
         }
 
-        public static Mapper MapperBetweeUserAndUserDto()
+        public static Mapper MapperBetweenUserAndUserDto()
         {
             MapperConfiguration config;
 
@@ -62,85 +73,135 @@ namespace CoffeeShop_WebApi.Services.AutoMapper
             return new Mapper(config);
         }
 
-        public static Mapper MapperBetweeUserDtoAndUser()
+        public static Mapper MapperBetweenUserDtoAndUser()
         {
             MapperConfiguration config;
-
-            config = new MapperConfiguration(cfg =>
+            try
             {
+                config = new MapperConfiguration(cfg =>
+                {
 
-                cfg.CreateMap<UserDto, User>().ForMember(dest => dest.Password, act => act.MapFrom(src => src.Password))
-                                             .ForMember(dest => dest.Email, act => act.MapFrom(src => src.Email))
-                                             .ForMember(dest => dest.FirstName, act => act.MapFrom(src => src.FirstName))
-                                             .ForMember(dest => dest.LastName, act => act.MapFrom(src => src.LastName))
-                                             .ForMember(dest => dest.Role, act => act.MapFrom(src => src.Role))
-                                             .ForPath(dest => dest.UserWithNewsLetter.Email, act => act.MapFrom(src => src.NewsLetter.Email))
-                                             .ForPath(dest => dest.UserWithNewsLetter.Name, act => act.MapFrom(src => src.NewsLetter.Name))
-                                             .ForPath(dest => dest.UserWithNewsLetter.IsNewsLetterActive, act => act.MapFrom(src => src.NewsLetter.IsActived));
-            });
+                    cfg.CreateMap<UserDto, User>().ForMember(dest => dest.Password, act => act.MapFrom(src => src.Password))
+                                                 .ForMember(dest => dest.Email, act => act.MapFrom(src => src.Email))
+                                                 .ForMember(dest => dest.FirstName, act => act.MapFrom(src => src.FirstName))
+                                                 .ForMember(dest => dest.LastName, act => act.MapFrom(src => src.LastName))
+                                                 .ForMember(dest => dest.Role, act => act.MapFrom(src => src.Role))
+                                                 .ForPath(dest => dest.UserWithNewsLetter.Email, act => act.MapFrom(src => src.NewsLetter.Email))
+                                                 .ForPath(dest => dest.UserWithNewsLetter.Name, act => act.MapFrom(src => src.NewsLetter.Name))
+                                                 .ForPath(dest => dest.UserWithNewsLetter.IsNewsLetterActive, act => act.MapFrom(src => src.NewsLetter.IsActived));
+                });
 
-            return new Mapper(config);
-
-
+                return new Mapper(config);
+            }
+            catch (Exception ex)
+            {
+                //logging
+                return null;
+            }
         }
 
-        public static Mapper MapperBetweeAuthenticateRequestAndUser()
+        public static Mapper MapperBetweenAuthenticateRequestAndUser()
         {
             MapperConfiguration config;
-
-            config = new MapperConfiguration(cfg =>
+            try
+            {
+                config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<AuthenticateRequest, User>().ForMember(dest => dest.Password, act => act.MapFrom(src => src.Password))
                                                           .ForMember(dest => dest.Email, act => act.MapFrom(src => src.Email))
                                                           .ForMember(dest => dest.Role, act => act.MapFrom(src => src.Role));
             });
 
-            return new Mapper(config);
+                return new Mapper(config);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
 
         }
 
-        public static Mapper MapperBetweeAuthenticateRequestAndUserDto()
+        public static Mapper MapperBetweenAuthenticateRequestAndUserDto()
         {
             MapperConfiguration config;
-
-            config = new MapperConfiguration(cfg =>
+            try
             {
-                cfg.CreateMap<AuthenticateRequest, UserDto>().ForMember(dest => dest.Password, act => act.MapFrom(src => src.Password))
-                                                          .ForMember(dest => dest.Email, act => act.MapFrom(src => src.Email))
-                                                          .ForMember(dest => dest.Role, act => act.MapFrom(src => src.Role));
-            });
+                config = new MapperConfiguration(cfg =>
+                {
+                    cfg.CreateMap<AuthenticateRequest, UserDto>().ForMember(dest => dest.Password, act => act.MapFrom(src => src.Password))
+                                                              .ForMember(dest => dest.Email, act => act.MapFrom(src => src.Email))
+                                                              .ForMember(dest => dest.Role, act => act.MapFrom(src => src.Role));
+                });
 
-            return new Mapper(config);
-
+                return new Mapper(config);
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
         }
 
-        public static Mapper MapperBetweeUserWithNewsLetterAndUserWithNewsLetterDto()
+        public static Mapper MapperBetweenUserWithNewsLetterAndUserWithNewsLetterDto()
         {
             MapperConfiguration config;
-
-            config = new MapperConfiguration(cfg =>
+            try
             {
-                cfg.CreateMap<UserWithNewsLetter, UserWithNewsLetterDto>().ForMember(dest => dest.Email, act => act.MapFrom(src => src.Email))
-                                                                       .ForMember(dest => dest.IsActived, act => act.MapFrom(src => src.IsNewsLetterActive))
-                                                          ;
-            });
-
-            return new Mapper(config);
-
+                config = new MapperConfiguration(cfg =>
+                {
+                    cfg.CreateMap<UserWithNewsLetter, UserWithNewsLetterDto>().ForMember(dest => dest.Email, act => act.MapFrom(src => src.Email))
+                                                                              .ForMember(dest => dest.IsActived, act => act.MapFrom(src => src.IsNewsLetterActive))
+                                                              ;
+                });
+                return new Mapper(config);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
 
-        public static Mapper MapperBetweeUserWithNewsLetterDtoAndUserWithNewsLetter()
+        public static Mapper MapperBetweenUserWithNewsLetterDtoAndUserWithNewsLetter()
         {
             MapperConfiguration config;
-
-            config = new MapperConfiguration(cfg =>
+            try
             {
-                cfg.CreateMap<UserWithNewsLetterDto, UserWithNewsLetter>().ForMember(dest => dest.Email, act => act.MapFrom(src => src.Email))
-                                                                      .ForMember(dest => dest.IsNewsLetterActive, act => act.MapFrom(src => src.IsActived));
-            });
-
-            return new Mapper(config);
-
+                config = new MapperConfiguration(cfg =>
+                {
+                    cfg.CreateMap<UserWithNewsLetterDto, UserWithNewsLetter>().ForMember(dest => dest.Email, act => act.MapFrom(src => src.Email))
+                                                                              .ForMember(dest => dest.IsNewsLetterActive, act => act.MapFrom(src => src.IsActived));
+                });
+                return new Mapper(config);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+        public static Mapper MapperBetweenProductAndProductDto()
+        {
+            MapperConfiguration config;
+            try
+            {
+                return config = new MapperConfiguration(cfg =>);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        public static Mapper MapperBetweenProductDtoAndProduct()
+        {
+            MapperConfiguration config;
+            try
+            {
+                return config = new MapperConfiguration(cfg =>
+                cfg.CreateMap<Product,ProductDto>().ForMember(dest=> dest.Sku,act=>act.MapFrom(src=>src.Sku))
+                .ForMember();
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
     }
 }
