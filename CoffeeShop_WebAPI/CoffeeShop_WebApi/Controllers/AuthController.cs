@@ -3,8 +3,8 @@ using CoffeeShop_WebApi.Authorization.Models;
 using CoffeeShop_WebApi.DataAccess.ModelDB;
 using CoffeeShop.ServicesLogic.EntiteModels;
 using Microsoft.AspNetCore.Mvc;
-using CoffeeShop_WebApi.Controllers;
 using CoffeeShop.ServicesLogic.Services.Interfaces;
+using Serilog;
 
 namespace WebApplication1.Controllers
 {
@@ -32,11 +32,12 @@ namespace WebApplication1.Controllers
                 {
                     return BadRequest("The user already exist!!!");
                 }
-                return Ok( "Register Success" );
+                return Ok("Register Success");
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                Log.Information("AutoController -> Register -> Exception => {@ex.Message}", ex.Message);
+                return BadRequest("Error");
             }
         }
 
@@ -55,7 +56,9 @@ namespace WebApplication1.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+
+                Log.Information("AutoController -> Login() -> Exception => {@ex.Message}", ex.Message);
+                return BadRequest("Error");
             }
 
         }
@@ -73,7 +76,8 @@ namespace WebApplication1.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                Log.Information("AutoController -> GetUserInfo() -> Exception => {@ex.Message}", ex.Message);
+                return BadRequest("Error");
             }
         }
 
@@ -96,7 +100,8 @@ namespace WebApplication1.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                Log.Information("AutoController -> GetAllUsersInfo() -> Exception => {@ex.Message}", ex.Message);
+                return BadRequest("Error");
             }
         }
     }

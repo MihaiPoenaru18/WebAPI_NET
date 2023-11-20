@@ -7,6 +7,7 @@ using CoffeeShop_WebApi.Services.AutoMapper;
 using CoffeeShop.DataAccess.DataAccess.ModelDB;
 using CoffeeShop.DataAccess.DataAccess.Repository.Interfaces;
 using CoffeeShop.ServicesLogic.Services.Interfaces;
+using Serilog;
 
 namespace CoffeeShop.ServicesLogic.Services
 {
@@ -31,59 +32,89 @@ namespace CoffeeShop.ServicesLogic.Services
         public UserDto GetInfo(AuthenticateRequest loginUser)
         {
             var user = MapperConfig<AuthenticateRequest, User>.InitializeAutomapper().Map<AuthenticateRequest, User>(loginUser);
-
-            if (UsersRepository.IsUserExistingInDB(user))
+            try
             {
-                return MapperConfig<User, UserDto>.InitializeAutomapper().Map<User, UserDto>(user);
+                if (UsersRepository.IsUserExistingInDB(user))
+                {
+                    return MapperConfig<User, UserDto>.InitializeAutomapper().Map<User, UserDto>(user);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Information("ServicesAuth  -> GetInfo() -> Exception => {@ex.Message}", ex.Message);
             }
             return null;
         }
 
         public IEnumerable<UserDto> GetAllUsers()
         {
-            var users = UsersRepository.GetAll().Result;
-            var userWithNewsLetters = _usersWithNewsLetterRepository.GetAll().Result;
+            try
+            {
+                var users = UsersRepository.GetAll().Result;
+                var userWithNewsLetters = _usersWithNewsLetterRepository.GetAll().Result;
+                if (users != null || userWithNewsLetters != null)
+                {
+                    var usersFromDb = (from user in users
+                                       join userWithNewsLetter in userWithNewsLetters
+                                       on user.IdUserNewsLetter equals userWithNewsLetter.Id
+                                       select new UserDto
+                                       {
+                                           Email = user.Email,
+                                           FirstName = user.FirstName,
+                                           LastName = user.LastName,
+                                           Role = user.Role,
+                                           Password = user.Password,
+                                           NewsLetter = new UserWithNewsLetterDto()
+                                           {
+                                               Email = user.Email,
+                                               Name = userWithNewsLetter.Name,
+                                               IsActived = userWithNewsLetter.IsNewsLetterActive
+                                           }
+                                       }).ToList();
 
-            var usersFromDb = (from user in users
-                               join userWithNewsLetter in userWithNewsLetters
-                               on user.IdUserNewsLetter equals userWithNewsLetter.Id
-                               select new UserDto
-                               {
-                                   Email = user.Email,
-                                   FirstName = user.FirstName,
-                                   LastName = user.LastName,
-                                   Role = user.Role,
-                                   Password = user.Password,
-                                   NewsLetter = new UserWithNewsLetterDto()
-                                   {
-                                       Email= user.Email,
-                                       Name = userWithNewsLetter.Name,
-                                       IsActived = userWithNewsLetter.IsNewsLetterActive
-                                   }
-                               }).ToList();
-
-            return usersFromDb;
+                    return usersFromDb;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Information("ServicesAuth  -> GetAllUsers() -> Exception => {@ex.Message}", ex.Message);
+            }
+            return null;
         }
 
         public async Task<bool> IsUserRegistered(UserDto userDto)
         {
-            var mapperUser = MapperConfig<UserDto, User>.InitializeAutomapper();
-            if ((userDto.Role != "User" || userDto.Role != "Admin") && userDto != null)
+            try
             {
-                user = mapperUser.Map(userDto, user);
-                return await UsersRepository.Insert(user);
+                var mapperUser = MapperConfig<UserDto, User>.InitializeAutomapper();
+                if ((userDto.Role != "User" || userDto.Role != "Admin") && userDto != null)
+                {
+                    user = mapperUser.Map(userDto, user);
+                    return await UsersRepository.Insert(user);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Information("ServicesAuth  -> IsUserRegistered() -> Exception => {@ex.Message}", ex.Message);
             }
             return false;
         }
 
         public AuthenticateResponse? Authenticate(AuthenticateRequest request)
         {
-            var response = _authorization.Authorization(request, DateTime.Now.AddDays(7));
-            if (response == null)
+            try
             {
-                return null;
+                var response = _authorization.Authorization(request, DateTime.Now.AddDays(7));
+                if (response != null)
+                {
+                    return response;
+                }
             }
-            return response;
+            catch (Exception ex)
+            {
+                Log.Information("ServicesAuth  -> Authenticate() -> Exception => {@ex.Message}", ex.Message);
+            }
+            return null;
         }
     }
 }

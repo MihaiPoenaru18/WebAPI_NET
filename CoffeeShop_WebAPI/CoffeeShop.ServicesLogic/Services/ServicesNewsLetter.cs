@@ -5,6 +5,7 @@ using CoffeeShop.ServicesLogic.Authorization;
 using CoffeeShop.ServicesLogic.EntiteModels;
 using CoffeeShop.ServicesLogic.Services.Interfaces;
 using CoffeeShop_WebApi.Services.AutoMapper;
+using Serilog;
 
 namespace CoffeeShop.ServicesLogic.Services
 {
@@ -24,33 +25,55 @@ namespace CoffeeShop.ServicesLogic.Services
 
         public IEnumerable<UserWithNewsLetterDto> GetAllUserWithNewsLetter()
         {
-            var mapper = MapperConfig<UserWithNewsLetterDto, UserWithNewsLetter>.InitializeAutomapper();
-            var users = new List<UserWithNewsLetterDto>();
-            foreach (var user in _usersWithNewsLetterRepository.GetAll().Result)
+            try
             {
-                users.Add(mapper.Map<UserWithNewsLetter, UserWithNewsLetterDto>(user));
+                var mapper = MapperConfig<UserWithNewsLetterDto, UserWithNewsLetter>.InitializeAutomapper();
+                var users = new List<UserWithNewsLetterDto>();
+                foreach (var user in _usersWithNewsLetterRepository.GetAll().Result)
+                {
+                    users.Add(mapper.Map<UserWithNewsLetter, UserWithNewsLetterDto>(user));
+                }
+                return users;
             }
-            return users;
+            catch (Exception ex)
+            {
+                Log.Information("ServicesNewsLetter  -> GetAllUserWithNewsLetter() -> Exception => {@ex.Message}", ex.Message);
+            }
+            return null;
         }
 
         public async Task<bool> IsUserRegisteredWithNewsLetter(UserWithNewsLetterDto userDto)
         {
-            var mapper = MapperConfig<UserWithNewsLetterDto, UserWithNewsLetter>.InitializeAutomapper();
-            if(!String.IsNullOrEmpty(userDto.Email) )
+            try
             {
-                userWithNews = mapper.Map(userDto, userWithNews);
-                return await _usersWithNewsLetterRepository.Insert(userWithNews);
+                var mapper = MapperConfig<UserWithNewsLetterDto, UserWithNewsLetter>.InitializeAutomapper();
+                if (!String.IsNullOrEmpty(userDto.Email))
+                {
+                    userWithNews = mapper.Map(userDto, userWithNews);
+                    return await _usersWithNewsLetterRepository.Insert(userWithNews);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Information("ServicesAuth  -> GetInfo() -> Exception => {@ex.Message}", ex.Message);
             }
             return false;
         }
 
         public bool GetStatusOfNewsLetter(UserWithNewsLetterDto userDto)
         {
-            var mapper = MapperConfig<UserWithNewsLetterDto, UserWithNewsLetter>.InitializeAutomapper();
-            userWithNews = mapper.Map(userDto, userWithNews);
-            if (!_usersWithNewsLetterRepository.IsUserExistingInDB(userWithNews))
+            try
             {
-                return false;
+                var mapper = MapperConfig<UserWithNewsLetterDto, UserWithNewsLetter>.InitializeAutomapper();
+                userWithNews = mapper.Map(userDto, userWithNews);
+                if (!_usersWithNewsLetterRepository.IsUserExistingInDB(userWithNews))
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Information("ServicesAuth  -> GetInfo() -> Exception => {@ex.Message}", ex.Message);
             }
             return true;
         }

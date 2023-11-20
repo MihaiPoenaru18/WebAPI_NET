@@ -1397,7 +1397,8 @@
           "Microsoft.EntityFrameworkCore": "7.0.12",
           "Microsoft.EntityFrameworkCore.SqlServer": "7.0.12",
           "Microsoft.Extensions.Configuration.Json": "7.0.0",
-          "Serilog.AspNetCore": "8.0.0"
+          "Serilog.AspNetCore": "8.0.0",
+          "Serilog.Sinks.File": "5.0.0"
         },
         "compile": {
           "bin/placeholder/CoffeeShop.DataAccess.dll": {}
@@ -3760,7 +3761,8 @@
       "AutoMapper.Extensions.Microsoft.DependencyInjection >= 12.0.1",
       "CoffeeShop.DataAccess >= 1.0.0",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 6.0.16",
-      "Serilog.AspNetCore >= 8.0.0"
+      "Serilog.AspNetCore >= 8.0.0",
+      "Serilog.Sinks.File >= 5.0.0"
     ]
   },
   "packageFolders": {
@@ -3822,6 +3824,10 @@
           "Serilog.AspNetCore": {
             "target": "Package",
             "version": "[8.0.0, )"
+          },
+          "Serilog.Sinks.File": {
+            "target": "Package",
+            "version": "[5.0.0, )"
           }
         },
         "imports": [

@@ -12,6 +12,7 @@ using CoffeeShop.DataAccess.DataAccess.Repository;
 using CoffeeShop.DataAccess.DataAccess.Repository.Interfaces;
 using CoffeeShop.ServicesLogic.Services.Interfaces;
 using CoffeeShop.ServicesLogic.Services;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,7 @@ builder.Services.AddDbContext<CoffeeShopContext>(options =>
     options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 });
 #endregion 
+Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(builder.Configuration).CreateLogger();
 
 #region Repositories
 builder.Services.AddScoped<ICoffeeShopRepository<Product>,CoffeeShopProductsRepository>();
@@ -52,7 +54,7 @@ builder.Services.AddCors(options => options.AddPolicy(name: "corspolicy",
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Host.UseSerilog();
 var app = builder.Build();
 {
 // global cors policy
@@ -70,6 +72,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
     }
+
+app.UseSerilogRequestLogging();
 
 app.UseCors("corspolicy");
 
