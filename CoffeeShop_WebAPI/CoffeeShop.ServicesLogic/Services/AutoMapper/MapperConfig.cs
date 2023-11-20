@@ -4,6 +4,7 @@ using CoffeeShop_WebApi.DataAccess.ModelDB;
 using CoffeeShop.ServicesLogic.EntiteModels;
 using CoffeeShop.DataAccess.DataAccess.ModelDB;
 using CoffeeShop.ServicesLogic.EntiteModels.ModelsForProducts;
+using Microsoft.SqlServer.Server;
 
 namespace CoffeeShop_WebApi.Services.AutoMapper
 {
@@ -135,7 +136,7 @@ namespace CoffeeShop_WebApi.Services.AutoMapper
 
                 return new Mapper(config);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return null;
             }
@@ -177,26 +178,54 @@ namespace CoffeeShop_WebApi.Services.AutoMapper
                 return null;
             }
         }
+
         public static Mapper MapperBetweenProductAndProductDto()
         {
             MapperConfiguration config;
             try
             {
-                return config = new MapperConfiguration(cfg =>);
+                config = new MapperConfiguration(cfg =>
+                {
+                    cfg.CreateMap<Product, ProductDto>().ForMember(dest => dest.Sku, act => act.MapFrom(src => src.Sku))
+                                                        .ForMember(dest => dest.Name, act => act.MapFrom(src => src.Name))
+                                                        .ForMember(dest => dest.Price, act => act.MapFrom(src => src.Price))
+                                                        .ForMember(dest => dest.Quantity, act => act.MapFrom(src => src.Quantity))
+                                                        .ForMember(dest => dest.Description, act => act.MapFrom(src => src.Description))
+                                                        .ForMember(dest => dest.IsStock, act => act.MapFrom(src => src.IsStock))
+                                                        .ForPath(dest => dest.Category.Name, act => act.MapFrom(src => src.Category.Name))
+                                                        .ForPath(dest => dest.Category.Name, act => act.MapFrom(src => src.Category.Name))
+                                                        .ForPath(dest => dest.Promotion.PricePromotion, act => act.MapFrom(src => src.Promotion.PricePromotion))
+                                                        .ForPath(dest => dest.Promotion.StartDate, act => act.MapFrom(src => src.Promotion.StartDate))
+                                                        .ForPath(dest => dest.Promotion.EndDate, act => act.MapFrom(src => src.Promotion.EndDate));
+                });
+                return new Mapper(config);
             }
             catch (Exception ex)
             {
                 return null;
             }
         }
+
         public static Mapper MapperBetweenProductDtoAndProduct()
         {
             MapperConfiguration config;
             try
             {
-                return config = new MapperConfiguration(cfg =>
-                cfg.CreateMap<Product,ProductDto>().ForMember(dest=> dest.Sku,act=>act.MapFrom(src=>src.Sku))
-                .ForMember();
+                config = new MapperConfiguration(cfg =>
+                {
+                    cfg.CreateMap<Product, ProductDto>().ForMember(dest => dest.Sku, act => act.MapFrom(src => src.Sku))
+                                                        .ForMember(dest => dest.Name, act => act.MapFrom(src => src.Name))
+                                                        .ForMember(dest => dest.Price, act => act.MapFrom(src => src.Price))
+                                                        .ForMember(dest => dest.Quantity, act => act.MapFrom(src => src.Quantity))
+                                                        .ForMember(dest => dest.Description, act => act.MapFrom(src => src.Description))
+                                                        .ForMember(dest => dest.IsStock, act => act.MapFrom(src => src.IsStock))
+                                                        .ForPath(dest => dest.Category.Name, act => act.MapFrom(src => src.Category.Name))
+                                                        .ForPath(dest => dest.Category.Name, act => act.MapFrom(src => src.Category.Name))
+                                                        .ForPath(dest => dest.Promotion.PricePromotion, act => act.MapFrom(src => src.Promotion.PricePromotion))
+                                                        .ForPath(dest => dest.Promotion.StartDate, act => act.MapFrom(src => src.Promotion.StartDate))
+                                                        .ForPath(dest => dest.Promotion.EndDate, act => act.MapFrom(src => src.Promotion.EndDate));
+                });
+                return new Mapper(config);
             }
             catch (Exception ex)
             {
