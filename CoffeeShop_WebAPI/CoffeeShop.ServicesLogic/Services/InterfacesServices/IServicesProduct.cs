@@ -2,8 +2,9 @@
 {
     public interface IServicesProduct<T> where T : class
     {
-        bool IsProductExistingInDb (string productName);
+        Task<bool> IsProductExistingInDb (string productName);
         Task<IEnumerable<T>> GetAllProducts();
+        Task AddNewProductsInDBAsync(List<T> products); 
         void UpdateProductInformation(T product);
     }
 }

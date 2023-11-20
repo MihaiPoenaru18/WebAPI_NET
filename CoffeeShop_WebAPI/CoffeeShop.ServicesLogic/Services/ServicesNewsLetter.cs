@@ -37,7 +37,7 @@ namespace CoffeeShop.ServicesLogic.Services
             }
             catch (Exception ex)
             {
-                Log.Information("ServicesNewsLetter  -> GetAllUserWithNewsLetter() -> Exception => {@ex.Message}", ex.Message);
+                Log.Error("ServicesNewsLetter  -> GetAllUserWithNewsLetter() -> Exception => {@ex.Message}", ex.Message);
             }
             return null;
         }
@@ -55,7 +55,7 @@ namespace CoffeeShop.ServicesLogic.Services
             }
             catch (Exception ex)
             {
-                Log.Information("ServicesAuth  -> GetInfo() -> Exception => {@ex.Message}", ex.Message);
+                Log.Error("ServicesAuth  -> GetInfo() -> Exception => {@ex.Message}", ex.Message);
             }
             return false;
         }
@@ -73,7 +73,7 @@ namespace CoffeeShop.ServicesLogic.Services
             }
             catch (Exception ex)
             {
-                Log.Information("ServicesAuth  -> GetInfo() -> Exception => {@ex.Message}", ex.Message);
+                Log.Error("ServicesAuth  -> GetInfo() -> Exception => {@ex.Message}", ex.Message);
             }
             return true;
         }

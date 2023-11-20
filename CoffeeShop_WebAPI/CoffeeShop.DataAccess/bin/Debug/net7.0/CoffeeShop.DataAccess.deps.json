@@ -14,8 +14,7 @@
           "Microsoft.EntityFrameworkCore.SqlServer": "7.0.12",
           "Microsoft.EntityFrameworkCore.Tools": "7.0.12",
           "Microsoft.Extensions.Configuration.Json": "7.0.0",
-          "Serilog.AspNetCore": "8.0.0",
-          "Serilog.Sinks.File": "5.0.0"
+          "Serilog.AspNetCore": "8.0.0"
         },
         "runtime": {
           "CoffeeShop.DataAccess.dll": {}

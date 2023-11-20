@@ -36,7 +36,7 @@ namespace WebApplication1.Controllers
             }
             catch (Exception ex)
             {
-                Log.Information("AutoController -> Register -> Exception => {@ex.Message}", ex.Message);
+                Log.Error("AutoController -> Register -> Exception => {@ex.Message}", ex.Message);
                 return BadRequest("Error");
             }
         }
@@ -57,7 +57,7 @@ namespace WebApplication1.Controllers
             catch (Exception ex)
             {
 
-                Log.Information("AutoController -> Login() -> Exception => {@ex.Message}", ex.Message);
+                Log.Error("AutoController -> Login() -> Exception => {@ex.Message}", ex.Message);
                 return BadRequest("Error");
             }
 
@@ -72,11 +72,16 @@ namespace WebApplication1.Controllers
                 {
                     return BadRequest("User doesn't exit!! \n You need to register this user");
                 }
-                return Ok(_services.GetInfo(authenticateRequest));
+                var userInfo = _services.GetInfo(authenticateRequest);
+                if(userInfo == null)
+                {
+                    Log.Information("AutoController -> GetUserInfo() -> _services.GetInfo(authenticateRequest) = null =>  Null answer!!!");
+                }
+                return Ok(userInfo);
             }
             catch (Exception ex)
             {
-                Log.Information("AutoController -> GetUserInfo() -> Exception => {@ex.Message}", ex.Message);
+                Log.Error("AutoController -> GetUserInfo() -> Exception => {@ex.Message}", ex.Message);
                 return BadRequest("Error");
             }
         }
@@ -100,7 +105,7 @@ namespace WebApplication1.Controllers
             }
             catch (Exception ex)
             {
-                Log.Information("AutoController -> GetAllUsersInfo() -> Exception => {@ex.Message}", ex.Message);
+                Log.Error("AutoController -> GetAllUsersInfo() -> Exception => {@ex.Message}", ex.Message);
                 return BadRequest("Error");
             }
         }

@@ -19,11 +19,10 @@ namespace CoffeeShop.ServicesLogic.Services
         private ICoffeeShopUserRepository<UserWithNewsLetter> _usersWithNewsLetterRepository;
         private static User user = new User();
 
-        public ICoffeeShopUserRepository<User> UsersRepository { get => _usersRepository; set => _usersRepository = value; }
 
         public ServicesAuth(ICoffeeShopUserRepository<User> usersRepository, IMapper mapper, IAuthentication authorization, ICoffeeShopUserRepository<UserWithNewsLetter> usersWithNewsLetterRepository)
         {
-            UsersRepository = usersRepository;
+            _usersRepository = usersRepository;
             _mapper = mapper;
             _authorization = authorization;
             _usersWithNewsLetterRepository = usersWithNewsLetterRepository;
@@ -34,14 +33,14 @@ namespace CoffeeShop.ServicesLogic.Services
             var user = MapperConfig<AuthenticateRequest, User>.InitializeAutomapper().Map<AuthenticateRequest, User>(loginUser);
             try
             {
-                if (UsersRepository.IsUserExistingInDB(user))
+                if (_usersRepository.IsUserExistingInDB(user))
                 {
                     return MapperConfig<User, UserDto>.InitializeAutomapper().Map<User, UserDto>(user);
                 }
             }
             catch (Exception ex)
             {
-                Log.Information("ServicesAuth  -> GetInfo() -> Exception => {@ex.Message}", ex.Message);
+                Log.Error("ServicesAuth  -> GetInfo() -> Exception => {@ex.Message}", ex.Message);
             }
             return null;
         }
@@ -50,7 +49,7 @@ namespace CoffeeShop.ServicesLogic.Services
         {
             try
             {
-                var users = UsersRepository.GetAll().Result;
+                var users = _usersRepository.GetAll().Result;
                 var userWithNewsLetters = _usersWithNewsLetterRepository.GetAll().Result;
                 if (users != null || userWithNewsLetters != null)
                 {
@@ -77,7 +76,7 @@ namespace CoffeeShop.ServicesLogic.Services
             }
             catch (Exception ex)
             {
-                Log.Information("ServicesAuth  -> GetAllUsers() -> Exception => {@ex.Message}", ex.Message);
+                Log.Error("ServicesAuth  -> GetAllUsers() -> Exception => {@ex.Message}", ex.Message);
             }
             return null;
         }
@@ -90,12 +89,12 @@ namespace CoffeeShop.ServicesLogic.Services
                 if ((userDto.Role != "User" || userDto.Role != "Admin") && userDto != null)
                 {
                     user = mapperUser.Map(userDto, user);
-                    return await UsersRepository.Insert(user);
+                    return await _usersRepository.Insert(user);
                 }
             }
             catch (Exception ex)
             {
-                Log.Information("ServicesAuth  -> IsUserRegistered() -> Exception => {@ex.Message}", ex.Message);
+                Log.Error("ServicesAuth  -> IsUserRegistered() -> Exception => {@ex.Message}", ex.Message);
             }
             return false;
         }
@@ -112,7 +111,7 @@ namespace CoffeeShop.ServicesLogic.Services
             }
             catch (Exception ex)
             {
-                Log.Information("ServicesAuth  -> Authenticate() -> Exception => {@ex.Message}", ex.Message);
+                Log.Error("ServicesAuth  -> Authenticate() -> Exception => {@ex.Message}", ex.Message);
             }
             return null;
         }

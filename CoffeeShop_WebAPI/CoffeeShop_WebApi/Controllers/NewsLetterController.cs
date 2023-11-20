@@ -2,6 +2,7 @@
 using CoffeeShop.ServicesLogic.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Serilog;
 
 namespace CoffeeShop_WebApi.Controllers
 {
@@ -36,7 +37,8 @@ namespace CoffeeShop_WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                Log.Error("NewsLetterController -> AddUserToNewsLette() -> Exception => {@ex.Message}", ex.Message);
+                return BadRequest("Error");
             }
 
         }
