@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
 using CoffeeShop.ServicesLogic.Authorization;
 using CoffeeShop_WebApi.Authorization.Models;
-using CoffeeShop_WebApi.DataAccess.ModelDB;
 using CoffeeShop.ServicesLogic.EntiteModels;
 using CoffeeShop_WebApi.Services.AutoMapper;
-using CoffeeShop.DataAccess.DataAccess.ModelDB;
 using CoffeeShop.DataAccess.DataAccess.Repository.Interfaces;
 using CoffeeShop.ServicesLogic.Services.Interfaces;
 using Serilog;
+using CoffeeShop.DataAccess.DataAccess.ModelDB.User;
 
 namespace CoffeeShop.ServicesLogic.Services
 {

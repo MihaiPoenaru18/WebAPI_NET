@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using CoffeeShop_WebApi.Authorization.Models;
-using CoffeeShop_WebApi.DataAccess.ModelDB;
 using CoffeeShop.ServicesLogic.EntiteModels;
-using CoffeeShop.DataAccess.DataAccess.ModelDB;
 using CoffeeShop.ServicesLogic.EntiteModels.ModelsForProducts;
 using Serilog;
+using CoffeeShop.DataAccess.DataAccess.ModelDB.User;
+using CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel;
 
 namespace CoffeeShop_WebApi.Services.AutoMapper
 {

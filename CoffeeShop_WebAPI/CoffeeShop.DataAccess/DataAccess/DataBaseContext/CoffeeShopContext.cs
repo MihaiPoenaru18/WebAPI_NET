@@ -1,5 +1,6 @@
-﻿using CoffeeShop.DataAccess.DataAccess.ModelDB;
-using CoffeeShop_WebApi.DataAccess.ModelDB;
+﻿using CoffeeShop.DataAccess.DataAccess.ModelDB.Order;
+using CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel;
+using CoffeeShop.DataAccess.DataAccess.ModelDB.User;
 using Microsoft.EntityFrameworkCore;
 
 namespace CoffeeShop.DataAccess.DataAccess.DataBaseContext
@@ -10,6 +11,7 @@ namespace CoffeeShop.DataAccess.DataAccess.DataBaseContext
         public DbSet<User> Users { get; set; }
         public DbSet<UserWithNewsLetter> Newsletters { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Order> Order { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

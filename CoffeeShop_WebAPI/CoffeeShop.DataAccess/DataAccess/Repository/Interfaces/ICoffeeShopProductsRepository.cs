@@ -1,4 +1,4 @@
-﻿using CoffeeShop.DataAccess.DataAccess.ModelDB;
+﻿using CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel;
 
 namespace CoffeeShop.DataAccess.DataAccess.Repository.Interfaces
 {

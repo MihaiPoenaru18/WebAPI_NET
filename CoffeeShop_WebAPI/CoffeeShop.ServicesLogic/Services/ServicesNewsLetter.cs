@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CoffeeShop.DataAccess.DataAccess.ModelDB;
+using CoffeeShop.DataAccess.DataAccess.ModelDB.User;
 using CoffeeShop.DataAccess.DataAccess.Repository.Interfaces;
 using CoffeeShop.ServicesLogic.Authorization;
 using CoffeeShop.ServicesLogic.EntiteModels;

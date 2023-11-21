@@ -1,11 +1,10 @@
-﻿using CoffeeShop_WebApi.DataAccess.ModelDB;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
-namespace CoffeeShop.DataAccess.DataAccess.ModelDB
+namespace CoffeeShop.DataAccess.DataAccess.ModelDB.User
 {
     public class UserWithNewsLetter
     {
-        
+
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }

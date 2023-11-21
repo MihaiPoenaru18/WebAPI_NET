@@ -1,4 +1,4 @@
-﻿namespace CoffeeShop.DataAccess.DataAccess.ModelDB
+﻿namespace CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel
 {
     public class Promotion
     {

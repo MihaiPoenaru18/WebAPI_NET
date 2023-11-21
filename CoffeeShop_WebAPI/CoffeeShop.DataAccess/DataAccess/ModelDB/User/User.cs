@@ -1,7 +1,6 @@
-﻿using CoffeeShop.DataAccess.DataAccess.ModelDB;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CoffeeShop_WebApi.DataAccess.ModelDB
+namespace CoffeeShop.DataAccess.DataAccess.ModelDB.User
 {
     public class User
     {

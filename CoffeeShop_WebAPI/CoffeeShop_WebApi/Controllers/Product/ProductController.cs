@@ -14,6 +14,7 @@ namespace CoffeeShop_WebApi.Controllers.Product
         {
             _services = services;
         }
+
         [HttpGet("GetCategories")]
         public ActionResult<IEnumerable<CategoryDto>> GetCategories()
         {
@@ -69,6 +70,25 @@ namespace CoffeeShop_WebApi.Controllers.Product
                 return BadRequest("Error");
             }
         }
+
+        [HttpPost("DeleteProducts")]
+        public ActionResult DeleteProducts([FromBody] List<ProductDto> products)
+        {
+            try
+            {
+                if (_services.DeleteProduct(products))
+                {
+                    return Ok("Products add in DB with success");
+                }
+                return BadRequest("Your products don't was add in db");
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"ProductController -> GetProducts() -> Exception => {ex.Message}");
+                return BadRequest("Error");
+            }
+        }
+
         [HttpPost("UpdateProduct")]
         public ActionResult UpdateProduct([FromBody] ProductDto product)
         {

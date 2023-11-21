@@ -1,7 +1,7 @@
 ﻿
+using CoffeeShop.DataAccess.DataAccess.ModelDB.User;
 using CoffeeShop.DataAccess.DataAccess.Repository.Interfaces;
 using CoffeeShop_WebApi.Authorization.Models;
-using CoffeeShop_WebApi.DataAccess.ModelDB;
 using CoffeeShop_WebApi.Services.AutoMapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;

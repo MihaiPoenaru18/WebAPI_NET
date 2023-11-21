@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
-using CoffeeShop_WebApi.DataAccess.ModelDB;
 using Microsoft.AspNetCore.Http;
+using CoffeeShop.DataAccess.DataAccess.ModelDB.User;
 
 namespace CoffeeShop.ServicesLogic.Authorization
 {

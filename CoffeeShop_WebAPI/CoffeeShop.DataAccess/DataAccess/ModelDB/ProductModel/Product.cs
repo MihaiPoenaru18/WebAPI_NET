@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CoffeeShop.DataAccess.DataAccess.ModelDB
+namespace CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel
 {
     public class Product
     {

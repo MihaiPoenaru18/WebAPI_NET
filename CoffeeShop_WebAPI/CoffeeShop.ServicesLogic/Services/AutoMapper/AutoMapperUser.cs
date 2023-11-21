@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using CoffeeShop_WebApi.DataAccess.ModelDB;
 using CoffeeShop.ServicesLogic.EntiteModels;
-using CoffeeShop.DataAccess.DataAccess.ModelDB;
 using CoffeeShop.ServicesLogic.EntiteModels.ModelsForProducts;
+using CoffeeShop.DataAccess.DataAccess.ModelDB.User;
+using CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel;
 
 namespace CoffeeShop.ServicesLogic.Services.AutoMapper
 {

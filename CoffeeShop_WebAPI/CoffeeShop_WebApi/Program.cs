@@ -1,18 +1,19 @@
 using CoffeeShop.DataAccess.DataAccess.DataBaseContext;
 using CoffeeShop.ServicesLogic.Authorization;
 using CoffeeShop_WebApi.Authorization.Models;
-using CoffeeShop_WebApi.DataAccess.ModelDB;
 using CoffeeShop.ServicesLogic.EntiteModels;
 using CoffeeShop.ServicesLogic.Services;
 using CoffeeShop_WebApi.Services.AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.DataAccess.Repository;
-using CoffeeShop.DataAccess.DataAccess.ModelDB;
 using CoffeeShop.DataAccess.DataAccess.Repository;
 using CoffeeShop.DataAccess.DataAccess.Repository.Interfaces;
 using CoffeeShop.ServicesLogic.Services.Interfaces;
 using Serilog;
 using CoffeeShop.ServicesLogic.EntiteModels.ModelsForProducts;
+
+using CoffeeShop.DataAccess.DataAccess.ModelDB.User;
+using CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,7 +32,7 @@ builder.Services.AddDbContext<CoffeeShopContext>(options =>
 Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(builder.Configuration).CreateLogger();
 
 #region Repositories
-builder.Services.AddScoped<ICoffeeShopRepository<Product>,CoffeeShopProductsRepository>();
+builder.Services.AddScoped<ICoffeeShopProductsRepository<Product>, CoffeeShopProductsRepository>();
 builder.Services.AddScoped<ICoffeeShopUserRepository<User>, CoffeeShopUserRepository>();
 builder.Services.AddScoped<ICoffeeShopUserRepository<UserWithNewsLetter>, NewsLetterRepository>();
 #endregion
