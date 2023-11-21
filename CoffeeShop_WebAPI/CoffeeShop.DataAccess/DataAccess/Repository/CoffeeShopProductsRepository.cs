@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoffeeShop.DataAccess.DataAccess.Repository
 {
-    public class CoffeeShopProductsRepository : ICoffeeShopRepository<Product>
+    public class CoffeeShopProductsRepository : ICoffeeShopProductsRepository<Product>
     {
         private CoffeeShopContext _context;
 
@@ -69,6 +69,10 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
             }
             return false;
         }
-        
+
+        public async Task<IEnumerable<Category>> GetAllCategoris()
+        {
+            return await _context.Products.Select(c=>c.Category).ToListAsync();
+        }
     }
 }

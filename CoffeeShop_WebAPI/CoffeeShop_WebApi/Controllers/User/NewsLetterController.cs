@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Serilog;
 
-namespace CoffeeShop_WebApi.Controllers
+namespace CoffeeShop_WebApi.Controllers.User
 {
     [Route("api/")]
     [ApiController]
@@ -25,15 +25,15 @@ namespace CoffeeShop_WebApi.Controllers
             {
                 if (body.Email == null && body.Name == null)
                 {
-                    return BadRequest("The fields are empty!!!" );
+                    return BadRequest("The fields are empty!!!");
                 }
                 var x = _servicesNewsLetter.IsUserRegisteredWithNewsLetter(body).Result;
                 if (!x)
                 {
-                    return BadRequest("The user already subscribed to the newsletter!!!" );
+                    return BadRequest("The user already subscribed to the newsletter!!!");
                 }
 
-                return Ok("Subscriber Success" );
+                return Ok("Subscriber Success");
             }
             catch (Exception ex)
             {

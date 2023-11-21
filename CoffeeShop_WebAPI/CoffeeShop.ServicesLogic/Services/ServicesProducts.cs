@@ -1,22 +1,19 @@
 ﻿using AutoMapper;
 using CoffeeShop.DataAccess.DataAccess.ModelDB;
 using CoffeeShop.DataAccess.DataAccess.Repository.Interfaces;
-using CoffeeShop.ServicesLogic.EntiteModels;
 using CoffeeShop.ServicesLogic.EntiteModels.ModelsForProducts;
 using CoffeeShop.ServicesLogic.Services.Interfaces;
-using CoffeeShop_WebApi.DataAccess.ModelDB;
 using CoffeeShop_WebApi.Services.AutoMapper;
 using Serilog;
-using System.Collections.Generic;
 
 namespace CoffeeShop.ServicesLogic.Services
 {
     public class ServicesProducts : IServicesProduct<ProductDto>
     {
         private readonly IMapper _mapper;
-        private readonly ICoffeeShopRepository<Product> _coffeeShopProductRepository;
+        private readonly ICoffeeShopProductsRepository<Product> _coffeeShopProductRepository;
 
-        public ServicesProducts(ICoffeeShopRepository<Product> coffeeShopProductRepository, IMapper mapper)
+        public ServicesProducts(ICoffeeShopProductsRepository<Product> coffeeShopProductRepository, IMapper mapper)
         {
             _mapper = mapper;
             _coffeeShopProductRepository = coffeeShopProductRepository;
@@ -27,7 +24,7 @@ namespace CoffeeShop.ServicesLogic.Services
             var productsDto = new List<ProductDto>();
             try
             {
-                var products = await _coffeeShopProductRepository.GetAll();
+                var products = _coffeeShopProductRepository.GetAll().Result;
                 if (products != null || products.Count() > 0)
                 {
                     foreach (var product in products)
@@ -57,14 +54,14 @@ namespace CoffeeShop.ServicesLogic.Services
             }
         }
 
-        public async Task<bool> IsProductExistingInDb(string productName)
+        public bool IsProductExistingInDb(string productName)
         {
             try
             {
                 if (!string.IsNullOrWhiteSpace(productName))
                 {
-                    var products = await _coffeeShopProductRepository.GetAll();
-                    if (products.Where(p => p.Name == productName).FirstOrDefault() != null)
+                    var products = _coffeeShopProductRepository.GetAll().Result;
+                    if (products.Where(p => p.Name == productName).Count() > 0)
                     {
                         return true;
                     }
@@ -77,35 +74,87 @@ namespace CoffeeShop.ServicesLogic.Services
             }
             catch (Exception ex)
             {
-                Log.Error("ServicesProducts  -> IsProductExistingInDb() -> Exception => {@ex.Message}", ex.Message);
+                Log.Error($"ServicesProducts  -> IsProductExistingInDb() -> Exception => {ex.Message}");
                 return false;
             }
         }
 
-        public async Task AddNewProductsInDBAsync(List<ProductDto> products)
+        public bool AddNewProductsInDBAsync(List<ProductDto> products)
         {
             var mappeProducts = MapperConfig<ProductDto, Product>.InitializeAutomapper();
+            var finishInsert = false;
             try
             {
                 if (products != null)
                 {
                     foreach (var product in products)
                     {
-                        if (await IsProductExistingInDb(product.Name))
+                        if (!IsProductExistingInDb(product.Name))
                         {
-                            _coffeeShopProductRepository.Insert(mappeProducts.Map<ProductDto, Product>(product));
+                            finishInsert = _coffeeShopProductRepository.Insert(mappeProducts.Map<ProductDto, Product>(product)).Result;
                         }
                     }
+                    return finishInsert;
                 }
                 else
                 {
-                    throw new NullReferenceException("Product Name is null");
+                    throw new NullReferenceException("Product Name is null!!!");
                 }
-
             }
             catch (Exception ex)
             {
-                Log.Error("ServicesProducts  -> GetAllUsers() -> Exception => {@ex.Message}", ex.Message);
+                Log.Error($"ServicesProducts  -> GetAllUsers() -> Exception => {ex.Message}");
+                return false;
+            }
+        }
+
+        public async Task<IEnumerable<CategoryDto>> GetAllCategories()
+        {
+            var mappeCategory = MapperConfig<Category, CategoryDto>.InitializeAutomapper();
+            var categoryDto = new List<CategoryDto>();
+            try
+            {
+                var categories = _coffeeShopProductRepository.GetAllCategoris().Result;
+                if (categories != null || categories.Count() > 0)
+                {
+                    foreach (var category in categories)
+                    {
+                        categoryDto.Add(mappeCategory.Map<Category, CategoryDto>(category));
+                    }
+                }
+                return categoryDto;
+            }
+            catch(Exception ex)
+            {
+                Log.Error($"ServicesProducts  -> GetAllUsers() -> Exception => {ex.Message}");
+            }
+            return null;
+        }
+
+        public bool DeleteProduct(List<ProductDto> products)
+        {
+            var mappeProducts = MapperConfig<ProductDto, Product>.InitializeAutomapper();
+            var isFinishProcess = false;
+            try
+            {
+                if (products != null)
+                {
+                    foreach (var product in products)
+                    {
+                        if (!IsProductExistingInDb(product.Name))
+                        {
+                            _coffeeShopProductRepository.Delete(mappeProducts.Map<ProductDto, Product>(product).Id);
+                            isFinishProcess = true;
+                        }
+                    }
+                    return isFinishProcess;
+                }
+                return isFinishProcess;
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"ServicesProducts  -> GetAllUsers() -> Exception => {ex.Message}");
+                return isFinishProcess;
             }
         }
     }

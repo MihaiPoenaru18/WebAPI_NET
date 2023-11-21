@@ -4,6 +4,7 @@ using FakeItEasy;
 using Microsoft.AspNetCore.Mvc;
 using CoffeeShop_WebApi.Controllers;
 using CoffeeShop.ServicesLogic.Services.Interfaces;
+using CoffeeShop_WebApi.Controllers.User;
 
 namespace CoffeeShop.UnitTests.NewsletterControllerTests
 {

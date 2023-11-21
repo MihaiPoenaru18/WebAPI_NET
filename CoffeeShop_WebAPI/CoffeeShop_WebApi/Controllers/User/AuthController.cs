@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using CoffeeShop.ServicesLogic.Services.Interfaces;
 using Serilog;
 
-namespace WebApplication1.Controllers
+namespace CoffeeShop_WebApi.Controllers.User
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -73,7 +73,7 @@ namespace WebApplication1.Controllers
                     return BadRequest("User doesn't exit!! \n You need to register this user");
                 }
                 var userInfo = _services.GetInfo(authenticateRequest);
-                if(userInfo == null)
+                if (userInfo == null)
                 {
                     Log.Information("AutoController -> GetUserInfo() -> _services.GetInfo(authenticateRequest) = null =>  Null answer!!!");
                 }
@@ -88,7 +88,7 @@ namespace WebApplication1.Controllers
 
         [AllowAnonymous]
         [HttpGet("GetAllUsersInfo"), Authorize]
-        public ActionResult<IEnumerable<User>> GetAllUsersInfo([FromBody] AuthenticateRequest loginUser)
+        public ActionResult<IEnumerable<UserDto>> GetAllUsersInfo([FromBody] AuthenticateRequest loginUser)
         {
             try
             {

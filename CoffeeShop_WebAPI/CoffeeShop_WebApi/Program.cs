@@ -11,8 +11,8 @@ using CoffeeShop.DataAccess.DataAccess.ModelDB;
 using CoffeeShop.DataAccess.DataAccess.Repository;
 using CoffeeShop.DataAccess.DataAccess.Repository.Interfaces;
 using CoffeeShop.ServicesLogic.Services.Interfaces;
-using CoffeeShop.ServicesLogic.Services;
 using Serilog;
+using CoffeeShop.ServicesLogic.EntiteModels.ModelsForProducts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,18 +32,25 @@ Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(builder.Configurat
 
 #region Repositories
 builder.Services.AddScoped<ICoffeeShopRepository<Product>,CoffeeShopProductsRepository>();
-
 builder.Services.AddScoped<ICoffeeShopUserRepository<User>, CoffeeShopUserRepository>();
 builder.Services.AddScoped<ICoffeeShopUserRepository<UserWithNewsLetter>, NewsLetterRepository>();
+#endregion
+
+#region Services
+builder.Services.AddScoped<IServicesProduct<ProductDto>, ServicesProducts>();
 builder.Services.AddScoped<IServicesAuth<UserDto>, ServicesAuth>();
 builder.Services.AddScoped<IServicesNewsLetter<UserWithNewsLetterDto>, ServicesNewsLetter>();
-builder.Services.AddScoped<IAuthentication, Authentication>();
 #endregion
+
+builder.Services.AddScoped<IAuthentication, Authentication>();
+
+#region MapperConfig
 builder.Services.AddScoped<MapperConfig<User,UserDto>>();
 builder.Services.AddScoped<MapperConfig<UserDto, User>>();
 builder.Services.AddScoped<MapperConfig<AuthenticateRequest, User>>();
 builder.Services.AddScoped<MapperConfig<UserWithNewsLetter, UserWithNewsLetterDto>>();
 builder.Services.AddScoped<MapperConfig<UserWithNewsLetterDto, UserWithNewsLetter>>();
+#endregion
 
 builder.Services.AddCors(options => options.AddPolicy(name: "corspolicy",
     policy =>
@@ -71,9 +78,8 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    }
+}
 
-app.UseSerilogRequestLogging();
 
 app.UseCors("corspolicy");
 
@@ -82,5 +88,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseSerilogRequestLogging();
+
 
 app.Run();

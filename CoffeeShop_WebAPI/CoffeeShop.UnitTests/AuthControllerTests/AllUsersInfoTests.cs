@@ -1,9 +1,10 @@
 ﻿using CoffeeShop.ServicesLogic.EntiteModels;
 using CoffeeShop.ServicesLogic.Services.Interfaces;
 using CoffeeShop_WebApi.Authorization.Models;
+using CoffeeShop_WebApi.Controllers.User;
 using FakeItEasy;
 using Microsoft.AspNetCore.Mvc;
-using WebApplication1.Controllers;
+
 using Xunit;
 
 namespace CoffeeShop.UnitTests.AuthControllerTests

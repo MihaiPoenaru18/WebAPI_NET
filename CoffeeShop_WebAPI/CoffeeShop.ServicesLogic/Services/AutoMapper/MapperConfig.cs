@@ -4,7 +4,7 @@ using CoffeeShop_WebApi.DataAccess.ModelDB;
 using CoffeeShop.ServicesLogic.EntiteModels;
 using CoffeeShop.DataAccess.DataAccess.ModelDB;
 using CoffeeShop.ServicesLogic.EntiteModels.ModelsForProducts;
-using Microsoft.SqlServer.Server;
+using Serilog;
 
 namespace CoffeeShop_WebApi.Services.AutoMapper
 {
@@ -13,47 +13,60 @@ namespace CoffeeShop_WebApi.Services.AutoMapper
         public static Mapper InitializeAutomapper()
         {
             MapperConfiguration config;
-            if (typeof(Source) != typeof(Destination))
+            try
             {
-                if (typeof(User) == typeof(Source) && typeof(UserDto) == typeof(Destination))
+                if (typeof(Source) != typeof(Destination))
                 {
-                    return MapperBetweenUserAndUserDto();
+                    if (typeof(User) == typeof(Source) && typeof(UserDto) == typeof(Destination))
+                    {
+                        return MapperBetweenUserAndUserDto();
+                    }
+
+                    if (typeof(UserDto) == typeof(Source) && typeof(User) == typeof(Destination))
+                    {
+                        return MapperBetweenUserDtoAndUser();
+                    }
+
+                    if (typeof(AuthenticateRequest) == typeof(Source) && typeof(User) == typeof(Destination))
+                    {
+                        return MapperBetweenAuthenticateRequestAndUser();
+                    }
+
+                    if (typeof(AuthenticateRequest) == typeof(Source) && typeof(UserDto) == typeof(Destination))
+                    {
+                        return MapperBetweenAuthenticateRequestAndUserDto();
+                    }
+
+                    if (typeof(UserWithNewsLetter) == typeof(Source) && typeof(UserWithNewsLetterDto) == typeof(Destination))
+                    {
+                        return MapperBetweenUserWithNewsLetterAndUserWithNewsLetterDto();
+                    }
+
+                    if (typeof(UserWithNewsLetterDto) == typeof(Source) && typeof(UserWithNewsLetter) == typeof(Destination))
+                    {
+                        return MapperBetweenUserWithNewsLetterDtoAndUserWithNewsLetter();
+                    }
+                    if (typeof(Product) == typeof(Source) && typeof(ProductDto) == typeof(Destination))
+                    {
+                        return MapperBetweenProductAndProductDto();
+                    }
+                    if (typeof(ProductDto) == typeof(Source) && typeof(Product) == typeof(Destination))
+                    {
+                        return MapperBetweenProductDtoAndProduct();
+                    }
+                    if (typeof(CategoryDto) == typeof(Source) && typeof(Category) == typeof(Destination))
+                    {
+                        return MapperBetweenCategoryAndCategoryDto();
+                    }
                 }
 
-                if (typeof(UserDto) == typeof(Source) && typeof(User) == typeof(Destination))
-                {
-                    return MapperBetweenUserDtoAndUser();
-                }
-
-                if (typeof(AuthenticateRequest) == typeof(Source) && typeof(User) == typeof(Destination))
-                {
-                    return MapperBetweenAuthenticateRequestAndUser();
-                }
-
-                if (typeof(AuthenticateRequest) == typeof(Source) && typeof(UserDto) == typeof(Destination))
-                {
-                    return MapperBetweenAuthenticateRequestAndUserDto();
-                }
-
-                if (typeof(UserWithNewsLetter) == typeof(Source) && typeof(UserWithNewsLetterDto) == typeof(Destination))
-                {
-                    return MapperBetweenUserWithNewsLetterAndUserWithNewsLetterDto();
-                }
-
-                if (typeof(UserWithNewsLetterDto) == typeof(Source) && typeof(UserWithNewsLetter) == typeof(Destination))
-                {
-                    return MapperBetweenUserWithNewsLetterDtoAndUserWithNewsLetter();
-                }
-                if (typeof(Product) == typeof(Source) && typeof(ProductDto) == typeof(Destination))
-                {
-                    return MapperBetweenProductDtoAndProduct();
-                }
-                if (typeof(ProductDto) == typeof(Source) && typeof(Product) == typeof(Destination))
-                {
-                    return MapperBetweenProductAndProductDto();
-                }
+                return null;
             }
-            return null;
+            catch (AutoMapperMappingException ex)
+            {
+                Log.Error($"ProductController -> GetProducts() -> Exception => {ex.Message}");
+                return null;
+            }
         }
 
         public static Mapper MapperBetweenUserAndUserDto()
@@ -96,7 +109,7 @@ namespace CoffeeShop_WebApi.Services.AutoMapper
             }
             catch (Exception ex)
             {
-                //logging
+                Log.Error($"ProductController -> GetProducts() -> Exception => {ex.Message}");
                 return null;
             }
         }
@@ -117,6 +130,7 @@ namespace CoffeeShop_WebApi.Services.AutoMapper
             }
             catch (Exception ex)
             {
+                Log.Error($"ProductController -> GetProducts() -> Exception => {ex.Message}");
                 return null;
             }
 
@@ -138,6 +152,7 @@ namespace CoffeeShop_WebApi.Services.AutoMapper
             }
             catch (Exception ex)
             {
+                Log.Error($"ProductController -> GetProducts() -> Exception => {ex.Message}");
                 return null;
             }
         }
@@ -157,6 +172,7 @@ namespace CoffeeShop_WebApi.Services.AutoMapper
             }
             catch (Exception ex)
             {
+                Log.Error($"ProductController -> GetProducts() -> Exception => {ex.Message}");
                 return null;
             }
         }
@@ -173,8 +189,9 @@ namespace CoffeeShop_WebApi.Services.AutoMapper
                 });
                 return new Mapper(config);
             }
-            catch
+            catch(Exception ex) 
             {
+                Log.Error($"ProductController -> GetProducts() -> Exception => {ex.Message}");
                 return null;
             }
         }
@@ -188,11 +205,11 @@ namespace CoffeeShop_WebApi.Services.AutoMapper
                 {
                     cfg.CreateMap<Product, ProductDto>().ForMember(dest => dest.Sku, act => act.MapFrom(src => src.Sku))
                                                         .ForMember(dest => dest.Name, act => act.MapFrom(src => src.Name))
+                                                        .ForMember(dest => dest.Currency, act => act.MapFrom(src => src.Currency))
                                                         .ForMember(dest => dest.Price, act => act.MapFrom(src => src.Price))
                                                         .ForMember(dest => dest.Quantity, act => act.MapFrom(src => src.Quantity))
                                                         .ForMember(dest => dest.Description, act => act.MapFrom(src => src.Description))
                                                         .ForMember(dest => dest.IsStock, act => act.MapFrom(src => src.IsStock))
-                                                        .ForPath(dest => dest.Category.Name, act => act.MapFrom(src => src.Category.Name))
                                                         .ForPath(dest => dest.Category.Name, act => act.MapFrom(src => src.Category.Name))
                                                         .ForPath(dest => dest.Promotion.PricePromotion, act => act.MapFrom(src => src.Promotion.PricePromotion))
                                                         .ForPath(dest => dest.Promotion.StartDate, act => act.MapFrom(src => src.Promotion.StartDate))
@@ -202,6 +219,7 @@ namespace CoffeeShop_WebApi.Services.AutoMapper
             }
             catch (Exception ex)
             {
+                Log.Error($"ProductController -> GetProducts() -> Exception => {ex.Message}");
                 return null;
             }
         }
@@ -213,13 +231,13 @@ namespace CoffeeShop_WebApi.Services.AutoMapper
             {
                 config = new MapperConfiguration(cfg =>
                 {
-                    cfg.CreateMap<Product, ProductDto>().ForMember(dest => dest.Sku, act => act.MapFrom(src => src.Sku))
+                    cfg.CreateMap<ProductDto, Product>().ForMember(dest => dest.Sku, act => act.MapFrom(src => src.Sku))
                                                         .ForMember(dest => dest.Name, act => act.MapFrom(src => src.Name))
                                                         .ForMember(dest => dest.Price, act => act.MapFrom(src => src.Price))
+                                                        .ForMember(dest => dest.Currency, act => act.MapFrom(src => src.Currency))
                                                         .ForMember(dest => dest.Quantity, act => act.MapFrom(src => src.Quantity))
                                                         .ForMember(dest => dest.Description, act => act.MapFrom(src => src.Description))
                                                         .ForMember(dest => dest.IsStock, act => act.MapFrom(src => src.IsStock))
-                                                        .ForPath(dest => dest.Category.Name, act => act.MapFrom(src => src.Category.Name))
                                                         .ForPath(dest => dest.Category.Name, act => act.MapFrom(src => src.Category.Name))
                                                         .ForPath(dest => dest.Promotion.PricePromotion, act => act.MapFrom(src => src.Promotion.PricePromotion))
                                                         .ForPath(dest => dest.Promotion.StartDate, act => act.MapFrom(src => src.Promotion.StartDate))
@@ -229,6 +247,26 @@ namespace CoffeeShop_WebApi.Services.AutoMapper
             }
             catch (Exception ex)
             {
+                Log.Error($"ProductController -> GetProducts() -> Exception => {ex.Message}");
+                return null;
+            }
+        }
+
+        public static Mapper MapperBetweenCategoryAndCategoryDto()
+        {
+            MapperConfiguration config;
+            try
+            {
+                config = new MapperConfiguration(cfg =>
+                {
+                    cfg.CreateMap<Category, CategoryDto>()
+                                                        .ForMember(dest => dest.Name, act => act.MapFrom(src => src.Name));
+                });
+                return new Mapper(config);
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"ProductController -> GetProducts() -> Exception => {ex.Message}");
                 return null;
             }
         }

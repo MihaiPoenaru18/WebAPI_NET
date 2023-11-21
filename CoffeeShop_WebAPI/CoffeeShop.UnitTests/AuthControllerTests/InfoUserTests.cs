@@ -4,7 +4,7 @@ using CoffeeShop_WebApi.Authorization.Models;
 using CoffeeShop_WebApi.Controllers;
 using FakeItEasy;
 using Microsoft.AspNetCore.Mvc;
-using WebApplication1.Controllers;
+using CoffeeShop_WebApi.Controllers.User;
 using Xunit;
 
 namespace CoffeeShop.UnitTests.AuthControllerTests

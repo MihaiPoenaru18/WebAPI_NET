@@ -1,10 +1,15 @@
-﻿namespace CoffeeShop.ServicesLogic.Services.Interfaces
+﻿using CoffeeShop.ServicesLogic.EntiteModels.ModelsForProducts;
+
+namespace CoffeeShop.ServicesLogic.Services.Interfaces
 {
     public interface IServicesProduct<T> where T : class
     {
-        Task<bool> IsProductExistingInDb (string productName);
+        bool IsProductExistingInDb (string productName);
         Task<IEnumerable<T>> GetAllProducts();
-        Task AddNewProductsInDBAsync(List<T> products); 
+        Task<IEnumerable<CategoryDto>> GetAllCategories ();
+        bool AddNewProductsInDBAsync(List<T> products); 
         void UpdateProductInformation(T product);
+        bool DeleteProduct(List<T> product);
+
     }
 }

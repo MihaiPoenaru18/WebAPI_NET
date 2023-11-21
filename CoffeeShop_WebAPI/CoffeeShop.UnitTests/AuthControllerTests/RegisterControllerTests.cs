@@ -1,7 +1,7 @@
 using Xunit;
 using FakeItEasy;
 using CoffeeShop.ServicesLogic.EntiteModels;
-using WebApplication1.Controllers;
+using CoffeeShop_WebApi.Controllers.User;
 using Microsoft.AspNetCore.Mvc;
 using CoffeeShop.ServicesLogic.Services.Interfaces;
 
