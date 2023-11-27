@@ -11,11 +11,17 @@ namespace CoffeeShop.DataAccess.DataAccess.DataBaseContext
         public DbSet<User> Users { get; set; }
         public DbSet<UserWithNewsLetter> Newsletters { get; set; }
         public DbSet<Product> Products { get; set; }
-        public DbSet<Order> Order { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        //public DbSet<Order> Order { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
+            modelBuilder.Entity<Product>()
+           .HasOne(p => p.Category)
+           .WithMany(c => c.Products)
+           .HasForeignKey(p => p.IdCategory)
+           .OnDelete(DeleteBehavior.Restrict);
+            //modelBuilder.Entity<List<Guid>>().HasNoKey();
             modelBuilder.Entity<User>(entity =>
             {
                 // Primary key

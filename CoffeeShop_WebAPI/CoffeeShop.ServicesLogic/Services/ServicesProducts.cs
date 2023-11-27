@@ -54,27 +54,22 @@ namespace CoffeeShop.ServicesLogic.Services
             }
         }
 
-        public bool IsProductExistingInDb(string productName)
+        public async Task<bool> IsProductExistingInDb(string productName)
         {
             try
             {
-                if (!string.IsNullOrWhiteSpace(productName))
+                if (string.IsNullOrWhiteSpace(productName))
                 {
-                    var products = _coffeeShopProductRepository.GetAll().Result;
-                    if (products.Where(p => p.Name == productName).Count() > 0)
-                    {
-                        return true;
-                    }
+                    throw new ArgumentException("Product Name is null or empty", nameof(productName));
                 }
-                else
-                {
-                    throw new Exception("Product Name is null");
-                }
-                return false;
+
+                var products = await _coffeeShopProductRepository.GetAll();
+
+                return products.Any(p => p.Name == productName);
             }
             catch (Exception ex)
             {
-                Log.Error($"ServicesProducts  -> IsProductExistingInDb() -> Exception => {ex.Message}");
+                Log.Error($"ServicesProducts -> IsProductExistingInDbAsync() -> Exception => {ex.Message}");
                 return false;
             }
         }
@@ -89,7 +84,7 @@ namespace CoffeeShop.ServicesLogic.Services
                 {
                     foreach (var product in products)
                     {
-                        if (!IsProductExistingInDb(product.Name))
+                        if (!IsProductExistingInDb(product.Name).Result)
                         {
                             finishInsert = _coffeeShopProductRepository.Insert(mappeProducts.Map<ProductDto, Product>(product)).Result;
                         }
@@ -122,7 +117,7 @@ namespace CoffeeShop.ServicesLogic.Services
                         categoryDto.Add(mappeCategory.Map<Category, CategoryDto>(category));
                     }
                 }
-                return categoryDto;
+                return categoryDto.DistinctBy(c => c.Name);
             }
             catch(Exception ex)
             {
@@ -141,9 +136,10 @@ namespace CoffeeShop.ServicesLogic.Services
                 {
                     foreach (var product in products)
                     {
-                        if (!IsProductExistingInDb(product.Name))
+                        if (IsProductExistingInDb(product.Name).Result)
                         {
-                            _coffeeShopProductRepository.Delete(mappeProducts.Map<ProductDto, Product>(product).Id);
+                            var p = mappeProducts.Map<ProductDto, Product>(product);
+                            _coffeeShopProductRepository.Delete(mappeProducts.Map<ProductDto, Product>(product).Name);
                             isFinishProcess = true;
                         }
                     }

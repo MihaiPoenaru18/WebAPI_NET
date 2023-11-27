@@ -1,5 +1,7 @@
 ﻿using CoffeeShop.ServicesLogic.EntiteModels.ModelsForProducts;
 using CoffeeShop.ServicesLogic.Services.Interfaces;
+using CoffeeShop_WebApi.QuerybleCustomMethod;
+using CoffeeShop_WebApi.QuerybleCustomMethod.ModelOfParameters;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 
@@ -20,7 +22,7 @@ namespace CoffeeShop_WebApi.Controllers.Product
         {
             try
             {
-                var categories = _services.GetAllCategories();
+                var categories = _services.GetAllCategories().Result.OrderBy(c=>c.Name).ToList();
                 if (categories == null)
                 {
                     return BadRequest("Not category in database");
@@ -33,17 +35,46 @@ namespace CoffeeShop_WebApi.Controllers.Product
                 return BadRequest("Error");
             }
         }
-
+        
         [HttpGet("GetProducts")]
-        public ActionResult<IEnumerable<ProductDto>> GetProducts()
+        public ActionResult<IEnumerable<ProductDto>> GetProducts([FromQuery] ProductQueryParameters parameters)
         {
             try
             {
-                var products = _services.GetAllProducts();
+                var products = _services.GetAllProducts().Result;
                 if (products == null)
                 {
                     return BadRequest("Not products in database");
                 }
+               
+                if( parameters.MaxPrice == null && parameters.MinPrice == null)
+                {
+                    products = products.Skip(parameters.Size * (parameters.Page - 1)).Take(parameters.Size);
+                }
+
+                if(parameters.MinPrice != null)
+                {
+                    products = products.Where(p=>p.Price > parameters.MinPrice).ToList();
+                }
+
+                if(parameters.MaxPrice != null)
+                {
+                    products = products.Where(p=>p.Price < parameters.MaxPrice).ToList();
+                }
+
+                if (!String.IsNullOrEmpty(parameters.SortBy))
+                {
+                    if(typeof(ProductDto).GetProperty(parameters.SortBy) != null)
+                    {
+                        products = products.OrderByProperty(parameters.SortBy, parameters.SortOrder);
+                    }
+                }
+
+                if(!String.IsNullOrEmpty(parameters.SearchTerm)) 
+                {
+                    products = products.SerachBy(parameters.SearchTerm);
+                }
+
                 return Ok(products);
             }
             catch (Exception ex)
@@ -78,18 +109,18 @@ namespace CoffeeShop_WebApi.Controllers.Product
             {
                 if (_services.DeleteProduct(products))
                 {
-                    return Ok("Products add in DB with success");
+                    return Ok("Products was delete from DB with success");
                 }
-                return BadRequest("Your products don't was add in db");
+                return BadRequest("Your products don't was delete from db");
             }
             catch (Exception ex)
             {
-                Log.Error($"ProductController -> GetProducts() -> Exception => {ex.Message}");
+                Log.Error($"ProductController -> DeleteProducts() -> Exception => {ex.Message}");
                 return BadRequest("Error");
             }
         }
 
-        [HttpPost("UpdateProduct")]
+        [HttpPut("UpdateProduct")]
         public ActionResult UpdateProduct([FromBody] ProductDto product)
         {
             try

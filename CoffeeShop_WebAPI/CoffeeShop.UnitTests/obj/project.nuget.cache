@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "eSxcO90+hQ3vnx+g6JX8F3Oftm6JGWazYKdKMIhHZ06zGmeb2HwS4TlFN+yl6juUFNO1FS33vO/cnZnkRPIMEw==",
+  "dgSpecHash": "9WjijkbcGLHvsqDSUPkGn+f8fk/4GtAmk2H+f/3d5NkunvqFJUl+522DggXC62aE97FK/OJk+vLwulSgWd/IjA==",
   "success": true,
   "projectFilePath": "D:\\Repository\\ASP.Net\\Web API-Angular&React\\WebAPI_NET\\CoffeeShop_WebAPI\\CoffeeShop.UnitTests\\CoffeeShop.UnitTests.csproj",
   "expectedPackageFiles": [
@@ -240,7 +240,10 @@
     "C:\\Users\\Mihai\\.nuget\\packages\\xunit.core\\2.4.2\\xunit.core.2.4.2.nupkg.sha512",
     "C:\\Users\\Mihai\\.nuget\\packages\\xunit.extensibility.core\\2.4.2\\xunit.extensibility.core.2.4.2.nupkg.sha512",
     "C:\\Users\\Mihai\\.nuget\\packages\\xunit.extensibility.execution\\2.4.2\\xunit.extensibility.execution.2.4.2.nupkg.sha512",
-    "C:\\Users\\Mihai\\.nuget\\packages\\xunit.runner.visualstudio\\2.4.5\\xunit.runner.visualstudio.2.4.5.nupkg.sha512"
+    "C:\\Users\\Mihai\\.nuget\\packages\\xunit.runner.visualstudio\\2.4.5\\xunit.runner.visualstudio.2.4.5.nupkg.sha512",
+    "C:\\Users\\Mihai\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\7.0.14\\microsoft.windowsdesktop.app.ref.7.0.14.nupkg.sha512",
+    "C:\\Users\\Mihai\\.nuget\\packages\\microsoft.netcore.app.ref\\7.0.14\\microsoft.netcore.app.ref.7.0.14.nupkg.sha512",
+    "C:\\Users\\Mihai\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\7.0.14\\microsoft.aspnetcore.app.ref.7.0.14.nupkg.sha512"
   ],
   "logs": []
 }

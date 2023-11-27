@@ -7,6 +7,7 @@ D:\Repository\ASP.Net\Web API-Angular&React\WebAPI_NET\CoffeeShop_WebAPI\CoffeeS
 D:\Repository\ASP.Net\Web API-Angular&React\WebAPI_NET\CoffeeShop_WebAPI\CoffeeShop.DataAccess\obj\Debug\net7.0\CoffeeShop.DataAccess.AssemblyInfoInputs.cache
 D:\Repository\ASP.Net\Web API-Angular&React\WebAPI_NET\CoffeeShop_WebAPI\CoffeeShop.DataAccess\obj\Debug\net7.0\CoffeeShop.DataAccess.AssemblyInfo.cs
 D:\Repository\ASP.Net\Web API-Angular&React\WebAPI_NET\CoffeeShop_WebAPI\CoffeeShop.DataAccess\obj\Debug\net7.0\CoffeeShop.DataAccess.csproj.CoreCompileInputs.cache
+D:\Repository\ASP.Net\Web API-Angular&React\WebAPI_NET\CoffeeShop_WebAPI\CoffeeShop.DataAccess\obj\Debug\net7.0\CoffeeShop.DataAccess.sourcelink.json
 D:\Repository\ASP.Net\Web API-Angular&React\WebAPI_NET\CoffeeShop_WebAPI\CoffeeShop.DataAccess\obj\Debug\net7.0\CoffeeShop.DataAccess.dll
 D:\Repository\ASP.Net\Web API-Angular&React\WebAPI_NET\CoffeeShop_WebAPI\CoffeeShop.DataAccess\obj\Debug\net7.0\refint\CoffeeShop.DataAccess.dll
 D:\Repository\ASP.Net\Web API-Angular&React\WebAPI_NET\CoffeeShop_WebAPI\CoffeeShop.DataAccess\obj\Debug\net7.0\CoffeeShop.DataAccess.pdb

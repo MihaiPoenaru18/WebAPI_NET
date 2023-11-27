@@ -1,5 +1,4 @@
 ﻿using CoffeeShop.DataAccess.DataAccess.DataBaseContext;
-using CoffeeShop.DataAccess.DataAccess.ModelDB;
 using CoffeeShop.DataAccess.DataAccess.ModelDB.User;
 using CoffeeShop.DataAccess.DataAccess.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -48,10 +47,20 @@ namespace WebApplication1.DataAccess.Repository
             return false;
         }
 
-        public void Delete(Guid id)
+        public async Task Delete(string Name)
         {
-            var user = GetById(id).Result;
+            var user = GetById(GetByName(Name).Result.Id).Result;
             _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<User> GetByName(string Name)
+        {
+            if (!string.IsNullOrEmpty(Name))
+            {
+                return await _context.Users.FindAsync(Name);
+            }
+            return null;
         }
 
         public bool IsUserExistingInDB(User user)
@@ -83,6 +92,7 @@ namespace WebApplication1.DataAccess.Repository
             if (item != null)
             {
                 _context.Users.Update(item);
+                await _context.SaveChangesAsync();
             }
         }
 
@@ -91,5 +101,7 @@ namespace WebApplication1.DataAccess.Repository
             var name = _context.Users.Where(e => e.Email == email).FirstOrDefault().FirstName;
             return name;
         }
+
+       
     }
 }

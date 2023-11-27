@@ -18,10 +18,20 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
             return await _context.Newsletters.ToListAsync();
         }
 
-        public void Delete(Guid id)
+        public async Task<UserWithNewsLetter> GetByName(string Name)
         {
-            var user = GetById(id).Result;
+            if (!string.IsNullOrEmpty(Name))
+            {
+                return await _context.Newsletters.FindAsync(Name);
+            }
+            return null;
+        }
+
+        public async Task Delete(string Name)
+        {
+            var user = GetById(GetByName(Name).Result.Id).Result;
             _context.Newsletters.Remove(user);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<UserWithNewsLetter> GetById(Guid id)
@@ -69,5 +79,6 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
         {
             throw new NotImplementedException();
         }
+
     }
 }

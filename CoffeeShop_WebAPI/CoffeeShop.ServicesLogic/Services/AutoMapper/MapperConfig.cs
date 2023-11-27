@@ -54,7 +54,7 @@ namespace CoffeeShop_WebApi.Services.AutoMapper
                     {
                         return MapperBetweenProductDtoAndProduct();
                     }
-                    if (typeof(CategoryDto) == typeof(Source) && typeof(Category) == typeof(Destination))
+                    if (typeof(Category) == typeof(Source) && typeof(CategoryDto) == typeof(Destination))
                     {
                         return MapperBetweenCategoryAndCategoryDto();
                     }
@@ -261,6 +261,7 @@ namespace CoffeeShop_WebApi.Services.AutoMapper
                 {
                     cfg.CreateMap<Category, CategoryDto>()
                                                         .ForMember(dest => dest.Name, act => act.MapFrom(src => src.Name));
+
                 });
                 return new Mapper(config);
             }

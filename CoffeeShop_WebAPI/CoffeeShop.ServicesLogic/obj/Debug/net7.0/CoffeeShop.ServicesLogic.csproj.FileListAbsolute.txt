@@ -8,6 +8,7 @@ D:\Repository\ASP.Net\Web API-Angular&React\WebAPI_NET\CoffeeShop_WebAPI\CoffeeS
 D:\Repository\ASP.Net\Web API-Angular&React\WebAPI_NET\CoffeeShop_WebAPI\CoffeeShop.ServicesLogic\obj\Debug\net7.0\CoffeeShop.ServicesLogic.AssemblyInfoInputs.cache
 D:\Repository\ASP.Net\Web API-Angular&React\WebAPI_NET\CoffeeShop_WebAPI\CoffeeShop.ServicesLogic\obj\Debug\net7.0\CoffeeShop.ServicesLogic.AssemblyInfo.cs
 D:\Repository\ASP.Net\Web API-Angular&React\WebAPI_NET\CoffeeShop_WebAPI\CoffeeShop.ServicesLogic\obj\Debug\net7.0\CoffeeShop.ServicesLogic.csproj.CoreCompileInputs.cache
+D:\Repository\ASP.Net\Web API-Angular&React\WebAPI_NET\CoffeeShop_WebAPI\CoffeeShop.ServicesLogic\obj\Debug\net7.0\CoffeeShop.ServicesLogic.sourcelink.json
 D:\Repository\ASP.Net\Web API-Angular&React\WebAPI_NET\CoffeeShop_WebAPI\CoffeeShop.ServicesLogic\obj\Debug\net7.0\CoffeeShop.ServicesLogic.csproj.CopyComplete
 D:\Repository\ASP.Net\Web API-Angular&React\WebAPI_NET\CoffeeShop_WebAPI\CoffeeShop.ServicesLogic\obj\Debug\net7.0\CoffeeShop.ServicesLogic.dll
 D:\Repository\ASP.Net\Web API-Angular&React\WebAPI_NET\CoffeeShop_WebAPI\CoffeeShop.ServicesLogic\obj\Debug\net7.0\refint\CoffeeShop.ServicesLogic.dll

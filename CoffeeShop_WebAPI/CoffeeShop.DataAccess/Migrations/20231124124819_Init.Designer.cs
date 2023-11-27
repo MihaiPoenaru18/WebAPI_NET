@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoffeeShop.DataAccess.Migrations
 {
     [DbContext(typeof(CoffeeShopContext))]
-    [Migration("20231119154327_AddSkuOnProduct")]
-    partial class AddSkuOnProduct
+    [Migration("20231124124819_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace CoffeeShop.DataAccess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.Category", b =>
+            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel.Category", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -40,11 +40,15 @@ namespace CoffeeShop.DataAccess.Migrations
                     b.ToTable("Category");
                 });
 
-            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.Product", b =>
+            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel.Product", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -82,7 +86,7 @@ namespace CoffeeShop.DataAccess.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.Promotion", b =>
+            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel.Promotion", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -102,30 +106,7 @@ namespace CoffeeShop.DataAccess.Migrations
                     b.ToTable("Promotion");
                 });
 
-            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.UserWithNewsLetter", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasDefaultValueSql("NEWID()");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsNewsLetterActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Newsletters");
-                });
-
-            modelBuilder.Entity("CoffeeShop_WebApi.DataAccess.ModelDB.User", b =>
+            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.User.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -163,15 +144,38 @@ namespace CoffeeShop.DataAccess.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.Product", b =>
+            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.User.UserWithNewsLetter", b =>
                 {
-                    b.HasOne("CoffeeShop.DataAccess.DataAccess.ModelDB.Category", "Category")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsNewsLetterActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Newsletters");
+                });
+
+            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel.Product", b =>
+                {
+                    b.HasOne("CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("IdCategory")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CoffeeShop.DataAccess.DataAccess.ModelDB.Promotion", "Promotion")
+                    b.HasOne("CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel.Promotion", "Promotion")
                         .WithMany()
                         .HasForeignKey("IdPromotie")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -182,23 +186,23 @@ namespace CoffeeShop.DataAccess.Migrations
                     b.Navigation("Promotion");
                 });
 
-            modelBuilder.Entity("CoffeeShop_WebApi.DataAccess.ModelDB.User", b =>
+            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.User.User", b =>
                 {
-                    b.HasOne("CoffeeShop.DataAccess.DataAccess.ModelDB.UserWithNewsLetter", "UserWithNewsLetter")
+                    b.HasOne("CoffeeShop.DataAccess.DataAccess.ModelDB.User.UserWithNewsLetter", "UserWithNewsLetter")
                         .WithOne("User")
-                        .HasForeignKey("CoffeeShop_WebApi.DataAccess.ModelDB.User", "IdUserNewsLetter")
+                        .HasForeignKey("CoffeeShop.DataAccess.DataAccess.ModelDB.User.User", "IdUserNewsLetter")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("UserWithNewsLetter");
                 });
 
-            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.Category", b =>
+            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel.Category", b =>
                 {
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.UserWithNewsLetter", b =>
+            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.User.UserWithNewsLetter", b =>
                 {
                     b.Navigation("User")
                         .IsRequired();

@@ -10,12 +10,22 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
             throw new NotImplementedException();
         }
 
+        public Task Delete(string Name)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<IEnumerable<Order>> GetAll()
         {
             throw new NotImplementedException();
         }
 
         public Task<Order> GetById(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Order> GetByName(string Name)
         {
             throw new NotImplementedException();
         }
@@ -29,5 +39,7 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
         {
             throw new NotImplementedException();
         }
+
+       
     }
 }
