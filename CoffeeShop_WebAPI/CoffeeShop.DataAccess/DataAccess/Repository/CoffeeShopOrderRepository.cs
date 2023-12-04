@@ -1,18 +1,28 @@
-﻿using CoffeeShop.DataAccess.DataAccess.ModelDB.Order;
+﻿using CoffeeShop.DataAccess.DataAccess.DataBaseContext;
+using CoffeeShop.DataAccess.DataAccess.ModelDB.Order;
+using CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel;
 using CoffeeShop.DataAccess.DataAccess.Repository.Interfaces;
 
 namespace CoffeeShop.DataAccess.DataAccess.Repository
 {
     public class CoffeeShopOrderRepository : ICoffeeShopRepository<Order>
     {
+        private CoffeeShopContext _context;
+        
+        public CoffeeShopOrderRepository(CoffeeShopContext context)
+        {
+            context = _context ?? throw new ArgumentNullException(nameof(context));
+        }
+
         public void Delete(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public Task Delete(string Name)
+        public async Task Delete(string Name)
         {
-            throw new NotImplementedException();
+            _context.Order.Remove(GetById(GetByName(Name).Result.Id).Result);
+            await _context.SaveChangesAsync();
         }
 
         public Task<IEnumerable<Order>> GetAll()
@@ -20,24 +30,44 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
             throw new NotImplementedException();
         }
 
-        public Task<Order> GetById(Guid id)
+        public async Task<Order> GetById(Guid id)
         {
-            throw new NotImplementedException();
+            return await _context.Order.FindAsync(id);
         }
 
-        public Task<Order> GetByName(string Name)
+        public async Task<Order> GetByName(string Name)
         {
-            throw new NotImplementedException();
+            return await _context.Order.FindAsync(Name);
         }
 
-        public Task<bool> Insert(Order item)
+        public async Task<bool> Insert(Order item)
         {
-            throw new NotImplementedException();
+            _context.Order.Add(new Order
+            {
+                Id = Guid.NewGuid(),
+                Address = new Address
+                {
+                    City = item.Address.City,
+                    PostalCode = item.Address.PostalCode,
+                    Country = item.Address.Country,
+                    Id = Guid.NewGuid(),
+                    Region = item.Address.Region
+                },
+                AndressId = item.Address.Id,
+                Currency = item.Currency,
+                TotalPrices = item.TotalPrices,
+            });
+            await _context.SaveChangesAsync();
+            return true;
         }
 
-        public Task Update(Order item)
+        public async Task Update(Order item)
         {
-            throw new NotImplementedException();
+            if (item != null)
+            {
+                _context.Order.Update(item);
+                await _context.SaveChangesAsync();
+            }
         }
 
        

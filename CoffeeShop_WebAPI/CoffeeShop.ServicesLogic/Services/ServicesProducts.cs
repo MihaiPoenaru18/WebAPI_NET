@@ -74,7 +74,7 @@ namespace CoffeeShop.ServicesLogic.Services
             }
         }
 
-        public bool AddNewProductsInDBAsync(List<ProductDto> products)
+        public bool AddNewProducts(List<ProductDto> products)
         {
             var mappeProducts = MapperConfig<ProductDto, Product>.InitializeAutomapper();
             var finishInsert = false;

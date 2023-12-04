@@ -89,7 +89,7 @@ namespace CoffeeShop_WebApi.Controllers.Product
         {
             try
             {
-                if (_services.AddNewProductsInDBAsync(products))
+                if (_services.AddNewProducts(products))
                 {
                     return Ok("Products add in DB with success");
                 }

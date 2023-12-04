@@ -38,7 +38,7 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
         {
             if (item != null)
             {
-                _context.Update(item);
+                _context.Products.Update(item);
                 await _context.SaveChangesAsync();
             }
         }
