@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/CoffeeShop_WebAPI/CoffeeShop.ServicesLogic/obj/Debug/net7.0/CoffeeShop.ServicesLogic.AssemblyInfoInputs.cache
+*.json
+/.vs
