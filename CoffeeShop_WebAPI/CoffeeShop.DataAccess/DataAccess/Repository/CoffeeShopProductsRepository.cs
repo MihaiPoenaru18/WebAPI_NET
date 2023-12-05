@@ -18,7 +18,11 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
             _context.Products.Remove(GetById(GetByName(Name).Result.Id).Result);
             await _context.SaveChangesAsync();
         }
-
+        public async Task DeleteById(Guid id)
+        {
+            _context.Products.Remove(GetById(id).Result);
+            await _context.SaveChangesAsync();
+        }
         public async Task<Product> GetByName(string Name)
         {
             return await _context.Products.FindAsync(Name);

@@ -2,6 +2,7 @@
 using CoffeeShop.DataAccess.DataAccess.ModelDB.Order;
 using CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel;
 using CoffeeShop.DataAccess.DataAccess.Repository.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace CoffeeShop.DataAccess.DataAccess.Repository
 {
@@ -14,20 +15,15 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
             context = _context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public void Delete(Guid id)
+        public async Task DeleteById(Guid id)
         {
-            throw new NotImplementedException();
-        }
-
-        public async Task Delete(string Name)
-        {
-            _context.Order.Remove(GetById(GetByName(Name).Result.Id).Result);
+            _context.Order.Remove(GetById(id).Result);
             await _context.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<Order>> GetAll()
+        public async Task<IEnumerable<Order>> GetAll()
         {
-            throw new NotImplementedException();
+            return await _context.Order.ToListAsync();
         }
 
         public async Task<Order> GetById(Guid id)
@@ -53,7 +49,7 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
                     Id = Guid.NewGuid(),
                     Region = item.Address.Region
                 },
-                AndressId = item.Address.Id,
+                AddressId = item.Address.Id,
                 Currency = item.Currency,
                 TotalPrices = item.TotalPrices,
             });
@@ -69,7 +65,5 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
                 await _context.SaveChangesAsync();
             }
         }
-
-       
     }
 }

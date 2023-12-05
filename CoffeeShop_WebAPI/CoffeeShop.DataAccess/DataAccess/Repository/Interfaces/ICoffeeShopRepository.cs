@@ -6,13 +6,9 @@
 
         Task<T> GetById(Guid id);
 
-        Task<T> GetByName(string Name);
-
         Task<bool> Insert(T item);
 
         Task Update(T item);
-
-        Task Delete(string Name);
-
+        Task DeleteById(Guid id);
     }
 }

@@ -17,6 +17,11 @@ namespace WebApplication1.DataAccess.Repository
         {
             return await _context.Users.ToListAsync();
         }
+        public async Task DeleteById(Guid id)
+        {
+            _context.Users.Remove(GetById(id).Result);
+            await _context.SaveChangesAsync();
+        }
 
         public async Task<bool> Insert(User user)
         {
@@ -45,22 +50,6 @@ namespace WebApplication1.DataAccess.Repository
                 return true;
             }
             return false;
-        }
-
-        public async Task Delete(string Name)
-        {
-            var user = GetById(GetByName(Name).Result.Id).Result;
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task<User> GetByName(string Name)
-        {
-            if (!string.IsNullOrEmpty(Name))
-            {
-                return await _context.Users.FindAsync(Name);
-            }
-            return null;
         }
 
         public bool IsUserExistingInDB(User user)

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoffeeShop.DataAccess.Migrations
 {
     [DbContext(typeof(CoffeeShopContext))]
-    [Migration("20231204124716_AddOrder")]
+    [Migration("20231204190822_AddOrder")]
     partial class AddOrder
     {
         /// <inheritdoc />
@@ -47,6 +47,10 @@ namespace CoffeeShop.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Streed")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Address");
@@ -58,7 +62,7 @@ namespace CoffeeShop.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("AndressId")
+                    b.Property<Guid>("AddressId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Currency")
@@ -70,7 +74,7 @@ namespace CoffeeShop.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AndressId");
+                    b.HasIndex("AddressId");
 
                     b.ToTable("Order");
                 });
@@ -120,6 +124,9 @@ namespace CoffeeShop.DataAccess.Migrations
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("ProductsId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
@@ -132,6 +139,8 @@ namespace CoffeeShop.DataAccess.Migrations
                     b.HasIndex("IdCategory");
 
                     b.HasIndex("IdPromotie");
+
+                    b.HasIndex("ProductsId");
 
                     b.ToTable("Products");
                 });
@@ -221,7 +230,7 @@ namespace CoffeeShop.DataAccess.Migrations
                 {
                     b.HasOne("CoffeeShop.DataAccess.DataAccess.ModelDB.Order.Address", "Address")
                         .WithMany()
-                        .HasForeignKey("AndressId")
+                        .HasForeignKey("AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -242,6 +251,10 @@ namespace CoffeeShop.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("CoffeeShop.DataAccess.DataAccess.ModelDB.Order.Order", null)
+                        .WithMany("Products")
+                        .HasForeignKey("ProductsId");
+
                     b.Navigation("Category");
 
                     b.Navigation("Promotion");
@@ -256,6 +269,11 @@ namespace CoffeeShop.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("UserWithNewsLetter");
+                });
+
+            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.Order.Order", b =>
+                {
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel.Category", b =>

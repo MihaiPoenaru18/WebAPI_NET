@@ -21,7 +21,7 @@ namespace CoffeeShop.DataAccess.DataAccess.DataBaseContext
            .WithMany(c => c.Products)
            .HasForeignKey(p => p.IdCategory)
            .OnDelete(DeleteBehavior.Restrict);
-            //modelBuilder.Entity<List<Guid>>().HasNoKey();
+         
             modelBuilder.Entity<User>(entity =>
             {
                 // Primary key
