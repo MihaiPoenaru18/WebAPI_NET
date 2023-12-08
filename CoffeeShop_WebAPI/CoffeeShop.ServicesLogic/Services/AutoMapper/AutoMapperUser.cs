@@ -3,6 +3,7 @@ using CoffeeShop.ServicesLogic.EntiteModels;
 using CoffeeShop.ServicesLogic.EntiteModels.ModelsForProducts;
 using CoffeeShop.DataAccess.DataAccess.ModelDB.User;
 using CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel;
+using CoffeeShop.DataAccess.DataAccess.ModelDB.Order;
 
 namespace CoffeeShop.ServicesLogic.Services.AutoMapper
 {
@@ -23,6 +24,11 @@ namespace CoffeeShop.ServicesLogic.Services.AutoMapper
             CreateMap<ProductDto, Product>();
 
             CreateMap<Category, CategoryDto>();
+
+            CreateMap<Order, OrderDto>();
+
+            CreateMap<OrderDto, Order>();
+
         }
     }
 }

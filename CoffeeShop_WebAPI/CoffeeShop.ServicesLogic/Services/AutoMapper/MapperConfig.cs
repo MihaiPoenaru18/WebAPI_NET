@@ -302,6 +302,7 @@ namespace CoffeeShop_WebApi.Services.AutoMapper
                                                         .ForPath(dest => dest.Products, act => act.MapFrom(src => src.Products))
                                                         ;
 
+
                 });
                 return new Mapper(config);
             }
@@ -327,6 +328,9 @@ namespace CoffeeShop_WebApi.Services.AutoMapper
                                                         .ForPath(dest => dest.Address.PostalCode, act => act.MapFrom(src => src.Address.PostalCode))
                                                         .ForPath(dest => dest.Products, act => act.MapFrom(src => src.Products))
                                                         ;
+                    MapperBetweenProductDtoAndProduct()
+
+                    ;
 
                 });
                 return new Mapper(config);

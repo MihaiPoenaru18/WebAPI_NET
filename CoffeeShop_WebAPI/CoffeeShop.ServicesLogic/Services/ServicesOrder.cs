@@ -94,10 +94,10 @@ namespace CoffeeShop.ServicesLogic.Services
             {
                 if (order != null)
                 {
-                    if (!IsOrderExistInDb(order.Id).Result)
-                    {
+                    //if (!IsOrderExistInDb(order.Id).Result)
+                    //{
                         finishInsert = _repository.Insert(mappeProducts.Map<OrderDto, Order>(order)).Result;
-                    }
+                    //}
                     return finishInsert;
                 }
                 else
@@ -121,8 +121,7 @@ namespace CoffeeShop.ServicesLogic.Services
                     throw new ArgumentException("Product Name is null or empty", nameof(orderId));
                 }
                 var order = await _repository.GetAll();
-
-                return order.Any(p => p.Id == orderId);
+                return order != null ? order.Any(p => p.Id == orderId) : true;
             }
             catch (Exception ex)
             {

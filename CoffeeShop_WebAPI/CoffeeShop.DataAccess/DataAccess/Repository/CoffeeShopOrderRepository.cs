@@ -12,7 +12,7 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
         
         public CoffeeShopOrderRepository(CoffeeShopContext context)
         {
-            context = _context ?? throw new ArgumentNullException(nameof(context));
+            context = _context;
         }
 
         public async Task DeleteById(Guid id)

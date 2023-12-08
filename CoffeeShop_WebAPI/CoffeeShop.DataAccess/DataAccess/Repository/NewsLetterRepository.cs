@@ -80,5 +80,9 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
             throw new NotImplementedException();
         }
 
+        public Task DeleteById(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

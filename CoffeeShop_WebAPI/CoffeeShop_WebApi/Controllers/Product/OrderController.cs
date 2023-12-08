@@ -33,7 +33,7 @@ namespace CoffeeShop_WebApi.Controllers.Product
             }
         }
 
-        [HttpPost]
+        [HttpPost("AddOrder")]
         public async Task<ActionResult> AddOrder([FromBody] OrderDto order)
         {
             try
@@ -51,7 +51,7 @@ namespace CoffeeShop_WebApi.Controllers.Product
             }
         }
 
-        [HttpGet]
+        [HttpGet("GetAllOrder")]
         public async Task<ActionResult<IEnumerable<OrderDto>>> GetAllOrder()
         {
             try
@@ -66,7 +66,7 @@ namespace CoffeeShop_WebApi.Controllers.Product
             }
         }
 
-        [HttpPost]
+        [HttpPost("DeleteOrder")]
         public async Task<ActionResult> DeleteOrder([FromBody] OrderDto order)
         {
             try
@@ -86,7 +86,7 @@ namespace CoffeeShop_WebApi.Controllers.Product
             }
         }
 
-        [HttpPost]
+        [HttpPost("UpdateOrder")]
         public async Task<ActionResult> UpdateOrder([FromBody] OrderDto order)
         {
             try

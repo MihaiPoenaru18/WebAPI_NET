@@ -14,6 +14,8 @@ using CoffeeShop.ServicesLogic.EntiteModels.ModelsForProducts;
 
 using CoffeeShop.DataAccess.DataAccess.ModelDB.User;
 using CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel;
+using CoffeeShop.ServicesLogic.Services.InterfacesServices;
+using CoffeeShop.DataAccess.DataAccess.ModelDB.Order;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,15 +37,17 @@ Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(builder.Configurat
 builder.Services.AddScoped<ICoffeeShopProductsRepository<Product>, CoffeeShopProductsRepository>();
 builder.Services.AddScoped<ICoffeeShopUserRepository<User>, CoffeeShopUserRepository>();
 builder.Services.AddScoped<ICoffeeShopUserRepository<UserWithNewsLetter>, NewsLetterRepository>();
+builder.Services.AddScoped<ICoffeeShopRepository<Order>,CoffeeShopOrderRepository>();
 #endregion
 
 #region Services
+builder.Services.AddScoped<IAuthentication, Authentication>();
 builder.Services.AddScoped<IServicesProduct<ProductDto>, ServicesProducts>();
 builder.Services.AddScoped<IServicesAuth<UserDto>, ServicesAuth>();
 builder.Services.AddScoped<IServicesNewsLetter<UserWithNewsLetterDto>, ServicesNewsLetter>();
+builder.Services.AddScoped<IServicesOrder<OrderDto>,ServicesOrder>();
 #endregion
 
-builder.Services.AddScoped<IAuthentication, Authentication>();
 
 #region MapperConfig
 builder.Services.AddScoped<MapperConfig<User,UserDto>>();
@@ -51,6 +55,11 @@ builder.Services.AddScoped<MapperConfig<UserDto, User>>();
 builder.Services.AddScoped<MapperConfig<AuthenticateRequest, User>>();
 builder.Services.AddScoped<MapperConfig<UserWithNewsLetter, UserWithNewsLetterDto>>();
 builder.Services.AddScoped<MapperConfig<UserWithNewsLetterDto, UserWithNewsLetter>>();
+builder.Services.AddScoped<MapperConfig<ProductDto, Product>>();
+builder.Services.AddScoped<MapperConfig<Product, ProductDto>>();
+builder.Services.AddScoped<MapperConfig<OrderDto, Order>>();
+builder.Services.AddScoped<MapperConfig<Order, OrderDto>>();
+builder.Services.AddScoped < MapperConfig<Category, CategoryDto>>();
 #endregion
 
 builder.Services.AddCors(options => options.AddPolicy(name: "corspolicy",
@@ -80,7 +89,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 
 app.UseCors("corspolicy");
 
