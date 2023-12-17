@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoffeeShop.DataAccess.Migrations
 {
     [DbContext(typeof(CoffeeShopContext))]
-    [Migration("20231124124819_Init")]
+    [Migration("20231213140743_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -24,6 +24,60 @@ namespace CoffeeShop.DataAccess.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.Order.Address", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Region")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Address");
+                });
+
+            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.Order.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AddressId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TotalPrices")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AddressId");
+
+                    b.ToTable("Order");
+                });
 
             modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel.Category", b =>
                 {
@@ -37,7 +91,7 @@ namespace CoffeeShop.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Category");
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel.Product", b =>
@@ -70,6 +124,9 @@ namespace CoffeeShop.DataAccess.Migrations
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("ProductsId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
@@ -82,6 +139,8 @@ namespace CoffeeShop.DataAccess.Migrations
                     b.HasIndex("IdCategory");
 
                     b.HasIndex("IdPromotie");
+
+                    b.HasIndex("ProductsId");
 
                     b.ToTable("Products");
                 });
@@ -167,12 +226,23 @@ namespace CoffeeShop.DataAccess.Migrations
                     b.ToTable("Newsletters");
                 });
 
+            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.Order.Order", b =>
+                {
+                    b.HasOne("CoffeeShop.DataAccess.DataAccess.ModelDB.Order.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Address");
+                });
+
             modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel.Product", b =>
                 {
                     b.HasOne("CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("IdCategory")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel.Promotion", "Promotion")
@@ -180,6 +250,10 @@ namespace CoffeeShop.DataAccess.Migrations
                         .HasForeignKey("IdPromotie")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("CoffeeShop.DataAccess.DataAccess.ModelDB.Order.Order", null)
+                        .WithMany("Products")
+                        .HasForeignKey("ProductsId");
 
                     b.Navigation("Category");
 
@@ -195,6 +269,11 @@ namespace CoffeeShop.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("UserWithNewsLetter");
+                });
+
+            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.Order.Order", b =>
+                {
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel.Category", b =>

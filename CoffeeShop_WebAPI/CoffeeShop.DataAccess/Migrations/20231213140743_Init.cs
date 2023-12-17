@@ -12,7 +12,23 @@ namespace CoffeeShop.DataAccess.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Category",
+                name: "Address",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Street = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Region = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Address", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Categories",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -20,7 +36,7 @@ namespace CoffeeShop.DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Category", x => x.Id);
+                    table.PrimaryKey("PK_Categories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -49,6 +65,26 @@ namespace CoffeeShop.DataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Promotion", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Order",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AddressId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TotalPrices = table.Column<int>(type: "int", nullable: false),
+                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Order", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Order_Address_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Address",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -87,17 +123,23 @@ namespace CoffeeShop.DataAccess.Migrations
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     IsStock = table.Column<bool>(type: "bit", nullable: false),
                     IdPromotie = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IdCategory = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    IdCategory = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductsId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Products_Category_IdCategory",
+                        name: "FK_Products_Categories_IdCategory",
                         column: x => x.IdCategory,
-                        principalTable: "Category",
+                        principalTable: "Categories",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Products_Order_ProductsId",
+                        column: x => x.ProductsId,
+                        principalTable: "Order",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Products_Promotion_IdPromotie",
                         column: x => x.IdPromotie,
@@ -105,6 +147,11 @@ namespace CoffeeShop.DataAccess.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Order_AddressId",
+                table: "Order",
+                column: "AddressId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_IdCategory",
@@ -115,6 +162,11 @@ namespace CoffeeShop.DataAccess.Migrations
                 name: "IX_Products_IdPromotie",
                 table: "Products",
                 column: "IdPromotie");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_ProductsId",
+                table: "Products",
+                column: "ProductsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_IdUserNewsLetter",
@@ -133,13 +185,19 @@ namespace CoffeeShop.DataAccess.Migrations
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Category");
+                name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "Order");
 
             migrationBuilder.DropTable(
                 name: "Promotion");
 
             migrationBuilder.DropTable(
                 name: "Newsletters");
+
+            migrationBuilder.DropTable(
+                name: "Address");
         }
     }
 }

@@ -19,7 +19,7 @@ namespace CoffeeShop.ServicesLogic.Services
             _mapper = mapper;
         }
 
-        public async Task<bool> DeleteOrder(OrderDto order)
+        public bool DeleteOrder(OrderDto order)
         {
             var mappeOrder = MapperConfig<OrderDto, Order>.InitializeAutomapper();
             var isFinishProcess = false;
@@ -27,9 +27,9 @@ namespace CoffeeShop.ServicesLogic.Services
             {
                 if (order != null)
                 {
-                        if (IsOrderExistInDb(order.Id).Result)
+                        if (IsOrderExistInDb(order.Id))
                         {
-                            await _repository.DeleteById(mappeOrder.Map<OrderDto, Order>(order).Id);
+                            _repository.DeleteById(mappeOrder.Map<OrderDto, Order>(order).Id);
                             isFinishProcess = true;
                         }
                     
@@ -46,7 +46,7 @@ namespace CoffeeShop.ServicesLogic.Services
 
         public async Task<IEnumerable<OrderDto>> GetAllOrders()
         {
-            var mappeProducts = MapperConfig<Order, OrderDto>.InitializeAutomapper();
+            var mappeOrders = MapperConfig<Order, OrderDto>.InitializeAutomapper();
             var ordersDto = new List<OrderDto>();
             try
             {
@@ -55,7 +55,7 @@ namespace CoffeeShop.ServicesLogic.Services
                 {
                     foreach (var order in orders)
                     {
-                        ordersDto.Add(mappeProducts.Map<Order, OrderDto>(order));
+                        ordersDto.Add(mappeOrders.Map<Order, OrderDto>(order));
                     }
                 }
                 return ordersDto;
@@ -67,7 +67,7 @@ namespace CoffeeShop.ServicesLogic.Services
             return null;
         }
 
-        public async Task<OrderDto> GetOrder(Guid orderId)
+        public OrderDto GetOrder(Guid orderId)
         {
             var mappeOrder = MapperConfig<Order, OrderDto>.InitializeAutomapper();
             try
@@ -77,7 +77,7 @@ namespace CoffeeShop.ServicesLogic.Services
                     throw new ArgumentException("Product Name is null or empty", nameof(orderId));
                 }
 
-                return mappeOrder.Map<Order, OrderDto>(_repository.GetAll().Result.FirstOrDefault(p => p.Id == orderId));
+                return  mappeOrder.Map<Order, OrderDto>(_repository.GetAll().Result.FirstOrDefault(p => p.Id == orderId));
             }
             catch (Exception ex)
             {
@@ -86,7 +86,7 @@ namespace CoffeeShop.ServicesLogic.Services
             }
         }
 
-        public async Task<bool> AddNewOrder(OrderDto order)
+        public bool AddNewOrder(OrderDto order)
         {
             var mappeProducts = MapperConfig<OrderDto, Order>.InitializeAutomapper();
             var finishInsert = false;
@@ -94,10 +94,10 @@ namespace CoffeeShop.ServicesLogic.Services
             {
                 if (order != null)
                 {
-                    //if (!IsOrderExistInDb(order.Id).Result)
-                    //{
-                        finishInsert = _repository.Insert(mappeProducts.Map<OrderDto, Order>(order)).Result;
-                    //}
+                    if (!IsOrderExistInDb(order.Id))
+                    {
+                       finishInsert = _repository.Insert(mappeProducts.Map<OrderDto, Order>(order)).Result;
+                    }
                     return finishInsert;
                 }
                 else
@@ -112,7 +112,7 @@ namespace CoffeeShop.ServicesLogic.Services
             }
         }
 
-        public async Task<bool> IsOrderExistInDb(Guid orderId)
+        public bool IsOrderExistInDb(Guid orderId)
         {
             try
             {
@@ -120,7 +120,7 @@ namespace CoffeeShop.ServicesLogic.Services
                 {
                     throw new ArgumentException("Product Name is null or empty", nameof(orderId));
                 }
-                var order = await _repository.GetAll();
+                var order = _repository.GetAll().Result;
                 return order != null ? order.Any(p => p.Id == orderId) : true;
             }
             catch (Exception ex)

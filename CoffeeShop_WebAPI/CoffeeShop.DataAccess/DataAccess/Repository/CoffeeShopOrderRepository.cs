@@ -12,7 +12,7 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
         
         public CoffeeShopOrderRepository(CoffeeShopContext context)
         {
-            context = _context;
+            _context = context;
         }
 
         public async Task DeleteById(Guid id)
@@ -46,12 +46,14 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
                     City = item.Address.City,
                     PostalCode = item.Address.PostalCode,
                     Country = item.Address.Country,
+                    Street = item.Address.Street,
                     Id = Guid.NewGuid(),
                     Region = item.Address.Region
                 },
                 AddressId = item.Address.Id,
                 Currency = item.Currency,
-                TotalPrices = item.TotalPrices,
+                TotalPrices = item.Products.Sum(x=>x.Price),
+                Products = item.Products,
             });
             await _context.SaveChangesAsync();
             return true;

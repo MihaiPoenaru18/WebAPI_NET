@@ -21,7 +21,33 @@ namespace CoffeeShop.DataAccess.DataAccess.DataBaseContext
            .WithMany(c => c.Products)
            .HasForeignKey(p => p.IdCategory)
            .OnDelete(DeleteBehavior.Restrict);
-         
+            modelBuilder.Entity<Order>()
+            .HasKey(o => o.Id);
+
+            // Configure relationship with Product entity
+            modelBuilder.Entity<Order>()
+                .HasMany(o => o.Products)
+                .WithOne()
+                .HasForeignKey("ProductsId") // This assumes ProductsId is the foreign key in the Order entity
+                .IsRequired();
+
+            // Configure relationship with Address entity
+            modelBuilder.Entity<Order>()
+                .HasOne(o => o.Address)
+                .WithMany()
+                .HasForeignKey(o => o.AddressId)
+                .IsRequired();
+
+            // Configure constraints
+            modelBuilder.Entity<Order>()
+                .Property(o => o.TotalPrices)
+                .IsRequired();
+
+            modelBuilder.Entity<Order>()
+                .Property(o => o.Currency)
+                .IsRequired()
+                .HasMaxLength(255);
+
             modelBuilder.Entity<User>(entity =>
             {
                 // Primary key

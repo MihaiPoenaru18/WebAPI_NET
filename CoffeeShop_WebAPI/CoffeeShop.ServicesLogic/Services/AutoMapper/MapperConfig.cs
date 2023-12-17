@@ -65,12 +65,12 @@ namespace CoffeeShop_WebApi.Services.AutoMapper
 
                     if (typeof(Order) == typeof(Source) && typeof(OrderDto) == typeof(Destination))
                     {
-                        return MapperBetweenCategoryAndCategoryDto();
+                        return MapperBetweenOrderAndOrderDto();
                     }
 
                     if (typeof(OrderDto) == typeof(Source) && typeof(Order) == typeof(Destination))
                     {
-                        return MapperBetweenCategoryAndCategoryDto();
+                        return MapperBetweenOrderDtoAndOrder();
                     }
                 }
 
@@ -218,13 +218,18 @@ namespace CoffeeShop_WebApi.Services.AutoMapper
                 config = new MapperConfiguration(cfg =>
                 {
                     cfg.CreateMap<Product, ProductDto>().ForMember(dest => dest.Sku, act => act.MapFrom(src => src.Sku))
+                                                        .ForMember(dest => dest.Category.Id, act => act.MapFrom(src => src.IdCategory))
+                                                        .ForMember(dest => dest.Promotion.Id, act => act.MapFrom(src => src.IdPromotie))
+                                                        .ForMember(dest => dest.Id, act => act.MapFrom(src => src.Id))
                                                         .ForMember(dest => dest.Name, act => act.MapFrom(src => src.Name))
-                                                        .ForMember(dest => dest.Currency, act => act.MapFrom(src => src.Currency))
                                                         .ForMember(dest => dest.Price, act => act.MapFrom(src => src.Price))
+                                                        .ForMember(dest => dest.Currency, act => act.MapFrom(src => src.Currency))
                                                         .ForMember(dest => dest.Quantity, act => act.MapFrom(src => src.Quantity))
                                                         .ForMember(dest => dest.Description, act => act.MapFrom(src => src.Description))
                                                         .ForMember(dest => dest.IsStock, act => act.MapFrom(src => src.IsStock))
+                                                        .ForPath(dest => dest.Category.Id, act => act.MapFrom(src => src.Category.Id))
                                                         .ForPath(dest => dest.Category.Name, act => act.MapFrom(src => src.Category.Name))
+                                                        .ForPath(dest => dest.Promotion.Id, act => act.MapFrom(src => src.Promotion.Id))
                                                         .ForPath(dest => dest.Promotion.PricePromotion, act => act.MapFrom(src => src.Promotion.PricePromotion))
                                                         .ForPath(dest => dest.Promotion.StartDate, act => act.MapFrom(src => src.Promotion.StartDate))
                                                         .ForPath(dest => dest.Promotion.EndDate, act => act.MapFrom(src => src.Promotion.EndDate));
@@ -246,13 +251,18 @@ namespace CoffeeShop_WebApi.Services.AutoMapper
                 config = new MapperConfiguration(cfg =>
                 {
                     cfg.CreateMap<ProductDto, Product>().ForMember(dest => dest.Sku, act => act.MapFrom(src => src.Sku))
+                                                        .ForMember(dest => dest.IdCategory, act => act.MapFrom(src => src.Category.Id))
+                                                        .ForMember(dest => dest.IdPromotie, act => act.MapFrom(src => src.Promotion.Id))
+                                                        .ForMember(dest => dest.Id, act => act.MapFrom(src => src.Id))
                                                         .ForMember(dest => dest.Name, act => act.MapFrom(src => src.Name))
                                                         .ForMember(dest => dest.Price, act => act.MapFrom(src => src.Price))
                                                         .ForMember(dest => dest.Currency, act => act.MapFrom(src => src.Currency))
                                                         .ForMember(dest => dest.Quantity, act => act.MapFrom(src => src.Quantity))
                                                         .ForMember(dest => dest.Description, act => act.MapFrom(src => src.Description))
                                                         .ForMember(dest => dest.IsStock, act => act.MapFrom(src => src.IsStock))
+                                                        .ForPath(dest => dest.Category.Id, act => act.MapFrom(src => src.Category.Id))
                                                         .ForPath(dest => dest.Category.Name, act => act.MapFrom(src => src.Category.Name))
+                                                        .ForPath(dest => dest.Promotion.Id, act => act.MapFrom(src => src.Promotion.Id))
                                                         .ForPath(dest => dest.Promotion.PricePromotion, act => act.MapFrom(src => src.Promotion.PricePromotion))
                                                         .ForPath(dest => dest.Promotion.StartDate, act => act.MapFrom(src => src.Promotion.StartDate))
                                                         .ForPath(dest => dest.Promotion.EndDate, act => act.MapFrom(src => src.Promotion.EndDate));
@@ -274,6 +284,7 @@ namespace CoffeeShop_WebApi.Services.AutoMapper
                 config = new MapperConfiguration(cfg =>
                 {
                     cfg.CreateMap<Category, CategoryDto>()
+                                                         .ForMember(dest => dest.Id, act => act.MapFrom(src => src.Id))
                                                         .ForMember(dest => dest.Name, act => act.MapFrom(src => src.Name));
 
                 });
@@ -292,16 +303,30 @@ namespace CoffeeShop_WebApi.Services.AutoMapper
             {
                 config = new MapperConfiguration(cfg =>
                 {
-                    cfg.CreateMap<Order, OrderDto>()
-                                                        .ForMember(dest => dest.Id, act => act.MapFrom(src => src.Id))
+                    cfg.CreateMap<Order, OrderDto>().ForMember(dest => dest.Id, act => act.MapFrom(src => src.Id))
                                                         .ForMember(dest => dest.Currency, act => act.MapFrom(src => src.Currency))
                                                         .ForMember(dest => dest.TotalPrices, act => act.MapFrom(src => src.TotalPrices))
+                                                        .ForMember(dest => dest.AddressId, act => act.MapFrom(src => src.AddressId))
                                                         .ForPath(dest => dest.Address.City, act => act.MapFrom(src => src.Address.City))
                                                         .ForPath(dest => dest.Address.Country, act => act.MapFrom(src => src.Address.Country))
                                                         .ForPath(dest => dest.Address.PostalCode, act => act.MapFrom(src => src.Address.PostalCode))
-                                                        .ForPath(dest => dest.Products, act => act.MapFrom(src => src.Products))
-                                                        ;
-
+                                                        .ForPath(dest => dest.Products, act => act.MapFrom(src => src.Products));
+                    cfg.CreateMap<Product, ProductDto>().ForMember(dest => dest.Sku, act => act.MapFrom(src => src.Sku))
+                                                        .ForPath(dest => dest.Category.Id, act => act.MapFrom(src => src.IdCategory))
+                                                        .ForPath(dest => dest.Promotion.Id, act => act.MapFrom(src => src.IdPromotie))
+                                                        .ForPath(dest => dest.Id, act => act.MapFrom(src => src.Id))
+                                                        .ForMember(dest => dest.Name, act => act.MapFrom(src => src.Name))
+                                                        .ForMember(dest => dest.Price, act => act.MapFrom(src => src.Price))
+                                                        .ForMember(dest => dest.Currency, act => act.MapFrom(src => src.Currency))
+                                                        .ForMember(dest => dest.Quantity, act => act.MapFrom(src => src.Quantity))
+                                                        .ForMember(dest => dest.Description, act => act.MapFrom(src => src.Description))
+                                                        .ForMember(dest => dest.IsStock, act => act.MapFrom(src => src.IsStock))
+                                                        .ForPath(dest => dest.Category.Id, act => act.MapFrom(src => src.Category.Id))
+                                                        .ForPath(dest => dest.Category.Name, act => act.MapFrom(src => src.Category.Name))
+                                                        .ForPath(dest => dest.Promotion.Id, act => act.MapFrom(src => src.Promotion.Id))
+                                                        .ForPath(dest => dest.Promotion.PricePromotion, act => act.MapFrom(src => src.Promotion.PricePromotion))
+                                                        .ForPath(dest => dest.Promotion.StartDate, act => act.MapFrom(src => src.Promotion.StartDate))
+                                                        .ForPath(dest => dest.Promotion.EndDate, act => act.MapFrom(src => src.Promotion.EndDate));
 
                 });
                 return new Mapper(config);
@@ -312,6 +337,7 @@ namespace CoffeeShop_WebApi.Services.AutoMapper
                 return null;
             }
         }
+
         public static Mapper MapperBetweenOrderDtoAndOrder()
         {
             MapperConfiguration config;
@@ -322,15 +348,33 @@ namespace CoffeeShop_WebApi.Services.AutoMapper
                     cfg.CreateMap<OrderDto, Order>()
                                                         .ForMember(dest => dest.Id, act => act.MapFrom(src => src.Id))
                                                         .ForMember(dest => dest.Currency, act => act.MapFrom(src => src.Currency))
+                                                        .ForMember(dest => dest.AddressId, act => act.MapFrom(src => src.AddressId))
                                                         .ForMember(dest => dest.TotalPrices, act => act.MapFrom(src => src.TotalPrices))
+                                                        .ForPath(dest => dest.Address.Id, act => act.MapFrom(src => src.AddressId))
                                                         .ForPath(dest => dest.Address.City, act => act.MapFrom(src => src.Address.City))
                                                         .ForPath(dest => dest.Address.Country, act => act.MapFrom(src => src.Address.Country))
+                                                        .ForPath(dest => dest.Address.Street, act => act.MapFrom(src => src.Address.Street))
+                                                        .ForPath(dest => dest.Address.Region, act => act.MapFrom(src => src.Address.Region))
                                                         .ForPath(dest => dest.Address.PostalCode, act => act.MapFrom(src => src.Address.PostalCode))
-                                                        .ForPath(dest => dest.Products, act => act.MapFrom(src => src.Products))
-                                                        ;
-                    MapperBetweenProductDtoAndProduct()
+                                                        .ForPath(dest => dest.Products, act => act.MapFrom(src => src.Products));
 
-                    ;
+                    cfg.CreateMap<ProductDto, Product>()
+                                                        .ForMember(dest => dest.Sku, act => act.MapFrom(src => src.Sku))
+                                                        .ForMember(dest => dest.IdCategory, act => act.MapFrom(src => src.Category.Id))
+                                                        .ForMember(dest => dest.IdPromotie, act => act.MapFrom(src => src.Promotion.Id))
+                                                        .ForMember(dest => dest.Id, act => act.MapFrom(src => src.Id))
+                                                        .ForMember(dest => dest.Name, act => act.MapFrom(src => src.Name))
+                                                        .ForMember(dest => dest.Price, act => act.MapFrom(src => src.Price))
+                                                        .ForMember(dest => dest.Currency, act => act.MapFrom(src => src.Currency))
+                                                        .ForMember(dest => dest.Quantity, act => act.MapFrom(src => src.Quantity))
+                                                        .ForMember(dest => dest.Description, act => act.MapFrom(src => src.Description))
+                                                        .ForMember(dest => dest.IsStock, act => act.MapFrom(src => src.IsStock))
+                                                        .ForPath(dest => dest.Category.Id, act => act.MapFrom(src => src.Category.Id))
+                                                        .ForPath(dest => dest.Category.Name, act => act.MapFrom(src => src.Category.Name))
+                                                        .ForPath(dest => dest.Promotion.Id, act => act.MapFrom(src => src.Promotion.Id))
+                                                        .ForPath(dest => dest.Promotion.PricePromotion, act => act.MapFrom(src => src.Promotion.PricePromotion))
+                                                        .ForPath(dest => dest.Promotion.StartDate, act => act.MapFrom(src => src.Promotion.StartDate))
+                                                        .ForPath(dest => dest.Promotion.EndDate, act => act.MapFrom(src => src.Promotion.EndDate));
 
                 });
                 return new Mapper(config);

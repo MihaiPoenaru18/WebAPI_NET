@@ -22,7 +22,7 @@ namespace CoffeeShop_WebApi.Controllers.Product
         {
             try
             {
-                var categories = _services.GetAllCategories().Result.OrderBy(c=>c.Name).ToList();
+                var categories = _services.GetAllCategories().Result.OrderBy(c => c.Name).ToList();
                 if (categories == null)
                 {
                     return BadRequest("Not category in database");
@@ -35,7 +35,7 @@ namespace CoffeeShop_WebApi.Controllers.Product
                 return BadRequest("Error");
             }
         }
-        
+
         [HttpGet("GetProducts")]
         public ActionResult<IEnumerable<ProductDto>> GetProducts([FromQuery] ProductQueryParameters parameters)
         {
@@ -46,31 +46,31 @@ namespace CoffeeShop_WebApi.Controllers.Product
                 {
                     return BadRequest("Not products in database");
                 }
-               
-                if( parameters.MaxPrice == null && parameters.MinPrice == null)
+
+                if (parameters.MaxPrice == null && parameters.MinPrice == null)
                 {
                     products = products.Skip(parameters.Size * (parameters.Page - 1)).Take(parameters.Size);
                 }
 
-                if(parameters.MinPrice != null)
+                if (parameters.MinPrice != null)
                 {
-                    products = products.Where(p=>p.Price > parameters.MinPrice).ToList();
+                    products = products.Where(p => p.Price > parameters.MinPrice).ToList();
                 }
 
-                if(parameters.MaxPrice != null)
+                if (parameters.MaxPrice != null)
                 {
-                    products = products.Where(p=>p.Price < parameters.MaxPrice).ToList();
+                    products = products.Where(p => p.Price < parameters.MaxPrice).ToList();
                 }
 
                 if (!String.IsNullOrEmpty(parameters.SortBy))
                 {
-                    if(typeof(ProductDto).GetProperty(parameters.SortBy) != null)
+                    if (typeof(ProductDto).GetProperty(parameters.SortBy) != null)
                     {
                         products = products.OrderByProperty(parameters.SortBy, parameters.SortOrder);
                     }
                 }
 
-                if(!String.IsNullOrEmpty(parameters.SearchTerm)) 
+                if (!String.IsNullOrEmpty(parameters.SearchTerm))
                 {
                     products = products.SerachBy(parameters.SearchTerm);
                 }
@@ -93,7 +93,11 @@ namespace CoffeeShop_WebApi.Controllers.Product
                 {
                     return Ok("Products add in DB with success");
                 }
-                return BadRequest("Your products don't was add in db");
+                else
+                {
+                    return BadRequest("Your products already are in db");
+                }
+
             }
             catch (Exception ex)
             {
