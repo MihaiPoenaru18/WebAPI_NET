@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CoffeeShop.DataAccess.DataAccess.ModelDB.Order;
+using CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel;
 using CoffeeShop.DataAccess.DataAccess.Repository.Interfaces;
 using CoffeeShop.ServicesLogic.EntiteModels;
 using CoffeeShop.ServicesLogic.Services.InterfacesServices;
@@ -11,12 +12,14 @@ namespace CoffeeShop.ServicesLogic.Services
     public class ServicesOrder : IServicesOrder<OrderDto>
     {
 
-        private ICoffeeShopRepository<Order> _repository;
+        private ICoffeeShopRepository<Order> _repositoryOrder;
+        private ICoffeeShopProductsRepository<Product> _repositoryProduct;
         private readonly IMapper _mapper;
-        public ServicesOrder(ICoffeeShopRepository<Order> repository, IMapper mapper)
+        public ServicesOrder(ICoffeeShopRepository<Order> repository, IMapper mapper, ICoffeeShopProductsRepository<Product> repositoryProduct)
         {
-            _repository = repository;
+            _repositoryOrder = repository;
             _mapper = mapper;
+            _repositoryProduct = repositoryProduct;
         }
 
         public bool DeleteOrder(OrderDto order)
@@ -29,7 +32,7 @@ namespace CoffeeShop.ServicesLogic.Services
                 {
                         if (IsOrderExistInDb(order.Id))
                         {
-                            _repository.DeleteById(mappeOrder.Map<OrderDto, Order>(order).Id);
+                            _repositoryOrder.DeleteById(mappeOrder.Map<OrderDto, Order>(order).OrderId);
                             isFinishProcess = true;
                         }
                     
@@ -50,11 +53,11 @@ namespace CoffeeShop.ServicesLogic.Services
             var ordersDto = new List<OrderDto>();
             try
             {
-                var orders = _repository.GetAll().Result;
+                var orders = _repositoryOrder.GetAll().Result;
                 if (orders != null || orders.Count() > 0)
-                {
+                {   
                     foreach (var order in orders)
-                    {
+                    {  
                         ordersDto.Add(mappeOrders.Map<Order, OrderDto>(order));
                     }
                 }
@@ -77,7 +80,7 @@ namespace CoffeeShop.ServicesLogic.Services
                     throw new ArgumentException("Product Name is null or empty", nameof(orderId));
                 }
 
-                return  mappeOrder.Map<Order, OrderDto>(_repository.GetAll().Result.FirstOrDefault(p => p.Id == orderId));
+                return  mappeOrder.Map<Order, OrderDto>(_repositoryOrder.GetAll().Result.FirstOrDefault(p => p.OrderId == orderId));
             }
             catch (Exception ex)
             {
@@ -96,7 +99,7 @@ namespace CoffeeShop.ServicesLogic.Services
                 {
                     if (!IsOrderExistInDb(order.Id))
                     {
-                       finishInsert = _repository.Insert(mappeProducts.Map<OrderDto, Order>(order)).Result;
+                       finishInsert = _repositoryOrder.Insert(mappeProducts.Map<OrderDto, Order>(order)).Result;
                     }
                     return finishInsert;
                 }
@@ -120,8 +123,8 @@ namespace CoffeeShop.ServicesLogic.Services
                 {
                     throw new ArgumentException("Product Name is null or empty", nameof(orderId));
                 }
-                var order = _repository.GetAll().Result;
-                return order != null ? order.Any(p => p.Id == orderId) : true;
+                var order = _repositoryOrder.GetAll().Result;
+                return order != null ? order.Any(p => p.OrderId == orderId) : true;
             }
             catch (Exception ex)
             {
@@ -135,7 +138,7 @@ namespace CoffeeShop.ServicesLogic.Services
             try
             {
                 var mappeOrder = MapperConfig<OrderDto, Order>.InitializeAutomapper();
-                _repository.Update(mappeOrder.Map<OrderDto, Order>(order));
+                _repositoryOrder.Update(mappeOrder.Map<OrderDto, Order>(order));
             }
             catch (Exception ex)
             {

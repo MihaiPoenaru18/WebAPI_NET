@@ -57,7 +57,7 @@ namespace CoffeeShop_WebApi.Controllers.Product
             try
             {
                 var orders = await _services.GetAllOrders();
-                return await _services.GetAllOrders() != null ? Ok(orders) : BadRequest("No orders exist in the system");
+                return  orders != null ? Ok(orders) : BadRequest("No orders exist in the system");
             }
             catch (Exception ex)
             {

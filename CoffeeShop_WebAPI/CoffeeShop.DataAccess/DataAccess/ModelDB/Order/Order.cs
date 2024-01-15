@@ -6,8 +6,10 @@ namespace CoffeeShop.DataAccess.DataAccess.ModelDB.Order
 {
     public class Order
     {
-        public Guid Id { get; set; }
-      
+        public Guid OrderId { get; set; }
+
+        public Guid ProductsId { get; set; }
+
         [ForeignKey("ProductsId")]
         public List<Product> Products { get; set; }
         public Guid AddressId { get; set; }

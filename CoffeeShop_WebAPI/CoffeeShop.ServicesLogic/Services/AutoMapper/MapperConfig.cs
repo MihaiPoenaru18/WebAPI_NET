@@ -303,7 +303,7 @@ namespace CoffeeShop_WebApi.Services.AutoMapper
             {
                 config = new MapperConfiguration(cfg =>
                 {
-                    cfg.CreateMap<Order, OrderDto>().ForMember(dest => dest.Id, act => act.MapFrom(src => src.Id))
+                    cfg.CreateMap<Order, OrderDto>().ForMember(dest => dest.Id, act => act.MapFrom(src => src.OrderId))
                                                         .ForMember(dest => dest.Currency, act => act.MapFrom(src => src.Currency))
                                                         .ForMember(dest => dest.TotalPrices, act => act.MapFrom(src => src.TotalPrices))
                                                         .ForMember(dest => dest.AddressId, act => act.MapFrom(src => src.AddressId))
@@ -346,7 +346,7 @@ namespace CoffeeShop_WebApi.Services.AutoMapper
                 config = new MapperConfiguration(cfg =>
                 {
                     cfg.CreateMap<OrderDto, Order>()
-                                                        .ForMember(dest => dest.Id, act => act.MapFrom(src => src.Id))
+                                                        .ForMember(dest => dest.OrderId, act => act.MapFrom(src => src.Id))
                                                         .ForMember(dest => dest.Currency, act => act.MapFrom(src => src.Currency))
                                                         .ForMember(dest => dest.AddressId, act => act.MapFrom(src => src.AddressId))
                                                         .ForMember(dest => dest.TotalPrices, act => act.MapFrom(src => src.TotalPrices))

@@ -40,7 +40,7 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
         {
             _context.Order.Add(new Order
             {
-                Id = Guid.NewGuid(),
+                OrderId = Guid.NewGuid(),
                 Address = new Address
                 {
                     City = item.Address.City,

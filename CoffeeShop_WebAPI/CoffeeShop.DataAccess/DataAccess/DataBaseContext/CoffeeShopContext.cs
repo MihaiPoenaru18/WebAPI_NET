@@ -16,38 +16,29 @@ namespace CoffeeShop.DataAccess.DataAccess.DataBaseContext
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            
             modelBuilder.Entity<Product>()
-           .HasOne(p => p.Category)
-           .WithMany(c => c.Products)
-           .HasForeignKey(p => p.IdCategory)
-           .OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<Order>()
-            .HasKey(o => o.Id);
+                .HasOne(p => p.Category)
+                .WithMany(c => c.Products)
+                .HasForeignKey(p => p.IdCategory)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            // Configure relationship with Product entity
-            modelBuilder.Entity<Order>()
-                .HasMany(o => o.Products)
-                .WithOne()
-                .HasForeignKey("ProductsId") // This assumes ProductsId is the foreign key in the Order entity
-                .IsRequired();
+            modelBuilder.Entity<Order>(entity =>
+            {
+                // Primary key
+                entity.Property(n => n.OrderId)
+                    .HasDefaultValueSql("NEWID()"); // Use SQL Server to generate a new Guid
+                entity.HasKey(n => n.OrderId);
 
-            // Configure relationship with Address entity
-            modelBuilder.Entity<Order>()
-                .HasOne(o => o.Address)
-                .WithMany()
-                .HasForeignKey(o => o.AddressId)
-                .IsRequired();
-
-            // Configure constraints
-            modelBuilder.Entity<Order>()
-                .Property(o => o.TotalPrices)
-                .IsRequired();
-
-            modelBuilder.Entity<Order>()
-                .Property(o => o.Currency)
-                .IsRequired()
-                .HasMaxLength(255);
-
+                // Required fields
+                entity.HasMany(u => u.Products)
+                     .WithOne()
+                     .HasForeignKey(u => u.Id);
+                entity.HasOne(u => u.Address)
+                     .WithMany()
+                     .HasForeignKey(u => u.AddressId);
+            });
+            
             modelBuilder.Entity<User>(entity =>
             {
                 // Primary key
@@ -82,8 +73,8 @@ namespace CoffeeShop.DataAccess.DataAccess.DataBaseContext
             });
         }
 
-       
 
-       
+
+
     }
 }
