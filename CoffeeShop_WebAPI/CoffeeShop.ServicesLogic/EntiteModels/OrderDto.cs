@@ -1,4 +1,5 @@
-﻿using CoffeeShop.ServicesLogic.EntiteModels.ModelsForProducts;
+﻿using CoffeeShop.DataAccess.DataAccess.ModelDB.Order;
+using CoffeeShop.ServicesLogic.EntiteModels.ModelsForProducts;
 
 namespace CoffeeShop.ServicesLogic.EntiteModels
 {
@@ -9,20 +10,7 @@ namespace CoffeeShop.ServicesLogic.EntiteModels
         public Guid AddressId { get; set; } = Guid.NewGuid();
         public AddressDto Address { get; set; }
         public int TotalPrices { get; set; }
-        //public int TotalPrices
-        //{
-        //    get 
-        //    { 
-        //        return TotalPrices;
-        //    }
-        //    set
-        //    {
-        //        var sum = 0;
-        //        foreach (var product in Products)
-        //        { sum += product.Price; }
-        //        value = sum;
-        //    }
-        //} 
         public string Currency { get; set; }
+        public OrderStatus Status { get; set; } = OrderStatus.Processing;
     }
 }

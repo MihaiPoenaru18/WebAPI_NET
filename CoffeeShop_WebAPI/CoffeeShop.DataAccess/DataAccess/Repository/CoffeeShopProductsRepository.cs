@@ -35,7 +35,10 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
 
         public async Task<IEnumerable<Product>> GetAll()
         {
-            return await _context.Products.ToListAsync();
+            return await _context.Products
+                                          .Include(p => p.Category)
+                                          .Include(p => p.Promotion)
+                                          .ToListAsync();
         }
 
         public async Task Update(Product item)
@@ -47,22 +50,51 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
             }
         }
 
-        public async Task<bool> Insert(Product item)
+        public async Task<Category> AddCategory(Category category)
         {
-            var existingCategory = _context.Categories.FirstOrDefault(c => c.Id == item.Category.Id);
+            var existingCategory = _context.Categories.FirstOrDefault(c => c.Name == category.Name);
 
-            // If the category doesn't exist, create a new one
             if (existingCategory == null)
             {
                 existingCategory = new Category
                 {
-                    Id = item.Category.Id,
-                    Name = item.Category.Name
+                    Name = category.Name
                 };
 
                 _context.Categories.Add(existingCategory);
+                await _context.SaveChangesAsync();
+                return existingCategory;
             }
+            return existingCategory;
+        }
 
+        public async Task<Promotion> AddPromotion(Promotion promotion)
+        {
+            var existingPromotion = _context.Promotion.FirstOrDefault(p =>p.PricePromotion == promotion.PricePromotion &&
+                                                                          p.StartDate == promotion.StartDate &&
+                                                                          p.EndDate == promotion.EndDate);
+            if (existingPromotion == null)
+            {
+                existingPromotion = new Promotion
+                {
+                    PricePromotion = promotion.PricePromotion,
+                    StartDate = promotion.StartDate,
+                    EndDate = promotion.EndDate
+                };
+
+                _context.Promotion.Add(existingPromotion);
+                await _context.SaveChangesAsync();
+                return existingPromotion;
+            }
+            return existingPromotion;
+        }
+
+        public async Task<bool> Insert(Product item)
+        {
+            var existingCategory = await AddCategory(item.Category);
+            var existingPromotion = await AddPromotion(item.Promotion);
+
+            // Create the new product using the attached promotion
             _context.Products.Add(new Product
             {
                 Id = Guid.NewGuid(),
@@ -71,19 +103,12 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
                 Description = item.Description,
                 IsStock = item.IsStock,
                 Currency = item.Currency,
-                Category = existingCategory,  // Use the existing or newly created category
-                IdCategory = existingCategory.Id,
-                Promotion = new Promotion
-                {
-                    Id = Guid.NewGuid(),
-                    PricePromotion = item.Promotion.PricePromotion,
-                    EndDate = item.Promotion.EndDate,
-                    StartDate = item.Promotion.StartDate,
-                },
-                IdPromotie = item.Promotion.Id,
+                CategoryId = existingCategory.Id,  // Assuming you have set CategoryId correctly in the Category object
+                PromotionId = existingPromotion.Id,
                 Price = item.Price,
                 Quantity = item.Quantity,
             });
+
             await _context.SaveChangesAsync();
             return true;
         }

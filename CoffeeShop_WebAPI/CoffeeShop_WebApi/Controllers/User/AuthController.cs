@@ -36,7 +36,7 @@ namespace CoffeeShop_WebApi.Controllers.User
             catch (Exception ex)
             {
                 Log.Error("AutoController -> Register -> Exception => {@ex.Message}", ex.Message);
-                return BadRequest("Error");
+                return BadRequest("An error occurred while processing the request.");
             }
         }
 
@@ -57,7 +57,7 @@ namespace CoffeeShop_WebApi.Controllers.User
             {
 
                 Log.Error("AutoController -> Login() -> Exception => {@ex.Message}", ex.Message);
-                return BadRequest("Error");
+                return BadRequest("An error occurred while processing the request.");
             }
 
         }
@@ -81,7 +81,7 @@ namespace CoffeeShop_WebApi.Controllers.User
             catch (Exception ex)
             {
                 Log.Error("AutoController -> GetUserInfo() -> Exception => {@ex.Message}", ex.Message);
-                return BadRequest("Error");
+                return BadRequest("An error occurred while processing the request.");
             }
         }
 
@@ -105,7 +105,7 @@ namespace CoffeeShop_WebApi.Controllers.User
             catch (Exception ex)
             {
                 Log.Error("AutoController -> GetAllUsersInfo() -> Exception => {@ex.Message}", ex.Message);
-                return BadRequest("Error");
+                return BadRequest("An error occurred while processing the request.");
             }
         }
     }

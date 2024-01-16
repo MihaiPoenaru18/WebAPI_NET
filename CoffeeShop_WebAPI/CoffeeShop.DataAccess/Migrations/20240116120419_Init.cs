@@ -59,8 +59,8 @@ namespace CoffeeShop.DataAccess.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PricePromotion = table.Column<int>(type: "int", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    StartDate = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EndDate = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -71,14 +71,14 @@ namespace CoffeeShop.DataAccess.Migrations
                 name: "Order",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                     AddressId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TotalPrices = table.Column<int>(type: "int", nullable: false),
                     Currency = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Order", x => x.Id);
+                    table.PrimaryKey("PK_Order", x => x.OrderId);
                     table.ForeignKey(
                         name: "FK_Order_Address_AddressId",
                         column: x => x.AddressId,
@@ -122,27 +122,27 @@ namespace CoffeeShop.DataAccess.Migrations
                     Price = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     IsStock = table.Column<bool>(type: "bit", nullable: false),
-                    IdPromotie = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IdCategory = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProductsId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    PromotionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Products_Categories_IdCategory",
-                        column: x => x.IdCategory,
+                        name: "FK_Products_Categories_CategoryId",
+                        column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Products_Order_ProductsId",
-                        column: x => x.ProductsId,
+                        name: "FK_Products_Order_OrderId",
+                        column: x => x.OrderId,
                         principalTable: "Order",
-                        principalColumn: "Id");
+                        principalColumn: "OrderId");
                     table.ForeignKey(
-                        name: "FK_Products_Promotion_IdPromotie",
-                        column: x => x.IdPromotie,
+                        name: "FK_Products_Promotion_PromotionId",
+                        column: x => x.PromotionId,
                         principalTable: "Promotion",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -154,19 +154,19 @@ namespace CoffeeShop.DataAccess.Migrations
                 column: "AddressId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_IdCategory",
+                name: "IX_Products_CategoryId",
                 table: "Products",
-                column: "IdCategory");
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_IdPromotie",
+                name: "IX_Products_OrderId",
                 table: "Products",
-                column: "IdPromotie");
+                column: "OrderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_ProductsId",
+                name: "IX_Products_PromotionId",
                 table: "Products",
-                column: "ProductsId");
+                column: "PromotionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_IdUserNewsLetter",

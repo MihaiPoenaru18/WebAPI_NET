@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoffeeShop.DataAccess.DataAccess.Repository
 {
-    public class CoffeeShopOrderRepository : ICoffeeShopRepository<Order>
+    public class CoffeeShopOrderRepository : ICoffeeShopOrderRepository<Order>
     {
         private CoffeeShopContext _context;
         
@@ -23,7 +23,13 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
 
         public async Task<IEnumerable<Order>> GetAll()
         {
-            return await _context.Order.ToListAsync();
+            return await _context.Order
+                .Include(p=>p.Products)
+                   .ThenInclude(c=>c.Category)
+                .Include(p => p.Products)
+                   .ThenInclude(p => p.Promotion)
+                .Include(a=>a.Address)
+                .ToListAsync();
         }
 
         public async Task<Order> GetById(Guid id)
@@ -38,9 +44,13 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
 
         public async Task<bool> Insert(Order item)
         {
+            
             _context.Order.Add(new Order
             {
                 OrderId = Guid.NewGuid(),
+                Currency = item.Currency,
+                TotalPrices = item.Products.Sum(x => x.Price),
+                Status = OrderStatus.Processing,
                 Address = new Address
                 {
                     City = item.Address.City,
@@ -50,10 +60,22 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
                     Id = Guid.NewGuid(),
                     Region = item.Address.Region
                 },
-                AddressId = item.Address.Id,
-                Currency = item.Currency,
-                TotalPrices = item.Products.Sum(x=>x.Price),
-                Products = item.Products,
+                Products = item.Products.Where(p => !_context.Products.Any(existingProduct =>  existingProduct.Name == p.Name))
+                                        .Select(p => new Product
+                                        {
+                                            Id = Guid.NewGuid(),
+                                            Name = p.Name,
+                                            Sku = p.Sku,
+                                            Description = p.Description,
+                                            IsStock = p.IsStock,
+                                            Currency = p.Currency,
+                                            Promotion = p.Promotion,
+                                            Category = p.Category,
+                                            Price = p.Price,
+                                            Quantity = p.Quantity,
+                                            
+                                        })
+                                        .ToList(),
             });
             await _context.SaveChangesAsync();
             return true;
@@ -65,6 +87,16 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
             {
                 _context.Order.Update(item);
                 await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task UpdateStatus(Guid id,OrderStatus status)
+        {
+            var orderToUpdate = await GetById(id);
+            if (orderToUpdate != null)
+            {
+                orderToUpdate.Status = status;
+                await Update(orderToUpdate);
             }
         }
     }

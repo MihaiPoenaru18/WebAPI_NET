@@ -29,7 +29,7 @@ namespace CoffeeShop_WebApi.Controllers.Product
             catch (Exception ex)
             {
                 Log.Error($"OrderController -> GetOrder()  -> Exception => {ex.Message}");
-                return BadRequest("Error");
+                return BadRequest("An error occurred while processing the request.");
             }
         }
 
@@ -47,7 +47,7 @@ namespace CoffeeShop_WebApi.Controllers.Product
             catch (Exception ex)
             {
                 Log.Error($"OrderController -> AddOrder()  -> Exception => {ex.Message}");
-                return BadRequest("Error");
+                return BadRequest("An error occurred while processing the request.");
             }
         }
 
@@ -62,7 +62,7 @@ namespace CoffeeShop_WebApi.Controllers.Product
             catch (Exception ex)
             {
                 Log.Error($"OrderController -> GetAllOrder()  -> Exception => {ex.Message}");
-                return BadRequest("Error");
+                return BadRequest("An error occurred while processing the request.");
             }
         }
 
@@ -82,7 +82,7 @@ namespace CoffeeShop_WebApi.Controllers.Product
             catch (Exception ex)
             {
                 Log.Error($"OrderController -> GetAllOrder()  -> Exception => {ex.Message}");
-                return BadRequest("Error");
+                return BadRequest("An error occurred while processing the request.");
             }
         }
 
@@ -102,7 +102,7 @@ namespace CoffeeShop_WebApi.Controllers.Product
             catch (Exception ex)
             {
                 Log.Error($"OrderController -> GetAllOrder()  -> Exception => {ex.Message}");
-                return BadRequest("Error");
+                return BadRequest("An error occurred while processing the request.");
             }
         }
     }

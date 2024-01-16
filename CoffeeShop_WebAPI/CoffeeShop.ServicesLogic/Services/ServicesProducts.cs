@@ -69,7 +69,7 @@ namespace CoffeeShop.ServicesLogic.Services
             }
             catch (Exception ex)
             {
-                Log.Error($"ServicesProducts -> IsProductExistingInDbAsync() -> Exception => {ex.Message}");
+                Log.Error($"ServicesProducts -> IsProductExistingInDb() -> Exception => {ex.Message}");
                 return false;
             }
         }
@@ -98,7 +98,7 @@ namespace CoffeeShop.ServicesLogic.Services
             }
             catch (Exception ex)
             {
-                Log.Error($"ServicesProducts  -> GetAllUsers() -> Exception => {ex.Message}");
+                Log.Error($"ServicesProducts  -> AddNewProducts() -> Exception => {ex.Message}");
                 return false;
             }
         }
@@ -121,7 +121,7 @@ namespace CoffeeShop.ServicesLogic.Services
             }
             catch(Exception ex)
             {
-                Log.Error($"ServicesProducts  -> GetAllUsers() -> Exception => {ex.Message}");
+                Log.Error($"ServicesProducts  -> GetAllCategories() -> Exception => {ex.Message}");
             }
             return null;
         }
@@ -149,7 +149,7 @@ namespace CoffeeShop.ServicesLogic.Services
             }
             catch (Exception ex)
             {
-                Log.Error($"ServicesProducts  -> GetAllUsers() -> Exception => {ex.Message}");
+                Log.Error($"ServicesProducts  -> DeleteProduct() -> Exception => {ex.Message}");
                 return isFinishProcess;
             }
         }

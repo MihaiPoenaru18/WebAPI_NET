@@ -38,7 +38,7 @@ namespace CoffeeShop_WebApi.Controllers.User
             catch (Exception ex)
             {
                 Log.Error("NewsLetterController -> AddUserToNewsLette() -> Exception => {@ex.Message}", ex.Message);
-                return BadRequest("Error");
+                return BadRequest("An error occurred while processing the request.");
             }
 
         }

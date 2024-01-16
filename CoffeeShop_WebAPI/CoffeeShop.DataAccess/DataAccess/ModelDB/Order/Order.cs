@@ -1,5 +1,5 @@
 ﻿using CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 
 namespace CoffeeShop.DataAccess.DataAccess.ModelDB.Order
@@ -8,16 +8,13 @@ namespace CoffeeShop.DataAccess.DataAccess.ModelDB.Order
     {
         public Guid OrderId { get; set; }
 
-        public Guid ProductsId { get; set; }
-
-        [ForeignKey("ProductsId")]
+        [JsonIgnore]
         public List<Product> Products { get; set; }
-        public Guid AddressId { get; set; }
 
-        [ForeignKey("AddressId ")]
+        [JsonIgnore]
         public Address Address { get; set; }
         public int TotalPrices { get; set; }
         public string Currency { get; set; }
-
+        public OrderStatus Status { get; set; }
     }
 }

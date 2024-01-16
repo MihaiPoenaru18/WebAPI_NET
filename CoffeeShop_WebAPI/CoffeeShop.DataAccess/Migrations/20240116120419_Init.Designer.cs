@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoffeeShop.DataAccess.Migrations
 {
     [DbContext(typeof(CoffeeShopContext))]
-    [Migration("20240106220620_UpdateContext")]
-    partial class UpdateContext
+    [Migration("20240116120419_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,6 +61,7 @@ namespace CoffeeShop.DataAccess.Migrations
                     b.Property<Guid>("OrderId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
+                        .HasColumnName("OrderId")
                         .HasDefaultValueSql("NEWID()");
 
                     b.Property<Guid>("AddressId")
@@ -69,9 +70,6 @@ namespace CoffeeShop.DataAccess.Migrations
                     b.Property<string>("Currency")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("ProductsId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("TotalPrices")
                         .HasColumnType("int");
@@ -101,6 +99,10 @@ namespace CoffeeShop.DataAccess.Migrations
             modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel.Product", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Currency")
@@ -111,12 +113,6 @@ namespace CoffeeShop.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("IdCategory")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("IdPromotie")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<bool>("IsStock")
                         .HasColumnType("bit");
 
@@ -124,10 +120,13 @@ namespace CoffeeShop.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("ProductsId")
+                    b.Property<Guid>("PromotionId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Quantity")
@@ -139,9 +138,11 @@ namespace CoffeeShop.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdCategory");
+                    b.HasIndex("CategoryId");
 
-                    b.HasIndex("IdPromotie");
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("PromotionId");
 
                     b.ToTable("Products");
                 });
@@ -152,14 +153,16 @@ namespace CoffeeShop.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("EndDate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PricePromotion")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("StartDate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -240,21 +243,19 @@ namespace CoffeeShop.DataAccess.Migrations
 
             modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel.Product", b =>
                 {
-                    b.HasOne("CoffeeShop.DataAccess.DataAccess.ModelDB.Order.Order", null)
-                        .WithMany("Products")
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel.Category", "Category")
                         .WithMany("Products")
-                        .HasForeignKey("IdCategory")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("CoffeeShop.DataAccess.DataAccess.ModelDB.Order.Order", null)
+                        .WithMany("Products")
+                        .HasForeignKey("OrderId");
+
                     b.HasOne("CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel.Promotion", "Promotion")
                         .WithMany()
-                        .HasForeignKey("IdPromotie")
+                        .HasForeignKey("PromotionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

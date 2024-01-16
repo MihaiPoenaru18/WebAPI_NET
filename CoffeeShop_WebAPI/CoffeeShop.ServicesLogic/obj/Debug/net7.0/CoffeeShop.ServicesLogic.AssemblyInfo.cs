@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CoffeeShop.ServicesLogic")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2d5b45e592e13d3a31d4d6608b2f27e92b115a2b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+24f2ed70e68e57c405618a6402c656e32ee33244")]
 [assembly: System.Reflection.AssemblyProductAttribute("CoffeeShop.ServicesLogic")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CoffeeShop.ServicesLogic")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

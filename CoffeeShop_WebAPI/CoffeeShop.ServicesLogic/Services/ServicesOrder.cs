@@ -42,7 +42,7 @@ namespace CoffeeShop.ServicesLogic.Services
             }
             catch (Exception ex)
             {
-                Log.Error($"ServicesProducts  -> GetAllUsers() -> Exception => {ex.Message}");
+                Log.Error($"ServicesProducts  -> DeleteOrder() -> Exception => {ex.Message}");
                 return isFinishProcess;
             }
         }
@@ -65,7 +65,7 @@ namespace CoffeeShop.ServicesLogic.Services
             }
             catch (Exception ex)
             {
-                Log.Error("ServicesProducts  -> GetAllProducts() -> Exception => {@ex.Message}", ex.Message);
+                Log.Error("ServicesProducts  -> GetAllOrders() -> Exception => {@ex.Message}", ex.Message);
             }
             return null;
         }
@@ -84,7 +84,7 @@ namespace CoffeeShop.ServicesLogic.Services
             }
             catch (Exception ex)
             {
-                Log.Error($"ServicesOrder-> IsOrderExistInDb() -> Exception => {ex.Message}");
+                Log.Error($"ServicesOrder-> GetOrder() -> Exception => {ex.Message}");
                 return null;
             }
         }
@@ -110,7 +110,7 @@ namespace CoffeeShop.ServicesLogic.Services
             }
             catch (Exception ex)
             {
-                Log.Error($"ServicesProducts  -> GetAllUsers() -> Exception => {ex.Message}");
+                Log.Error($"ServicesProducts  -> (OrderDto order)() -> Exception => {ex.Message}");
                 return false;
             }
         }

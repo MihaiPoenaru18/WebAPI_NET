@@ -1,3 +1,7 @@
+//services
+import { NewsletterService } from './services/Newsletter/newsletter.service';
+import { AuthenticatorService } from './services/Auth/authenticator.service';
+
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
@@ -16,18 +20,19 @@ import { HomeComponent } from './componets/home/home.component';
 import { SignInComponent } from './componets/sign-in/sign-in.component';
 import { SvgSignUpComponent } from './componets/svg-sign-up/svg-sign-up.component';
 import { SvgFooterComponent } from './componets/footer/svg-footer/svg-footer.component';
-//services
-import { NewsletterService } from './services/Newsletter/newsletter.service';
-import { AuthenticatorService } from './services/Auth/authenticator.service';
 import { UserinfoComponent } from './componets/userinfo/userinfo.component';
+import { ProductsListComponent } from './componets/Product-Page/products-list/products-list.component';
+import { ProductDetailsComponent } from './componets/Product-Page/product-details/product-details.component';
+import { ProductsService } from './services/Product/products.service';
 
 const appRoutes: Routes = [
   { path: 'sign-up', component: SignUpComponent },
   { path: 'sign-in', component: SignInComponent },
   { path: 'userInfo', component: UserinfoComponent },
-  { path: '', component: HomeComponent },
-  { path: '', redirectTo: 'Home', pathMatch: 'full' },
-  { path: '**', component: HomeComponent },
+  { path: 'products-list', component: ProductsListComponent },
+  { path: 'Home', component: HomeComponent },
+  { path: '**', component: HomeComponent }
+ 
 ];
 
 @NgModule({
@@ -44,6 +49,8 @@ const appRoutes: Routes = [
     SvgSignUpComponent,
     SvgFooterComponent,
     UserinfoComponent,
+    ProductsListComponent,
+    ProductDetailsComponent,
    
   ],
   imports: [
@@ -55,7 +62,7 @@ const appRoutes: Routes = [
     HttpClientModule,
     RouterModule.forRoot(appRoutes, { enableTracing: true }),
   ],
-  providers: [NewsletterService,AuthenticatorService ],
+  providers: [NewsletterService,AuthenticatorService,ProductsService ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

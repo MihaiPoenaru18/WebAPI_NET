@@ -7,74 +7,74 @@ namespace CoffeeShop.DataAccess.DataAccess.DataBaseContext
 {
     public class CoffeeShopContext : DbContext
     {
-        public CoffeeShopContext(DbContextOptions<CoffeeShopContext> options) : base(options) { }
+        public CoffeeShopContext(DbContextOptions<CoffeeShopContext> options) : base(options) 
+        {
+            this.ChangeTracker.LazyLoadingEnabled = true;
+        }
         public DbSet<User> Users { get; set; }
         public DbSet<UserWithNewsLetter> Newsletters { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Promotion> Promotion { get; set; }
         public DbSet<Order> Order { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            
-            modelBuilder.Entity<Product>()
-                .HasOne(p => p.Category)
-                .WithMany(c => c.Products)
-                .HasForeignKey(p => p.IdCategory)
-                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Product>(entity =>
+            {
+                entity.HasKey(p => p.Id);
+
+                entity.HasOne(p => p.Category)
+                      .WithMany(c => c.Products)
+                      .OnDelete(DeleteBehavior.Restrict);
+            });
 
             modelBuilder.Entity<Order>(entity =>
             {
-                // Primary key
-                entity.Property(n => n.OrderId)
-                    .HasDefaultValueSql("NEWID()"); // Use SQL Server to generate a new Guid
-                entity.HasKey(n => n.OrderId);
+                entity.Property(o => o.OrderId)
+                      .HasColumnName("OrderId")
+                      .HasDefaultValueSql("NEWID()");
 
-                // Required fields
-                entity.HasMany(u => u.Products)
-                     .WithOne()
-                     .HasForeignKey(u => u.Id);
-                entity.HasOne(u => u.Address)
-                     .WithMany()
-                     .HasForeignKey(u => u.AddressId);
+                entity.HasKey(o => o.OrderId);
+
+                entity.HasMany(o => o.Products)
+                      .WithOne();
+                      //.HasForeignKey(p => p.OrderId);
+
+                entity.HasOne(o => o.Address)
+                      .WithMany();
             });
-            
+
             modelBuilder.Entity<User>(entity =>
             {
-                // Primary key
-                entity.Property(n => n.Id)
-                    .HasDefaultValueSql("NEWID()"); // Use SQL Server to generate a new Guid
-                entity.HasKey(n => n.Id);
+                entity.Property(u => u.Id)
+                      .HasDefaultValueSql("NEWID()");
 
-                // Required fields
+                entity.HasKey(u => u.Id);
+
                 entity.Property(u => u.Email).IsRequired();
                 entity.Property(u => u.FirstName).IsRequired();
                 entity.Property(u => u.LastName).IsRequired();
                 entity.Property(u => u.Role).IsRequired();
                 entity.Property(u => u.Password).IsRequired();
 
-                // Relationship with UserWithNewsLetter
                 entity.HasOne(u => u.UserWithNewsLetter)
-                    .WithOne(n => n.User)
-                    .HasForeignKey<User>(u => u.IdUserNewsLetter);
+                      .WithOne(n => n.User)
+                      .HasForeignKey<User>(u => u.IdUserNewsLetter);
             });
 
             modelBuilder.Entity<UserWithNewsLetter>(entity =>
             {
-                // Primary key with automatic Guid generation
                 entity.Property(n => n.Id)
-                    .HasDefaultValueSql("NEWID()"); // Use SQL Server to generate a new Guid
+                      .HasDefaultValueSql("NEWID()");
+
                 entity.HasKey(n => n.Id);
 
-                // Additional configuration for UserWithNewsLetter entity
                 entity.Property(n => n.Name).IsRequired();
                 entity.Property(n => n.Email).IsRequired();
                 entity.Property(n => n.IsNewsLetterActive).IsRequired();
             });
         }
-
-
-
-
     }
 }

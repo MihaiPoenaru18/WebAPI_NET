@@ -32,7 +32,7 @@ namespace CoffeeShop_WebApi.Controllers.Product
             catch (Exception ex)
             {
                 Log.Error("ProductController -> GetCategories() -> Exception => {@ex.Message}", ex.Message);
-                return BadRequest("Error");
+                return BadRequest("An error occurred while processing the request.");
             }
         }
 
@@ -80,7 +80,7 @@ namespace CoffeeShop_WebApi.Controllers.Product
             catch (Exception ex)
             {
                 Log.Error("ProductController -> GetProducts() -> Exception => {@ex.Message}", ex.Message);
-                return BadRequest("Error");
+                return BadRequest("An error occurred while processing the request.");
             }
         }
 
@@ -89,20 +89,19 @@ namespace CoffeeShop_WebApi.Controllers.Product
         {
             try
             {
-                if (_services.AddNewProducts(products))
+                bool productsAdded = _services.AddNewProducts(products);
+
+                if (!productsAdded)
                 {
-                    return Ok("Products add in DB with success");
-                }
-                else
-                {
-                    return BadRequest("Your products already are in db");
+                    return BadRequest("Some or all of the products already exist in the database.");
                 }
 
+                return Ok("Products added to the database successfully.");
             }
             catch (Exception ex)
             {
-                Log.Error($"ProductController -> GetProducts() -> Exception => {ex.Message}");
-                return BadRequest("Error");
+                Log.Error($"ProductController -> AddProducts() -> Exception: {ex.Message}");
+                return BadRequest("An error occurred while processing the request.");
             }
         }
 
@@ -120,7 +119,7 @@ namespace CoffeeShop_WebApi.Controllers.Product
             catch (Exception ex)
             {
                 Log.Error($"ProductController -> DeleteProducts() -> Exception => {ex.Message}");
-                return BadRequest("Error");
+                return BadRequest("An error occurred while processing the request.");
             }
         }
 
@@ -135,7 +134,7 @@ namespace CoffeeShop_WebApi.Controllers.Product
             catch (Exception ex)
             {
                 Log.Error("ProductController -> GetProducts() -> Exception => {@ex.Message}", ex.Message);
-                return BadRequest("Error");
+                return BadRequest("An error occurred while processing the request.");
             }
         }
     }
