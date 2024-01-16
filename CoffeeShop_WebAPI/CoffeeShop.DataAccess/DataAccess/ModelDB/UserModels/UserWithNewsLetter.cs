@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace CoffeeShop.DataAccess.DataAccess.ModelDB.User
+namespace CoffeeShop.DataAccess.DataAccess.ModelDB.UserModels
 {
     public class UserWithNewsLetter
     {

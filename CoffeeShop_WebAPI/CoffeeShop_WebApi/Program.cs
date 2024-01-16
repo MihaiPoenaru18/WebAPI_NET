@@ -11,11 +11,10 @@ using CoffeeShop.DataAccess.DataAccess.Repository.Interfaces;
 using CoffeeShop.ServicesLogic.Services.Interfaces;
 using Serilog;
 using CoffeeShop.ServicesLogic.EntiteModels.ModelsForProducts;
-
-using CoffeeShop.DataAccess.DataAccess.ModelDB.User;
+using CoffeeShop.DataAccess.DataAccess.ModelDB.UserModels;
 using CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel;
 using CoffeeShop.ServicesLogic.Services.InterfacesServices;
-using CoffeeShop.DataAccess.DataAccess.ModelDB.Order;
+using CoffeeShop.DataAccess.DataAccess.ModelDB.OrderModels;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,7 +36,7 @@ Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(builder.Configurat
 builder.Services.AddScoped<ICoffeeShopProductsRepository<Product>, CoffeeShopProductsRepository>();
 builder.Services.AddScoped<ICoffeeShopUserRepository<User>, CoffeeShopUserRepository>();
 builder.Services.AddScoped<ICoffeeShopUserRepository<UserWithNewsLetter>, NewsLetterRepository>();
-builder.Services.AddScoped<ICoffeeShopRepository<Order>,CoffeeShopOrderRepository>();
+builder.Services.AddScoped<ICoffeeShopOrderRepository<Order>,CoffeeShopOrderRepository>();
 #endregion
 
 #region Services

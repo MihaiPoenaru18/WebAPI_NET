@@ -1,4 +1,4 @@
-﻿using CoffeeShop.DataAccess.DataAccess.ModelDB.Order;
+﻿using CoffeeShop.DataAccess.DataAccess.ModelDB.OrderModels;
 using CoffeeShop.ServicesLogic.EntiteModels.ModelsForProducts;
 
 namespace CoffeeShop.ServicesLogic.EntiteModels

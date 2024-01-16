@@ -1,4 +1,4 @@
-﻿namespace CoffeeShop.DataAccess.DataAccess.ModelDB.Order
+﻿namespace CoffeeShop.DataAccess.DataAccess.ModelDB.OrderModels
 {
     public class Address
     {

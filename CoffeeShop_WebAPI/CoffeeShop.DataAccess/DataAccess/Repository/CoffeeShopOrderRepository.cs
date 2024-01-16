@@ -1,5 +1,5 @@
 ﻿using CoffeeShop.DataAccess.DataAccess.DataBaseContext;
-using CoffeeShop.DataAccess.DataAccess.ModelDB.Order;
+using CoffeeShop.DataAccess.DataAccess.ModelDB.OrderModels;
 using CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel;
 using CoffeeShop.DataAccess.DataAccess.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -24,12 +24,12 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
         public async Task<IEnumerable<Order>> GetAll()
         {
             return await _context.Order
-                .Include(p=>p.Products)
-                   .ThenInclude(c=>c.Category)
-                .Include(p => p.Products)
-                   .ThenInclude(p => p.Promotion)
-                .Include(a=>a.Address)
-                .ToListAsync();
+                                 .Include(p=>p.Products)
+                                    .ThenInclude(c=>c.Category)
+                                 .Include(p => p.Products)
+                                    .ThenInclude(p => p.Promotion)
+                                 .Include(a=>a.Address)
+                                 .ToListAsync();
         }
 
         public async Task<Order> GetById(Guid id)
@@ -44,7 +44,6 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
 
         public async Task<bool> Insert(Order item)
         {
-            
             _context.Order.Add(new Order
             {
                 OrderId = Guid.NewGuid(),
@@ -87,16 +86,6 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
             {
                 _context.Order.Update(item);
                 await _context.SaveChangesAsync();
-            }
-        }
-
-        public async Task UpdateStatus(Guid id,OrderStatus status)
-        {
-            var orderToUpdate = await GetById(id);
-            if (orderToUpdate != null)
-            {
-                orderToUpdate.Status = status;
-                await Update(orderToUpdate);
             }
         }
     }

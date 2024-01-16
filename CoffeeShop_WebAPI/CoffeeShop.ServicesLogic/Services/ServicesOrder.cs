@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CoffeeShop.DataAccess.DataAccess.ModelDB.Order;
+using CoffeeShop.DataAccess.DataAccess.ModelDB.OrderModels;
 using CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel;
 using CoffeeShop.DataAccess.DataAccess.Repository.Interfaces;
 using CoffeeShop.ServicesLogic.EntiteModels;
@@ -12,10 +12,10 @@ namespace CoffeeShop.ServicesLogic.Services
     public class ServicesOrder : IServicesOrder<OrderDto>
     {
 
-        private ICoffeeShopRepository<Order> _repositoryOrder;
+        private ICoffeeShopOrderRepository<Order> _repositoryOrder;
         private ICoffeeShopProductsRepository<Product> _repositoryProduct;
         private readonly IMapper _mapper;
-        public ServicesOrder(ICoffeeShopRepository<Order> repository, IMapper mapper, ICoffeeShopProductsRepository<Product> repositoryProduct)
+        public ServicesOrder(ICoffeeShopOrderRepository<Order> repository, IMapper mapper, ICoffeeShopProductsRepository<Product> repositoryProduct)
         {
             _repositoryOrder = repository;
             _mapper = mapper;

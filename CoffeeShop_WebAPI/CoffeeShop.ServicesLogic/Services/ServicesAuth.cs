@@ -6,7 +6,7 @@ using CoffeeShop_WebApi.Services.AutoMapper;
 using CoffeeShop.DataAccess.DataAccess.Repository.Interfaces;
 using CoffeeShop.ServicesLogic.Services.Interfaces;
 using Serilog;
-using CoffeeShop.DataAccess.DataAccess.ModelDB.User;
+using CoffeeShop.DataAccess.DataAccess.ModelDB.UserModels;
 
 namespace CoffeeShop.ServicesLogic.Services
 {

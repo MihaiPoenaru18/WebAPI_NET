@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoffeeShop.DataAccess.Migrations
 {
     [DbContext(typeof(CoffeeShopContext))]
-    [Migration("20240116120419_Init")]
+    [Migration("20240116175740_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -25,7 +25,7 @@ namespace CoffeeShop.DataAccess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.Order.Address", b =>
+            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.OrderModels.Address", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -56,7 +56,7 @@ namespace CoffeeShop.DataAccess.Migrations
                     b.ToTable("Address");
                 });
 
-            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.Order.Order", b =>
+            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.OrderModels.Order", b =>
                 {
                     b.Property<Guid>("OrderId")
                         .ValueGeneratedOnAdd()
@@ -71,12 +71,20 @@ namespace CoffeeShop.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.Property<int>("TotalPrices")
                         .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("OrderId");
 
                     b.HasIndex("AddressId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Order");
                 });
@@ -169,9 +177,9 @@ namespace CoffeeShop.DataAccess.Migrations
                     b.ToTable("Promotion");
                 });
 
-            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.User.User", b =>
+            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.UserModels.User", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("UserId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("NEWID()");
@@ -199,7 +207,7 @@ namespace CoffeeShop.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("UserId");
 
                     b.HasIndex("IdUserNewsLetter")
                         .IsUnique();
@@ -207,7 +215,7 @@ namespace CoffeeShop.DataAccess.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.User.UserWithNewsLetter", b =>
+            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.UserModels.UserWithNewsLetter", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -230,15 +238,23 @@ namespace CoffeeShop.DataAccess.Migrations
                     b.ToTable("Newsletters");
                 });
 
-            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.Order.Order", b =>
+            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.OrderModels.Order", b =>
                 {
-                    b.HasOne("CoffeeShop.DataAccess.DataAccess.ModelDB.Order.Address", "Address")
+                    b.HasOne("CoffeeShop.DataAccess.DataAccess.ModelDB.OrderModels.Address", "Address")
                         .WithMany()
                         .HasForeignKey("AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("CoffeeShop.DataAccess.DataAccess.ModelDB.UserModels.User", "User")
+                        .WithMany("Orders")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Address");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel.Product", b =>
@@ -249,7 +265,7 @@ namespace CoffeeShop.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("CoffeeShop.DataAccess.DataAccess.ModelDB.Order.Order", null)
+                    b.HasOne("CoffeeShop.DataAccess.DataAccess.ModelDB.OrderModels.Order", null)
                         .WithMany("Products")
                         .HasForeignKey("OrderId");
 
@@ -264,18 +280,18 @@ namespace CoffeeShop.DataAccess.Migrations
                     b.Navigation("Promotion");
                 });
 
-            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.User.User", b =>
+            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.UserModels.User", b =>
                 {
-                    b.HasOne("CoffeeShop.DataAccess.DataAccess.ModelDB.User.UserWithNewsLetter", "UserWithNewsLetter")
+                    b.HasOne("CoffeeShop.DataAccess.DataAccess.ModelDB.UserModels.UserWithNewsLetter", "UserWithNewsLetter")
                         .WithOne("User")
-                        .HasForeignKey("CoffeeShop.DataAccess.DataAccess.ModelDB.User.User", "IdUserNewsLetter")
+                        .HasForeignKey("CoffeeShop.DataAccess.DataAccess.ModelDB.UserModels.User", "IdUserNewsLetter")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("UserWithNewsLetter");
                 });
 
-            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.Order.Order", b =>
+            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.OrderModels.Order", b =>
                 {
                     b.Navigation("Products");
                 });
@@ -285,7 +301,12 @@ namespace CoffeeShop.DataAccess.Migrations
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.User.UserWithNewsLetter", b =>
+            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.UserModels.User", b =>
+                {
+                    b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("CoffeeShop.DataAccess.DataAccess.ModelDB.UserModels.UserWithNewsLetter", b =>
                 {
                     b.Navigation("User")
                         .IsRequired();

@@ -1,6 +1,6 @@
-﻿using CoffeeShop.DataAccess.DataAccess.ModelDB.Order;
+﻿using CoffeeShop.DataAccess.DataAccess.ModelDB.OrderModels;
 using CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel;
-using CoffeeShop.DataAccess.DataAccess.ModelDB.User;
+using CoffeeShop.DataAccess.DataAccess.ModelDB.UserModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace CoffeeShop.DataAccess.DataAccess.DataBaseContext
@@ -48,10 +48,10 @@ namespace CoffeeShop.DataAccess.DataAccess.DataBaseContext
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.Property(u => u.Id)
+                entity.Property(u => u.UserId)
                       .HasDefaultValueSql("NEWID()");
 
-                entity.HasKey(u => u.Id);
+                entity.HasKey(u => u.UserId);
 
                 entity.Property(u => u.Email).IsRequired();
                 entity.Property(u => u.FirstName).IsRequired();
@@ -70,7 +70,6 @@ namespace CoffeeShop.DataAccess.DataAccess.DataBaseContext
                       .HasDefaultValueSql("NEWID()");
 
                 entity.HasKey(n => n.Id);
-
                 entity.Property(n => n.Name).IsRequired();
                 entity.Property(n => n.Email).IsRequired();
                 entity.Property(n => n.IsNewsLetterActive).IsRequired();

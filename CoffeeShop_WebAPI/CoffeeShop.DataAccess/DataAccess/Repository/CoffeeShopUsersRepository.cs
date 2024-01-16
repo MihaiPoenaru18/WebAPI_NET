@@ -1,5 +1,5 @@
 ﻿using CoffeeShop.DataAccess.DataAccess.DataBaseContext;
-using CoffeeShop.DataAccess.DataAccess.ModelDB.User;
+using CoffeeShop.DataAccess.DataAccess.ModelDB.UserModels;
 using CoffeeShop.DataAccess.DataAccess.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,10 +28,10 @@ namespace WebApplication1.DataAccess.Repository
             if (user != null && !IsUserExistingInDB(user))
             {
                 user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
-                user.Id = Guid.NewGuid();
+                user.UserId = Guid.NewGuid();
                 _context.Users.Add(new User
                 {
-                    Id = Guid.NewGuid(),
+                    UserId = Guid.NewGuid(),
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     Email = user.Email,

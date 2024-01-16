@@ -1,5 +1,5 @@
 ﻿
-using CoffeeShop.DataAccess.DataAccess.ModelDB.User;
+using CoffeeShop.DataAccess.DataAccess.ModelDB.UserModels;
 using CoffeeShop.DataAccess.DataAccess.Repository.Interfaces;
 using CoffeeShop_WebApi.Authorization.Models;
 using CoffeeShop_WebApi.Services.AutoMapper;

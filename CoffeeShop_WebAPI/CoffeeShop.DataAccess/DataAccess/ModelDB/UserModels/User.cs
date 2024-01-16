@@ -1,10 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using CoffeeShop.DataAccess.DataAccess.ModelDB.OrderModels;
+using System.Text.Json.Serialization;
 
-namespace CoffeeShop.DataAccess.DataAccess.ModelDB.User
+namespace CoffeeShop.DataAccess.DataAccess.ModelDB.UserModels
 {
     public class User
     {
-        public Guid Id { get; set; }
+        public Guid UserId { get; set; }
         public string Email { get; set; } = string.Empty;
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
@@ -12,5 +13,8 @@ namespace CoffeeShop.DataAccess.DataAccess.ModelDB.User
         public string Password { get; set; } = string.Empty;
         public Guid IdUserNewsLetter { get; set; }
         public UserWithNewsLetter UserWithNewsLetter { get; set; }
+
+        [JsonIgnore]
+        public List<Order>Orders { get; set; }
     }
 }

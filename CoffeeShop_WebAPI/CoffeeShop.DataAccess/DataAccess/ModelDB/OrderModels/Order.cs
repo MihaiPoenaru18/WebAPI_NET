@@ -1,8 +1,8 @@
 ﻿using CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel;
 using System.Text.Json.Serialization;
+using CoffeeShop.DataAccess.DataAccess.ModelDB.UserModels;
 
-
-namespace CoffeeShop.DataAccess.DataAccess.ModelDB.Order
+namespace CoffeeShop.DataAccess.DataAccess.ModelDB.OrderModels
 {
     public class Order
     {
@@ -16,5 +16,7 @@ namespace CoffeeShop.DataAccess.DataAccess.ModelDB.Order
         public int TotalPrices { get; set; }
         public string Currency { get; set; }
         public OrderStatus Status { get; set; }
+
+        public User User { get; set; }
     }
 }
