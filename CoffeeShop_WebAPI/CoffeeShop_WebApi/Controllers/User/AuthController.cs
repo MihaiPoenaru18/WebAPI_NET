@@ -23,7 +23,7 @@ namespace CoffeeShop_WebApi.Controllers.User
         {
             try
             {
-                if (request == null)
+                if (request == null || String.IsNullOrEmpty(request.Role))
                 {
                     return BadRequest("The fiels are emplty!!!");
                 }

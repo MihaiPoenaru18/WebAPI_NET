@@ -1,6 +1,7 @@
 ﻿using CoffeeShop.DataAccess.DataAccess.DataBaseContext;
 using CoffeeShop.DataAccess.DataAccess.ModelDB.OrderModels;
 using CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel;
+using CoffeeShop.DataAccess.DataAccess.ModelDB.UserModels;
 using CoffeeShop.DataAccess.DataAccess.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,7 +10,7 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
     public class CoffeeShopOrderRepository : ICoffeeShopOrderRepository<Order>
     {
         private CoffeeShopContext _context;
-        
+
         public CoffeeShopOrderRepository(CoffeeShopContext context)
         {
             _context = context;
@@ -24,11 +25,11 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
         public async Task<IEnumerable<Order>> GetAll()
         {
             return await _context.Order
-                                 .Include(p=>p.Products)
-                                    .ThenInclude(c=>c.Category)
                                  .Include(p => p.Products)
-                                    .ThenInclude(p => p.Promotion)
-                                 .Include(a=>a.Address)
+                                    .ThenInclude(c => c.Category)
+                                .Include(p => p.Products)
+                                    .ThenInclude(c => c.Promotion)
+                                 .Include(a => a.Address)
                                  .ToListAsync();
         }
 
@@ -44,12 +45,25 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
 
         public async Task<bool> Insert(Order item)
         {
-            _context.Order.Add(new Order
+            var existingUser = _context.Users.FirstOrDefault(u => u.UserId == item.UserId);
+
+            if (existingUser == null)
+            {
+                existingUser = new User
+                {
+                    UserId = item.UserId,
+                };
+
+                _context.Users.Add(existingUser);
+            }
+
+            var newOrder = new Order
             {
                 OrderId = Guid.NewGuid(),
+                UserId = existingUser.UserId,
                 Currency = item.Currency,
                 TotalPrices = item.Products.Sum(x => x.Price),
-                Status = OrderStatus.Processing,
+                Status = item.Status,
                 Address = new Address
                 {
                     City = item.Address.City,
@@ -59,23 +73,18 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
                     Id = Guid.NewGuid(),
                     Region = item.Address.Region
                 },
-                Products = item.Products.Where(p => !_context.Products.Any(existingProduct =>  existingProduct.Name == p.Name))
-                                        .Select(p => new Product
-                                        {
-                                            Id = Guid.NewGuid(),
-                                            Name = p.Name,
-                                            Sku = p.Sku,
-                                            Description = p.Description,
-                                            IsStock = p.IsStock,
-                                            Currency = p.Currency,
-                                            Promotion = p.Promotion,
-                                            Category = p.Category,
-                                            Price = p.Price,
-                                            Quantity = p.Quantity,
-                                            
-                                        })
-                                        .ToList(),
-            });
+                Products = item.Products
+                    .Where(p => _context.Products.Any(existingProduct => existingProduct.Name != p.Name && existingProduct.OrderId == null))
+                    .Select(p => new Product
+                    {
+                        Id = p.Id,
+                        OrderId = p.OrderId,
+                        
+                    })
+                    .ToList(),
+            };
+
+            _context.Order.Add(newOrder);
             await _context.SaveChangesAsync();
             return true;
         }

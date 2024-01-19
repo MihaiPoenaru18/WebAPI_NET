@@ -15,7 +15,7 @@ namespace WebApplication1.DataAccess.Repository
 
         public async Task<IEnumerable<User>> GetAll()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Users.Include(n=>n.UserWithNewsLetter).ToListAsync();
         }
         public async Task DeleteById(Guid id)
         {
@@ -43,7 +43,7 @@ namespace WebApplication1.DataAccess.Repository
                         Email = user.Email,
                         Id = Guid.NewGuid(),
                         IsNewsLetterActive = user.UserWithNewsLetter.IsNewsLetterActive,
-                        Name = user.FirstName + user.LastName
+                        Name = user.FirstName +" "+ user.LastName
                     }
                 });
                 await _context.SaveChangesAsync();
@@ -61,6 +61,12 @@ namespace WebApplication1.DataAccess.Repository
                 {
                     user.FirstName = userFromDb.FirstName;
                     user.LastName = userFromDb.LastName;
+                    user.Email = userFromDb.Email;
+                    
+                    user.Role = userFromDb.Role;
+                    user.IdUserNewsLetter = userFromDb.IdUserNewsLetter;
+                    user.UserId= userFromDb.UserId;
+                    user.UserWithNewsLetter = userFromDb.UserWithNewsLetter;
                     return true;
                 }
             }

@@ -15,8 +15,9 @@ namespace CoffeeShop.DataAccess.DataAccess.ModelDB.OrderModels
         public Address Address { get; set; }
         public int TotalPrices { get; set; }
         public string Currency { get; set; }
-        public OrderStatus Status { get; set; }
-
+        public OrderStatus Status { get; set; } = OrderStatus.Processing;
+        public Guid UserId { get; set; }
+        [JsonIgnore]
         public User User { get; set; }
     }
 }

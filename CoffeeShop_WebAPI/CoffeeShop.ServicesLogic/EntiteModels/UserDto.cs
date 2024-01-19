@@ -15,5 +15,6 @@ namespace CoffeeShop.ServicesLogic.EntiteModels
         public required string Password { get; set; }
         public UserWithNewsLetterDto NewsLetter { get; set; }
 
+
     }
 }

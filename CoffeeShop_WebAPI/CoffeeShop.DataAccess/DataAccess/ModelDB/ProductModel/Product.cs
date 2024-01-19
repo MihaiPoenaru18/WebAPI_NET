@@ -19,5 +19,6 @@ namespace CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel
         [JsonIgnore]
         public Category Category { get; set; }
         public Guid CategoryId { get; set; }
+        public Guid OrderId { get; set; }
     }
 }

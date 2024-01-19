@@ -12,5 +12,6 @@ namespace CoffeeShop.ServicesLogic.EntiteModels
         public int TotalPrices { get; set; }
         public string Currency { get; set; }
         public OrderStatus Status { get; set; } = OrderStatus.Processing;
+        public Guid UserId { get; set; }
     }
 }
