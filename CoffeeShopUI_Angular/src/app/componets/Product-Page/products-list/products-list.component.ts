@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductInterfaces } from './product.interfaces';
 import { ProductsService } from 'src/app//services/Product/products.service';
-
+import { ChangeDetectorRef } from '@angular/core';
 @Component({
   selector: 'cs-products-list',
   templateUrl: './products-list.component.html',
@@ -9,8 +9,8 @@ import { ProductsService } from 'src/app//services/Product/products.service';
   providers: [ProductsService],
 })
 export class ProductsListComponent implements OnInit {
-  products: ProductInterfaces[] = [];
-  constructor(private productService: ProductsService) {}
+  products: any[] = [];
+  constructor(private productService: ProductsService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.loadProducts();
@@ -18,7 +18,13 @@ export class ProductsListComponent implements OnInit {
 
   loadProducts() {
     this.productService.getProducts().subscribe((data) => {
+      console.log('Received data:', data);
       this.products = data;
+      console.log('Received Products:', this.products);
+      this.cdr.detectChanges();
+    },
+    (error) => {
+      console.error('Error fetching products:', error);
     });
   }
 }

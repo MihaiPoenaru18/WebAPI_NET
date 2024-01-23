@@ -1,8 +1,11 @@
-<div class="list" > 
+<div class="list" *ngIf="products && products.length > 0">
+   <div *ngFor="let product of products"  class="card">
     
-   <div *ngFor="let product of this.products" class="card">
-      <p>{{product.Name}}</p>
-      {{product.Category}}
+      <li>{{ product.Name}}</li>
+    <li>{{ product.Category?.Name }}</li>
+    <li>{{ product.Currency }}</li>
+    <li>{{ product.Description }}</li>
+     
    </div>
-</div>
+ </div>
 <footer></footer>
