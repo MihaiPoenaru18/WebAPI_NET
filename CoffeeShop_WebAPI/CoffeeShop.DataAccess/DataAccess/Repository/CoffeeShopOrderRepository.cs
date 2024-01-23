@@ -74,12 +74,10 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
                     Region = item.Address.Region
                 },
                 Products = item.Products
-                    .Where(p => _context.Products.Any(existingProduct => existingProduct.Name != p.Name && existingProduct.OrderId == null))
+                    .Where(p => _context.Products.Any(existingProduct => existingProduct.Name != p.Name))
                     .Select(p => new Product
                     {
                         Id = p.Id,
-                        OrderId = p.OrderId,
-                        
                     })
                     .ToList(),
             };

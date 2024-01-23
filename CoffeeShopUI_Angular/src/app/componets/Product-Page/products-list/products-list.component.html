@@ -1,7 +1,8 @@
 <div class="list" > 
     
-   <div *ngFor="let product of products" class="card">
-      <p>{{product.Name}}</p>d
+   <div *ngFor="let product of this.products" class="card">
+      <p>{{product.Name}}</p>
+      {{product.Category}}
    </div>
 </div>
 <footer></footer>

@@ -94,8 +94,8 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
             var existingCategory = await AddCategory(item.Category);
             var existingPromotion = await AddPromotion(item.Promotion);
 
-            // Create the new product using the attached promotion
-            _context.Products.Add(new Product
+            // Use the existing product's properties
+            var newProduct = new Product
             {
                 Id = Guid.NewGuid(),
                 Name = item.Name,
@@ -103,11 +103,13 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
                 Description = item.Description,
                 IsStock = item.IsStock,
                 Currency = item.Currency,
-                CategoryId = existingCategory.Id,  // Assuming you have set CategoryId correctly in the Category object
+                CategoryId = existingCategory.Id,
                 PromotionId = existingPromotion.Id,
                 Price = item.Price,
                 Quantity = item.Quantity,
-            });
+            };
+
+            _context.Products.Add(newProduct);
 
             await _context.SaveChangesAsync();
             return true;
