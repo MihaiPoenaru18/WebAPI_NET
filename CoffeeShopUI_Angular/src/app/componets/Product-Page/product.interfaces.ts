@@ -11,12 +11,10 @@ export interface ProductInterfaces {
   category: CategoryInterfaces;
 }
 
-export interface PromotionInterfaces  {
-  
+export interface PromotionInterfaces {
   pricePromotion: number;
   startDate: string;
   endDate: string;
-  
 }
 
 export interface CategoryInterfaces {

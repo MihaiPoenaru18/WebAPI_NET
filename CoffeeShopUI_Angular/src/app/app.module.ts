@@ -24,6 +24,10 @@ import { UserinfoComponent } from './componets/userinfo/userinfo.component';
 import { ProductsListComponent } from './componets/Product-Page/products-list/products-list.component';
 import { ProductDetailsComponent } from './componets/Product-Page/product-details/product-details.component';
 import { ProductsService } from './services/Product/products.service';
+import { CategoryListComponent } from './componets/Product-Page/category-list/category-list.component';
+import { CategoriesProductsService } from './services/Product/categories-products.service';
+import { NavbarProductsListComponent } from './componets/Product-Page/navbar-products-list/navbar-products-list.component';
+
 
 const appRoutes: Routes = [
   { path: 'sign-up', component: SignUpComponent },
@@ -31,7 +35,8 @@ const appRoutes: Routes = [
   { path: 'userInfo', component: UserinfoComponent },
   { path: 'products-list', component: ProductsListComponent },
   { path: 'Home', component: HomeComponent },
-  { path: '**', component: HomeComponent }
+  { path: '**', component: HomeComponent },
+  { path: "categories-list", component: CategoryListComponent }
  
 ];
 
@@ -51,6 +56,8 @@ const appRoutes: Routes = [
     UserinfoComponent,
     ProductsListComponent,
     ProductDetailsComponent,
+    CategoryListComponent,
+    NavbarProductsListComponent,
    
   ],
   imports: [
@@ -62,7 +69,7 @@ const appRoutes: Routes = [
     HttpClientModule,
     RouterModule.forRoot(appRoutes, { enableTracing: true }),
   ],
-  providers: [NewsletterService,AuthenticatorService,ProductsService ],
+  providers: [NewsletterService,AuthenticatorService,ProductsService,CategoriesProductsService ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

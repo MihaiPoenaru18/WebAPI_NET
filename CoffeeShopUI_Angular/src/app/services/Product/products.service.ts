@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
-import { ProductInterfaces } from 'src/app/componets/Product-Page/products-list/product.interfaces';
+import { ProductInterfaces } from 'src/app/componets/Product-Page/product.interfaces';
 import { ProductConversionTypeService } from './product-conversion-type.service';
 
 @Injectable({

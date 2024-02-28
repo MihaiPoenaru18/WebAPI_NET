@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductInterfaces } from './product.interfaces';
+import { ProductInterfaces } from '../product.interfaces';
 import { ProductsService } from 'src/app//services/Product/products.service';
 import { ChangeDetectorRef } from '@angular/core';
 @Component({
