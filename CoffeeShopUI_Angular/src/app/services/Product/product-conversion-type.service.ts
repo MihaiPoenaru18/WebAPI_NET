@@ -28,7 +28,6 @@ export class ProductConversionTypeService {
     // });
     // return result;
 
-
     // cleaner code version
     return beProducts.map(this.convertFromBEToFE);
 

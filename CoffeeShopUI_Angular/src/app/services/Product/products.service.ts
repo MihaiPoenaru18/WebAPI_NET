@@ -15,13 +15,13 @@ export class ProductsService  {
   constructor(private http: HttpClient, private converter: ProductConversionTypeService) {}
 
   getProducts(): Observable<ProductInterfaces[]> {
-    //TODO rewrite with conversion usage
+    return this.http.get<ProductInterfaces[]>(`${this.apiUrl}`);
 
-    return this.http.get<any[]>(`${this.apiUrl}`)
-        .pipe(
-          map(products=> {return this.converter.convertProductsListFromBEtoFE(products) } )
-        );
-
+    // return this.http.get<any[]>(`${this.apiUrl}`)
+    //     .pipe(
+    //       map(products=> {return this.converter.convertProductsListFromBEtoFE(products) } )
+    //     );
+    
   }
   
   // addProduct(newProduct: ProductInterfaces): Observable<ProductInterfaces> {
