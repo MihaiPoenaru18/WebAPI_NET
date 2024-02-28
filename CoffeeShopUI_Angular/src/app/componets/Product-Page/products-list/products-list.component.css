@@ -1,18 +1,128 @@
-.list{
-    display: flex;
-    flex-direction: column;
-    height: 500px;
-    width: auto;
-    border-radius: 8px;
-    border: 1px solid #D1D9E6;
-    background: #fbfbec;
-    box-shadow: 8px 8px 24px 0px rgba(0, 0, 0, 0.08);
-    padding: 32px 48px;
-    margin: 5% 5%;
+.products{
+  margin: 10% 5%;
+}
+.list {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  height: auto;
+  width: auto;
+  border-radius: 8px;
+  border: 1px solid #d1d9e6;
+  background: #fbfbec;
+  box-shadow: 8px 8px 24px 0px rgba(0, 0, 0, 0.08);
+  padding: 32px 48px;
+ 
 }
 
 footer {
-    background-color: #fafbec;
-    border: 1px solid #d1d9e6;
-    box-shadow: 8px 8px 24px 0px rgba(0, 0, 0, 0.08);
-  }
+  background-color: #fafbec;
+  border: 1px solid #d1d9e6;
+  box-shadow: 8px 8px 24px 0px rgba(0, 0, 0, 0.08);
+}
+.card {
+  
+  height: auto;
+  width: 400px;
+  border-radius: 10px;
+  border: 1px solid #d1d9e6;
+  background: #676d3c;
+  box-shadow: 8px 8px 24px 0px rgba(0, 0, 0, 0.08);
+  margin: 5%;
+}
+.card-in {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 18px 32px;
+}
+.card img {
+  object-fit: cover;
+  width: 300px;
+  height: 250px;
+  border-radius: 25px;
+}
+.card p {
+  font-weight: bold;
+  color: white;
+  margin: 0px;
+  padding: 5px 2px;
+}
+.card a{
+    color:#676d3c;
+  font-weight: bold;
+  box-shadow: 8px 8px 24px 0px #676d3c;
+  background: #fbfbec;
+  border-radius: 8px;
+  padding: 10px 13px;
+    text-decoration: none;
+} 
+.card a:hover{
+    width: 45%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card button {
+  background: #9cc4c4;
+  border-radius: 8px;
+  border: 1px solid #9cc4c4;
+  color: white;
+  font-weight: bold;
+  box-shadow: 8px 8px 24px 0px rgba(0, 0, 0, 0.08);
+  padding: 10px 13px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.card button svg {
+  margin-right: 5px;
+}
+
+@media (max-width: 414px){
+  .card  img{
+        width: 200px;
+        height: 150px;
+    }
+}
+.card img:hover{
+    content: "stuff";
+}
+
+.nav-bar{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  background-color: #fbfbec;
+}
+.nav-bar .icon{
+  width: 30px;
+  height: 30px;
+  margin-right: 5px;
+  
+}
+.nav-bar a {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-right: 100px;
+}
+.nav-bar button {
+  margin-left: 3px;
+}
+.nav-bar form{
+  margin-right: 100px;
+}
+select{
+  margin-left: 10px;
+}
+h5{margin: 0;}

@@ -1,21 +1,24 @@
 export interface ProductInterfaces {
-  Name: string;
-  Sku: string;
-  Description: string;
-  Currency: string;
-  Price: number;
-  Quantity: number;
-  IsStock: boolean;
-  Promotion?: PromotionInterfaces;
-  Category: CategoryInterfaces;
+  name: string;
+  sku: string;
+  description: string;
+  currency: string;
+  price: number;
+  quantity: number;
+  isStock: boolean;
+  imagePath: string;
+  promotion: PromotionInterfaces;
+  category: CategoryInterfaces;
 }
 
-export interface PromotionInterfaces {
-  PricePromotion: number;
-  StartDate: string;
-  EndDate: string;
+export interface PromotionInterfaces  {
+  
+  pricePromotion: number;
+  startDate: string;
+  endDate: string;
+  
 }
 
 export interface CategoryInterfaces {
-  Name: string;
+  name: string;
 }

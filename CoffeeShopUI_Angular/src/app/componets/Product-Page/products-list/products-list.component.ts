@@ -9,22 +9,102 @@ import { ChangeDetectorRef } from '@angular/core';
   providers: [ProductsService],
 })
 export class ProductsListComponent implements OnInit {
-  products: any[] = [];
-  constructor(private productService: ProductsService, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private productService: ProductsService,
+    private cdr: ChangeDetectorRef
+  ) {}
+  showDescription:boolean =false;
+  products: ProductInterfaces[] = [
+    {
+      name: 'Product C',
+      sku: 'SKU123',
+      description: 'Description of Product C',
+      currency: 'USD',
+      price: 20,
+      quantity: 2,
+      isStock: true,
+      promotion: {
+        pricePromotion: 15,
+        startDate: '2024.02.01',
+        endDate: '2024.02.06',
+      },
+      category: {
+        name: 'Category B',
+      },
+      imagePath: '/assets/images/products/pack.jpg',
+    },
+    {
+      name: 'Product C',
+      sku: 'SKU123',
+      description: 'Description of Product C',
+      currency: 'USD',
+      price: 20,
+      quantity: 2,
+      isStock: true,
+      promotion: {
+        pricePromotion: 15,
+        startDate: '2024.02.01',
+        endDate: '2024.02.06',
+      },
+      category: {
+        name: 'Category B',
+      },
+      imagePath: '/assets/images/products/pack 4.jpg',
+    },
+    {
+      name: 'Product C',
+      sku: 'SKU123',
+      description: 'Description of Product C',
+      currency: 'USD',
+      price: 20,
+      quantity: 2,
+      isStock: true,
+      promotion: {
+        pricePromotion: 15,
+        startDate: '2024.02.01',
+        endDate: '2024.02.06',
+      },
+      category: {
+        name: 'Category B',
+      },
+      imagePath: '/assets/images/products/Pack3.jpg',
+    },
+    {
+      name: 'Product C',
+      sku: 'SKU123',
+      description: 'Description of Product C',
+      currency: 'USD',
+      price: 20,
+      quantity: 2,
+      isStock: true,
+      promotion: {
+        pricePromotion: 15,
+        startDate: '2024.02.01',
+        endDate: '2024.02.06',
+      },
+      category: {
+        name: 'Category B',
+      },
+      imagePath: '/assets/images/products/pack.jpg',
+    },
+  ];
+  
 
   ngOnInit(): void {
     this.loadProducts();
   }
 
   loadProducts() {
-    this.productService.getProducts().subscribe((data) => {
-      console.log('Received data:', data);
-      this.products = data;
-      console.log('Received Products:', this.products);
-      this.cdr.detectChanges();
-    },
-    (error) => {
-      console.error('Error fetching products:', error);
-    });
+    this.productService.getProducts().subscribe(
+      (jsonResponse) => {
+        console.log('Received data:', jsonResponse);
+        this.products = [...this.products, ...jsonResponse];
+        console.log('Received Products:', this.products);
+        this.cdr.detectChanges();
+      },
+      (error) => {
+        console.error('Error fetching products:', error);
+      }
+    );
   }
 }

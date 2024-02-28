@@ -28,9 +28,9 @@ export class SignInComponent {
       '',
       [
         Validators.required,
-        Validators.pattern(
-          /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[.,@$!%*#?&^_-]).{8,99}/
-        ),
+        // Validators.pattern(
+        //   /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[.,@$!%*#?&^_-]).{8,99}/
+        // ),
       ],
     ],
   });

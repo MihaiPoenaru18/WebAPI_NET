@@ -12,5 +12,6 @@ namespace CoffeeShop.ServicesLogic.EntiteModels.ModelsForProducts
         public bool IsStock { get; set; }
         public PromotionDto Promotion { get; set; }
         public CategoryDto Category { get; set; }
+        public string ImagePath { get; set; }
     }
 }
