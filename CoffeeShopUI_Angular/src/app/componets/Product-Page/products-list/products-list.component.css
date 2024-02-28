@@ -1,4 +1,4 @@
-.products{
+.products {
   margin: 10% 5%;
 }
 .list {
@@ -13,7 +13,6 @@
   background: #fbfbec;
   box-shadow: 8px 8px 24px 0px rgba(0, 0, 0, 0.08);
   padding: 32px 48px;
- 
 }
 
 footer {
@@ -22,7 +21,6 @@ footer {
   box-shadow: 8px 8px 24px 0px rgba(0, 0, 0, 0.08);
 }
 .card {
-  
   height: auto;
   width: 400px;
   border-radius: 10px;
@@ -32,11 +30,11 @@ footer {
   margin: 5%;
 }
 .card-in {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 18px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 32px;
 }
 .card img {
   object-fit: cover;
@@ -49,21 +47,6 @@ footer {
   color: white;
   margin: 0px;
   padding: 5px 2px;
-}
-.card a{
-    color:#676d3c;
-  font-weight: bold;
-  box-shadow: 8px 8px 24px 0px #676d3c;
-  background: #fbfbec;
-  border-radius: 8px;
-  padding: 10px 13px;
-    text-decoration: none;
-} 
-.card a:hover{
-    width: 45%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .card button {
@@ -84,45 +67,120 @@ footer {
   margin-right: 5px;
 }
 
-@media (max-width: 414px){
-  .card  img{
-        width: 200px;
-        height: 150px;
-    }
-}
-.card img:hover{
-    content: "stuff";
+.card img:hover {
+  content: "stuff";
 }
 
-.nav-bar{
+.nav-bar {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  height: 40px;
+  height: 45px;
   border-radius: 8px;
   margin-bottom: 16px;
   background-color: #fbfbec;
 }
-.nav-bar .icon{
+.nav-bar .icon {
   width: 30px;
   height: 30px;
   margin-right: 5px;
-  
 }
 .nav-bar a {
   display: flex;
   flex-direction: row;
   align-items: center;
   margin-right: 100px;
+  text-decoration: none;
+  color: #676d3c;
+  font-weight: bold;
 }
-.nav-bar button {
-  margin-left: 3px;
+.nav-bar a:hover {
+  color: #9cc4c4;
 }
-.nav-bar form{
+input {
+  border-radius: 60px;
+  border: 1px solid #676d3c;
+  background: #fff;
+  padding: 3px 3px 3px 30px; /* top left bottom right */
+  text-align: start;
+}
+
+.nav-bar svg {
+  margin-bottom: 4px;
+  margin-left: -205px;
+}
+.nav-bar form {
   margin-right: 100px;
 }
-select{
-  margin-left: 10px;
+select {
+  margin-left: 200px;
+  border-radius: 30px;
+  border: 1px solid #676d3c;
+  padding: 3px 3px 4px 4px;
+  background: #676d3c;
+  color: #fbfbec;
 }
-h5{margin: 0;}
+
+h5 {
+  margin: 0;
+}
+@media (max-width: 414px) {
+  .card img {
+    width: 200px;
+    height: 150px;
+  }
+  .nav-bar {
+    flex-direction: column;
+    height: auto;
+    width: auto;
+    gap: 10px;
+  }
+  .nav-bar a {
+    margin: 5px 0px;
+  }
+  .nav-bar input {
+    margin: 5px 0px;
+    position: relative;
+    left: -58px;
+  }
+  .nav-bar svg {
+    margin-left: -278px;
+    position: relative;
+    left: 15px;
+  }
+  .nav-bar select {
+    margin: 5px 0px;
+    margin-bottom: 10px;
+  }
+}
+@media (max-width: 390px) {
+  .card img {
+    width: 200px;
+    height: 150px;
+  }
+  .nav-bar {
+    flex-direction: column;
+    height: auto;
+    width: auto;
+    gap: 10px;
+  }
+  .nav-bar a {
+    margin: 5px 0px;
+  }
+  .nav-bar input {
+    margin: 5px 0px;
+    position: relative;
+    left: -58px;
+  }
+  .nav-bar svg {
+    margin-left: -278px;
+    position: relative;
+    left: 15px;
+  }
+  .nav-bar select {
+    margin: 5px 0px;
+    margin-bottom: 10px;
+  }
+}
