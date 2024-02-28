@@ -19,4 +19,5 @@ export interface PromotionInterfaces {
 
 export interface CategoryInterfaces {
   name: string;
+  imagePath: string;
 }

@@ -277,7 +277,8 @@ namespace CoffeeShop_WebApi.Services.AutoMapper
                 {
                     cfg.CreateMap<Category, CategoryDto>()
                                                         
-                                                        .ForMember(dest => dest.Name, act => act.MapFrom(src => src.Name));
+                                                        .ForMember(dest => dest.Name, act => act.MapFrom(src => src.Name))
+                                                        .ForMember(dest => dest.ImagePath, act => act.MapFrom(src => src.ImagePath));
 
                 });
                 return new Mapper(config);
