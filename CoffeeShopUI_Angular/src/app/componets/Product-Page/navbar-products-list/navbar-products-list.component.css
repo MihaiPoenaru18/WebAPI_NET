@@ -14,16 +14,19 @@
   height: 30px;
   margin-right: 5px;
 }
-.nav-bar a {
+.nav-bar button {
   display: flex;
   flex-direction: row;
   align-items: center;
   margin-right: 100px;
-  text-decoration: none;
+  
   color: #676d3c;
+  border:solid 1px #fbfbec;
+  background-color: #fbfbec;
+  box-shadow: none;
   font-weight: bold;
 }
-.nav-bar a:hover {
+.nav-bar button:hover {
   color: #9cc4c4;
 }
 input {
@@ -57,7 +60,7 @@ select {
     width: auto;
     gap: 10px;
   }
-  .nav-bar a {
+  .nav-bar button {
     margin: 5px 0px;
   }
   .nav-bar input {
@@ -82,7 +85,7 @@ select {
     width: auto;
     gap: 10px;
   }
-  .nav-bar a {
+  .nav-bar button {
     margin: 5px 0px;
   }
   .nav-bar input {

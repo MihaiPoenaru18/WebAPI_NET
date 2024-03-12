@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Output, Component, OnInit, EventEmitter, Input } from '@angular/core';
 import { ProductInterfaces } from '../product.interfaces';
 import { ProductsService } from 'src/app//services/Product/products.service';
 import { ChangeDetectorRef } from '@angular/core';
@@ -9,11 +9,14 @@ import { ChangeDetectorRef } from '@angular/core';
   providers: [ProductsService],
 })
 export class ProductsListComponent implements OnInit {
+isShowCategory: any;
   constructor(
     private productService: ProductsService,
     private cdr: ChangeDetectorRef
   ) {}
-  showDescription:boolean =false;
+
+
+ @Output()  showCategory:boolean = false;
   products: ProductInterfaces[] = [
     {
       name: 'Product C',
@@ -30,6 +33,7 @@ export class ProductsListComponent implements OnInit {
       },
       category: {
         name: 'Category B',
+        imagePath: 'p'
       },
       imagePath: '/assets/images/products/pack.jpg',
     },
@@ -48,6 +52,7 @@ export class ProductsListComponent implements OnInit {
       },
       category: {
         name: 'Category B',
+        imagePath: 'p'
       },
       imagePath: '/assets/images/products/pack 4.jpg',
     },
@@ -66,6 +71,7 @@ export class ProductsListComponent implements OnInit {
       },
       category: {
         name: 'Category B',
+        imagePath: 'p'
       },
       imagePath: '/assets/images/products/Pack3.jpg',
     },
@@ -84,6 +90,7 @@ export class ProductsListComponent implements OnInit {
       },
       category: {
         name: 'Category B',
+        imagePath: 'p'
       },
       imagePath: '/assets/images/products/pack.jpg',
     },
@@ -107,4 +114,8 @@ export class ProductsListComponent implements OnInit {
       }
     );
   }
+
+  onShowCategoryChange(isShowCategory: boolean) {
+    this.showCategory = isShowCategory; 
+ }
 }

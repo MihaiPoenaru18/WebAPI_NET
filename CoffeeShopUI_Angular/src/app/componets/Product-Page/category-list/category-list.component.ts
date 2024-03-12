@@ -12,11 +12,26 @@ export class CategoryListComponent implements OnInit{
  constructor(
    private categoriesService: CategoriesProductsService,
   ){}
-  categories : CategoryInterfaces[] = []
+  
+  categories : CategoryInterfaces[] = [
+    {
+      name: 'Category A',
+      imagePath: '/assets/images/products/pack.jpg'
+    },
+    {
+      name: 'Category B',
+      imagePath: '/assets/images/products/pack.jpg'
+    },
+    {
+      name: 'Category c',
+      imagePath: '/assets/images/products/pack.jpg'
+    },
+    
+  ]
   ngOnInit(): void {
     this.loadCategories();
   }
-
+   
   loadCategories () {
     this.categoriesService.getCategories().subscribe(
       (jsonResponse) => {
@@ -28,4 +43,5 @@ export class CategoryListComponent implements OnInit{
       }
     );
   }
+   
 }

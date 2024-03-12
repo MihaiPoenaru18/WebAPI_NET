@@ -1,8 +1,10 @@
 <div class="products">
-  <cs-navbar-products-list></cs-navbar-products-list>
+  <cs-navbar-products-list
+  (showCategoryChange)="onShowCategoryChange($event)">
+  </cs-navbar-products-list>
 
-  <div class="list" *ngIf="products && products.length > 0">
-
+  <div class="list" *ngIf="products && products.length > 0 && !showCategory">
+ 
     <div *ngFor="let product of products" class="card">
       <div class="card-in">
         <img src="{{ product?.imagePath }}" alt="{{ product?.name }} Image">
@@ -17,6 +19,6 @@
         Add to cart</button>
     </div>
   </div>
-  <cs-category-list></cs-category-list>
+  <cs-category-list *ngIf="showCategory "></cs-category-list>
 </div>
 <footer></footer>
