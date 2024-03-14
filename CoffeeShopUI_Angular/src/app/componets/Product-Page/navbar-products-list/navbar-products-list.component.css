@@ -58,7 +58,17 @@ select {
   background: #676d3c;
   color: #fbfbec;
 }
+.order{
+  margin-left: 20px;
+}
+.order-icons{
+  fill:#676d3c;
+  margin-right: 10px;
+}
 
+.order-icons:hover{
+  fill: #9cc4c4;
+}
 @media (max-width: 414px) {
   .nav-bar {
     flex-direction: column;

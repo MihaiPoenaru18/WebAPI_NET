@@ -13,6 +13,8 @@ export class NavbarProductsListComponent {
   isShowCategory: boolean = false;
   listName: string = 'Categories';
   searchTerm: string;
+  orderType:string = 'asc';
+  orderBy:any;
   constructor(private productService: ProductsService) {}
 
   showCategories() {
@@ -53,14 +55,26 @@ export class NavbarProductsListComponent {
         this.searchEvent.emit(searchedProducts);
       },
       (error) => {
-        console.error('Error fetching  onSearchEnter() products by a term:', error);
+        console.error('Error fetching onSearchEnter() products by a term:', error);
       }
     );
   }
   refreshPage() {
     window.location.reload();
   }
+  setOrderType(type:string){
+    this.orderType = type;
+    console.log("t ="+type )
+  }
   onOrderByChange(){
-    
+    console.log("Selected order by: " + this.orderBy)
+    this.productService.sortProductByTerm(this.orderBy, this.orderType).subscribe(
+    (sortProducts) => {
+      this.searchEvent.emit(sortProducts);
+    },
+    (error) => {
+      console.error('Error fetching onOrderByChange() products by a term:', error);
+    }
+  );
   }
 }

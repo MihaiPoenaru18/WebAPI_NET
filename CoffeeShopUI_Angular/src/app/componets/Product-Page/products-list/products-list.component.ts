@@ -138,4 +138,7 @@ export class ProductsListComponent implements OnInit {
   filterProductsBySearchTerm(searchProducts: ProductInterfaces[]) {
      this.products = searchProducts;
   }
+  sortProductsBy(orderProducts: ProductInterfaces[]){
+    this.products = orderProducts;
+  }
 }
