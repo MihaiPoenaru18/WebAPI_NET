@@ -9,14 +9,15 @@ import { ChangeDetectorRef } from '@angular/core';
   providers: [ProductsService],
 })
 export class ProductsListComponent implements OnInit {
-isShowCategory: any;
+  isShowCategory: any;
   constructor(
     private productService: ProductsService,
     private cdr: ChangeDetectorRef
   ) {}
 
+  @Output() showCategory: boolean = false;
+  @Output() categoryName: string = '';
 
- @Output()  showCategory:boolean = false;
   products: ProductInterfaces[] = [
     {
       name: 'Product C',
@@ -32,8 +33,8 @@ isShowCategory: any;
         endDate: '2024.02.06',
       },
       category: {
-        name: 'Category B',
-        imagePath: 'p'
+        name: 'Category A',
+        imagePath: 'p',
       },
       imagePath: '/assets/images/products/pack.jpg',
     },
@@ -52,7 +53,7 @@ isShowCategory: any;
       },
       category: {
         name: 'Category B',
-        imagePath: 'p'
+        imagePath: 'p',
       },
       imagePath: '/assets/images/products/pack 4.jpg',
     },
@@ -71,7 +72,7 @@ isShowCategory: any;
       },
       category: {
         name: 'Category B',
-        imagePath: 'p'
+        imagePath: 'p',
       },
       imagePath: '/assets/images/products/Pack3.jpg',
     },
@@ -89,16 +90,16 @@ isShowCategory: any;
         endDate: '2024.02.06',
       },
       category: {
-        name: 'Category B',
-        imagePath: 'p'
+        name: 'Category c',
+        imagePath: 'p',
       },
       imagePath: '/assets/images/products/pack.jpg',
     },
   ];
-  
 
   ngOnInit(): void {
     this.loadProducts();
+    console.log(this.categoryName + '-- lenght =' + this.categoryName.length);
   }
 
   loadProducts() {
@@ -116,6 +117,25 @@ isShowCategory: any;
   }
 
   onShowCategoryChange(isShowCategory: boolean) {
-    this.showCategory = isShowCategory; 
- }
+    this.showCategory = isShowCategory;
+  }
+
+  onShowProductsByCategory(name: string) {
+    this.categoryName = name;
+  }
+
+  filterProductsByCategory(): ProductInterfaces[] {
+    if (this.categoryName.length == 0 || this.categoryName == null) {
+      return this.products;
+    }
+    console.log(this.products.filter(
+      (product) => product.category.name === this.categoryName
+    ));
+    return this.products.filter(
+      (product) => product.category.name === this.categoryName
+    );
+  }
+  filterProductsBySearchTerm(searchProducts: ProductInterfaces[]) {
+     this.products = searchProducts;
+  }
 }

@@ -1,26 +1,66 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ProductsService } from 'src/app/services/Product/products.service';
 
 @Component({
   selector: 'cs-navbar-products-list',
   templateUrl: './navbar-products-list.component.html',
   styleUrls: ['./navbar-products-list.component.css'],
+  providers: [ProductsService],
 })
 export class NavbarProductsListComponent {
   @Output() showCategoryChange = new EventEmitter<boolean>();
+  @Output() searchEvent = new EventEmitter<any>();
   isShowCategory: boolean = false;
   listName: string = 'Categories';
-  
-  showDescription() {
+  searchTerm: string;
+  constructor(private productService: ProductsService) {}
+
+  showCategories() {
     this.listName = 'Products';
     this.isShowCategory = !this.isShowCategory;
     this.showCategoryChange.emit(this.isShowCategory);
+
     this.updateListName();
     console.log('isShowCategory = ' + this.isShowCategory);
   }
 
-  private updateListName() {
+  updateListName() {
     if (!this.isShowCategory) {
       this.listName = 'Categories';
     }
+  }
+  setSearchTerm(event: any) {
+    event.preventDefault();
+    this.searchTerm = event.target.value.trim();
+  }
+
+  onSearch() {
+    console.log('serach !!! ' + 'term = ' + this.searchTerm);
+    this.productService.searchProducts(this.searchTerm).subscribe(
+      (searchedProducts) => {
+        this.searchEvent.emit(searchedProducts);
+      },
+      (error) => {
+        console.error('Error fetching onSearch() products by a term', error);
+      }
+    );
+  }
+  onSearchEnter(event: any): void {
+    event.preventDefault();
+    // Perform the search operation when Enter key is pressed
+    this.productService.searchProducts(this.searchTerm).subscribe(
+      (searchedProducts) => {
+        this.searchEvent.emit(searchedProducts);
+      },
+      (error) => {
+        console.error('Error fetching  onSearchEnter() products by a term:', error);
+      }
+    );
+  }
+  refreshPage() {
+    window.location.reload();
+  }
+  onOrderByChange(){
+    
   }
 }

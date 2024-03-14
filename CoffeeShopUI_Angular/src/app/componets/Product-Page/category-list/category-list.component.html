@@ -2,9 +2,9 @@
     <h3> Products Categories</h3>
     <div class=" list">
         <div *ngFor="let category of categories" class="card">
-            <a class ="name" href="">
+            <a  class ="name" >
                 <div class="card-in">
-                    <a>{{ category?.name}}</a>
+                    <button (click)="setCategoryByUser(category?.name)" (click)="selectCategory()">{{ category?.name}}</button>
                     <img src="{{ category?.imagePath }}" alt="{{ category?.name }} Image">
                 </div>
             </a>

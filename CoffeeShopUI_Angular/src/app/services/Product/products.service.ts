@@ -24,6 +24,9 @@ export class ProductsService  {
     
   }
   
+  searchProducts(searchTerm:any): Observable<ProductInterfaces[]>{
+    return this.http.get<ProductInterfaces[]>(`https://localhost:7282/api/Product/GetProducts?SearchTerm=${searchTerm}`);
+  }
   // addProduct(newProduct: ProductInterfaces): Observable<ProductInterfaces> {
   //   // Assuming your API supports adding a new product
   //   return this.http.post<ProductInterfaces>(`${this.apiUrl}/products`, newProduct);

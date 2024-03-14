@@ -36,8 +36,14 @@ input {
   padding: 3px 3px 3px 30px; /* top left bottom right */
   text-align: start;
 }
-
-.nav-bar svg {
+.refresh{
+   width: 30px;
+   fill: #676d3c;
+}
+.refresh:hover{
+  fill: #9cc4c4;;
+}
+.nav-bar .icon-search {
   margin-bottom: 4px;
   margin-left: -205px;
 }
@@ -68,7 +74,7 @@ select {
     position: relative;
     left: -58px;
   }
-  .nav-bar svg {
+  .nav-bar .icon-search {
     margin-left: -278px;
     position: relative;
     left: 15px;
@@ -93,7 +99,7 @@ select {
     position: relative;
     left: -58px;
   }
-  .nav-bar svg {
+  .nav-bar .icon-search {
     margin-left: -278px;
     position: relative;
     left: 15px;
