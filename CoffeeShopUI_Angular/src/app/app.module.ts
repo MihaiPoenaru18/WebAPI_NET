@@ -28,16 +28,15 @@ import { CategoryListComponent } from './componets/Product-Page/category-list/ca
 import { CategoriesProductsService } from './services/Product/categories-products.service';
 import { NavbarProductsListComponent } from './componets/Product-Page/navbar-products-list/navbar-products-list.component';
 
-
 const appRoutes: Routes = [
   { path: 'sign-up', component: SignUpComponent },
   { path: 'sign-in', component: SignInComponent },
   { path: 'userInfo', component: UserinfoComponent },
   { path: 'products-list', component: ProductsListComponent },
+  { path: 'products-details', component: ProductDetailsComponent },
   { path: 'Home', component: HomeComponent },
   { path: '**', component: HomeComponent },
-  { path: "categories-list", component: CategoryListComponent }
- 
+  { path: 'categories-list', component: CategoryListComponent },
 ];
 
 @NgModule({
@@ -58,7 +57,6 @@ const appRoutes: Routes = [
     ProductDetailsComponent,
     CategoryListComponent,
     NavbarProductsListComponent,
-   
   ],
   imports: [
     AppRoutingModule,
@@ -69,7 +67,12 @@ const appRoutes: Routes = [
     HttpClientModule,
     RouterModule.forRoot(appRoutes, { enableTracing: true }),
   ],
-  providers: [NewsletterService,AuthenticatorService,ProductsService,CategoriesProductsService ],
+  providers: [
+    NewsletterService,
+    AuthenticatorService,
+    ProductsService,
+    CategoriesProductsService,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
