@@ -2,6 +2,7 @@ import { Output, Component, OnInit, EventEmitter, Input } from '@angular/core';
 import { ProductInterfaces } from '../product.interfaces';
 import { ProductsService } from 'src/app//services/Product/products.service';
 import { ChangeDetectorRef } from '@angular/core';
+import { EmailValidator } from '@angular/forms';
 @Component({
   selector: 'cs-products-list',
   templateUrl: './products-list.component.html',
@@ -18,13 +19,13 @@ export class ProductsListComponent implements OnInit {
   @Output() showCategory: boolean = false;
   @Output() categoryName: string = '';
 
-  products: ProductInterfaces[] = [
+   products: ProductInterfaces[] = [
     {
-      name: 'Product C',
+      name: 'Tea',
       sku: 'SKU123',
       description: 'Description of Product C',
       currency: 'USD',
-      price: 20,
+      price: 5,
       quantity: 2,
       isStock: true,
       promotion: {
@@ -43,7 +44,7 @@ export class ProductsListComponent implements OnInit {
       sku: 'SKU123',
       description: 'Description of Product C',
       currency: 'USD',
-      price: 20,
+      price: 10,
       quantity: 2,
       isStock: true,
       promotion: {
@@ -58,7 +59,7 @@ export class ProductsListComponent implements OnInit {
       imagePath: '/assets/images/products/pack 4.jpg',
     },
     {
-      name: 'Product C',
+      name: 'Coffee',
       sku: 'SKU123',
       description: 'Description of Product C',
       currency: 'USD',
@@ -77,11 +78,11 @@ export class ProductsListComponent implements OnInit {
       imagePath: '/assets/images/products/Pack3.jpg',
     },
     {
-      name: 'Product C',
+      name: 'Cake',
       sku: 'SKU123',
       description: 'Description of Product C',
       currency: 'USD',
-      price: 20,
+      price: 25,
       quantity: 2,
       isStock: true,
       promotion: {
@@ -128,17 +129,23 @@ export class ProductsListComponent implements OnInit {
     if (this.categoryName.length == 0 || this.categoryName == null) {
       return this.products;
     }
-    console.log(this.products.filter(
-      (product) => product.category.name === this.categoryName
-    ));
+    console.log(
+      this.products.filter(
+        (product) => product.category.name === this.categoryName
+      )
+    );
     return this.products.filter(
       (product) => product.category.name === this.categoryName
     );
   }
+
   filterProductsBySearchTerm(searchProducts: ProductInterfaces[]) {
-     this.products = searchProducts;
+    this.products = searchProducts;
   }
-  sortProductsBy(orderProducts: ProductInterfaces[]){
+
+  sortProductsBy(orderProducts: ProductInterfaces[]) {
     this.products = orderProducts;
   }
+  
+  
 }

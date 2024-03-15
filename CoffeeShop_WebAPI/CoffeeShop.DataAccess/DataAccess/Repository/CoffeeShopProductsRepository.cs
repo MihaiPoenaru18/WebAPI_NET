@@ -54,11 +54,12 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
         {
             var existingCategory = _context.Categories.FirstOrDefault(c => c.Name == category.Name);
 
-            if (existingCategory == null)
+            if (existingCategory.Name == null && existingCategory.ImagePath ==null )
             {
                 existingCategory = new Category
                 {
-                    Name = category.Name
+                    Name = category.Name,
+                    ImagePath = category.ImagePath,
                 };
 
                 _context.Categories.Add(existingCategory);

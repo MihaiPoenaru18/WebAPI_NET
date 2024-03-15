@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ProductsService } from 'src/app/services/Product/products.service';
+import { ProductInterfaces } from '../product.interfaces';
 
 @Component({
   selector: 'cs-navbar-products-list',
@@ -13,8 +14,87 @@ export class NavbarProductsListComponent {
   isShowCategory: boolean = false;
   listName: string = 'Categories';
   searchTerm: string;
-  orderType:string = 'asc';
-  orderBy:any;
+  orderType: string = 'asc';
+  orderBy: any;
+  products: ProductInterfaces[] = [
+    {
+      name: 'Tea',
+      sku: 'SKU123',
+      description: 'Description of Product C',
+      currency: 'USD',
+      price: 5,
+      quantity: 2,
+      isStock: true,
+      promotion: {
+        pricePromotion: 15,
+        startDate: '2024.02.01',
+        endDate: '2024.02.06',
+      },
+      category: {
+        name: 'Category A',
+        imagePath: 'p',
+      },
+      imagePath: '/assets/images/products/pack.jpg',
+    },
+    {
+      name: 'Product C',
+      sku: 'SKU123',
+      description: 'Description of Product C',
+      currency: 'USD',
+      price: 10,
+      quantity: 2,
+      isStock: true,
+      promotion: {
+        pricePromotion: 15,
+        startDate: '2024.02.01',
+        endDate: '2024.02.06',
+      },
+      category: {
+        name: 'Category B',
+        imagePath: 'p',
+      },
+      imagePath: '/assets/images/products/pack 4.jpg',
+    },
+    {
+      name: 'Coffee',
+      sku: 'SKU123',
+      description: 'Description of Product C',
+      currency: 'USD',
+      price: 20,
+      quantity: 2,
+      isStock: true,
+      promotion: {
+        pricePromotion: 15,
+        startDate: '2024.02.01',
+        endDate: '2024.02.06',
+      },
+      category: {
+        name: 'Category B',
+        imagePath: 'p',
+      },
+      imagePath: '/assets/images/products/Pack3.jpg',
+    },
+    {
+      name: 'Cake',
+      sku: 'SKU123',
+      description: 'Description of Product C',
+      currency: 'USD',
+      price: 25,
+      quantity: 2,
+      isStock: true,
+      promotion: {
+        pricePromotion: 15,
+        startDate: '2024.02.01',
+        endDate: '2024.02.06',
+      },
+      category: {
+        name: 'Category c',
+        imagePath: 'p',
+      },
+      imagePath: '/assets/images/products/pack.jpg',
+    },
+  ];
+
   constructor(private productService: ProductsService) {}
 
   showCategories() {
@@ -55,26 +135,60 @@ export class NavbarProductsListComponent {
         this.searchEvent.emit(searchedProducts);
       },
       (error) => {
-        console.error('Error fetching onSearchEnter() products by a term:', error);
+        console.error(
+          'Error fetching onSearchEnter() products by a term:',
+          error
+        );
       }
     );
   }
   refreshPage() {
     window.location.reload();
   }
-  setOrderType(type:string){
+  setOrderType(type: string) {
     this.orderType = type;
-    console.log("t ="+type )
+    console.log('t =' + type);
   }
-  onOrderByChange(){
-    console.log("Selected order by: " + this.orderBy)
-    this.productService.sortProductByTerm(this.orderBy, this.orderType).subscribe(
-    (sortProducts) => {
-      this.searchEvent.emit(sortProducts);
-    },
-    (error) => {
-      console.error('Error fetching onOrderByChange() products by a term:', error);
+  setOrderBy(order: string) {
+    console.log('Selected order by: 22' + this.orderBy);
+    this.orderBy = order;
+    this.onOrderByChange()
+  }
+  onOrderByChange() {
+    console.log('Selected order by: ' + this.orderBy);
+   
+    this.productService
+      .sortProductByTerm(this.orderBy, this.orderType)
+      .subscribe(
+        (sortProducts) => {
+          this.searchEvent.emit(sortProducts);
+        },
+        (error) => {
+          this.sortProducts();
+          console.error(
+            'Error fetching onOrderByChange() products by a term:',
+            error
+          );
+        
+        }
+      );
+  }
+  sortProducts(): void {
+    switch (this.orderBy) {
+      case 'Name':
+        this.products.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case 'Price':
+        this.products.sort((a, b) => a.price - b.price);
+        break;
+      case 'Category':
+        this.products.sort((a, b) =>
+          a.category.name.localeCompare(b.category.name)
+        );
+        break;
+      default:
+        this.products.sort((a, b) => a.name.localeCompare(b.name));
+        break;
     }
-  );
   }
 }
