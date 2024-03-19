@@ -27,6 +27,7 @@ import { ProductsService } from './services/Product/products.service';
 import { CategoryListComponent } from './componets/Product-Page/category-list/category-list.component';
 import { CategoriesProductsService } from './services/Product/categories-products.service';
 import { NavbarProductsListComponent } from './componets/Product-Page/navbar-products-list/navbar-products-list.component';
+import { ProductQuantityCounterComponent } from './componets/Product-Page/product-details/product-quantity-counter/product-quantity-counter.component';
 
 const appRoutes: Routes = [
   { path: 'sign-up', component: SignUpComponent },
@@ -35,8 +36,7 @@ const appRoutes: Routes = [
   { path: 'products-list', component: ProductsListComponent },
   { path: 'products-details', component: ProductDetailsComponent },
   { path: 'Home', component: HomeComponent },
-  { path: '**', component: HomeComponent },
-  { path: 'categories-list', component: CategoryListComponent },
+  { path: '**', component: HomeComponent }
 ];
 
 @NgModule({
@@ -57,6 +57,7 @@ const appRoutes: Routes = [
     ProductDetailsComponent,
     CategoryListComponent,
     NavbarProductsListComponent,
+    ProductQuantityCounterComponent,
   ],
   imports: [
     AppRoutingModule,

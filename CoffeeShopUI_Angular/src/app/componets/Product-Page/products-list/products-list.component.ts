@@ -146,6 +146,30 @@ export class ProductsListComponent implements OnInit {
   sortProductsBy(orderProducts: ProductInterfaces[]) {
     this.products = orderProducts;
   }
+   getProductOnClick(product:ProductInterfaces) {
+    
+    localStorage.clear;
+    const productData: { [key: string]: string } = {
+      'Product Name': product.name,
+      'SKU': product.sku,
+      'Description': product.description,
+      'Currency': product.currency,
+      'Price': product.price.toString(),
+      'Quantity': product.quantity.toString(),
+      'IsStock': product.isStock.toString(),
+      'ImagePath': product.imagePath,
+      'Category': product.category.name,
+      'Price Promotion': product.promotion ? product.promotion.pricePromotion.toString() : '',
+      'Start Date': product.promotion ? product.promotion.startDate : '',
+      'End Date': product.promotion ? product.promotion.endDate : ''
+    };
   
+    for (const key in productData) {
+      if (Object.prototype.hasOwnProperty.call(productData, key)) {
+        localStorage.setItem(key, productData[key]);
+      }
+    }
   
+    return new Set(Object.values(productData).map(String));
+  }
 }

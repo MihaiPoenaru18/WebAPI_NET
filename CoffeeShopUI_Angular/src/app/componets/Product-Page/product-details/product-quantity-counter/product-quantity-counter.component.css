@@ -1,0 +1,28 @@
+div{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+button{
+    content: "\002B";
+    margin: 5px 3px;
+    background: #9cc4c4;
+    border-radius: 8px;
+    border: 1px solid #9cc4c4;
+    color: white;
+    font-weight: bold;
+    box-shadow: 8px 8px 24px 0px rgba(0, 0, 0, 0.08);
+    padding: 3px 9px;
+    width: 50px;
+    cursor: pointer;
+   
+}
+button:hover{
+    opacity: 0.8;
+}
+span{
+    margin: 0 10px;
+    color: #676d3c;
+    font-weight: bolder;
+}
