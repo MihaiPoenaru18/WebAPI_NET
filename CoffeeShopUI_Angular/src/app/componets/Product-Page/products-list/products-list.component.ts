@@ -83,7 +83,7 @@ export class ProductsListComponent implements OnInit {
       description: 'Description of Product C',
       currency: 'USD',
       price: 25,
-      quantity: 2,
+      quantity: 8,
       isStock: true,
       promotion: {
         pricePromotion: 15,

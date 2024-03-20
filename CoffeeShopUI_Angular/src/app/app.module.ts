@@ -28,6 +28,7 @@ import { CategoryListComponent } from './componets/Product-Page/category-list/ca
 import { CategoriesProductsService } from './services/Product/categories-products.service';
 import { NavbarProductsListComponent } from './componets/Product-Page/navbar-products-list/navbar-products-list.component';
 import { ProductQuantityCounterComponent } from './componets/Product-Page/product-details/product-quantity-counter/product-quantity-counter.component';
+import { ProductDescriptionComponent } from './componets/Product-Page/product-details/product-description/product-description.component';
 
 const appRoutes: Routes = [
   { path: 'sign-up', component: SignUpComponent },
@@ -58,6 +59,7 @@ const appRoutes: Routes = [
     CategoryListComponent,
     NavbarProductsListComponent,
     ProductQuantityCounterComponent,
+    ProductDescriptionComponent,
   ],
   imports: [
     AppRoutingModule,

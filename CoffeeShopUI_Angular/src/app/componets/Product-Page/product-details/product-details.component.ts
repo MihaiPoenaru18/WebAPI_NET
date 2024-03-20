@@ -9,10 +9,11 @@ import { ProductInterfaces } from '../product.interfaces';
 export class ProductDetailsComponent implements OnInit {
   @Output() productInfo: ProductInterfaces | null = null;
   constructor() {}
-
+  
   ngOnInit(): void  {
     this.getProductDataFromLocalStorage();
   }
+  showDescription: boolean = false;
   getProductDataFromLocalStorage() {
     const productData: ProductInterfaces = {
       name: localStorage.getItem('Product Name') || '',
@@ -35,8 +36,11 @@ export class ProductDetailsComponent implements OnInit {
         imagePath: localStorage.getItem('Category ImagePath') || '',
       },
     };
-
+     
     this.productInfo = productData;
     console.log(this.productInfo);
+  }
+  toggleDescription(): void {
+    this.showDescription = !this.showDescription;
   }
 }

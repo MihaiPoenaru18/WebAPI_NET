@@ -1,7 +1,8 @@
 .content {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
   flex-wrap: wrap;
   height: auto;
   width: auto;
@@ -13,11 +14,43 @@
   margin: 64px;
 }
 
+h2 {
+  margin-bottom: 32px;
+}
+ h2{
+  color: #676d3c;
+  font-weight: bold;
+  align-items: center;
+  margin-bottom: 18px;
+ }
+
+.product {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 32px;
+}
+
 img {
   object-fit: cover;
   width: 500px;
   height: 450px;
-  border-radius: 25px;
+  border-radius: 45px;
+}
+img:hover{
+  animation: big 0.6s;
+  animation-delay: 100ms;
+  animation-fill-mode: forwards;
+}
+
+@keyframes big{
+  from {
+    border-radius: 150px;
+  }
+  to {
+    border-radius: none;
+
+    
+  }
 }
 
 .options {
@@ -30,7 +63,7 @@ img {
 
 button {
   background: #9cc4c4;
-  border-radius: 8px;
+  border-radius: 100px;
   border: 1px solid #9cc4c4;
   color: white;
   font-weight: bold;
@@ -41,4 +74,78 @@ button {
   flex-direction: row;
   align-items: center;
   justify-content: center;
+}
+
+.subcontent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: #676d3c;
+  font-weight: bold;
+}
+
+.options p {
+  margin: 8px 0; /* Adjust spacing between paragraphs */
+  font-size: 25px; /* Adjust font size */
+  font-weight: bold; /* Default text color */
+}
+h4{
+  margin-right: 10px;
+
+}
+.toggle {
+  border-radius: 25px;
+  background-color: #9cc4c4;
+  width: 100%;
+  border: 1px solid #9cc4c4;
+  box-shadow: 8px 8px 24px 0px rgba(243, 239, 239, 0.1);
+}
+
+.toggle button {
+  font-size: 20px;
+}
+
+.toggle:hover {
+  animation: description 0.6s;
+  animation-delay: 100ms;
+  animation-fill-mode: forwards;
+}
+
+.toggle button:hover {
+  animation: description 0.6s;
+  animation-delay: 100ms;
+  animation-fill-mode: forwards;
+}
+
+@keyframes description {
+  from { 
+  }
+  to {
+    color: #fafbec;
+    background-color: #676d3c;
+
+    font-weight: bold;
+    border: 1px solid #676d3c;
+  }
+}
+
+button:hover {
+  animation: grow 0.6s;
+  animation-delay: 100ms;
+  animation-fill-mode: forwards;
+}
+@keyframes grow {
+  from {
+    border-radius: 20px;
+  }
+  to {
+    color: #fafbec;
+    background-color: #676d3c;
+    border-radius: 5px;
+    font-weight: bold;
+    border: 1px solid #676d3c;
+  }
+}
+cs-product-description {
+  background-color: #676d3c;
 }
