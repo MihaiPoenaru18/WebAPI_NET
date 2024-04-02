@@ -3,17 +3,19 @@ import { ProductInterfaces } from '../product.interfaces';
 import { ProductsService } from 'src/app//services/Product/products.service';
 import { ChangeDetectorRef } from '@angular/core';
 import { EmailValidator } from '@angular/forms';
+import { CartService } from 'src/app/services/Product/cart.service';
 @Component({
   selector: 'cs-products-list',
   templateUrl: './products-list.component.html',
   styleUrls: ['./products-list.component.css'],
-  providers: [ProductsService],
+  providers: [ProductsService,CartService],
 })
 export class ProductsListComponent implements OnInit {
   isShowCategory: any;
   constructor(
     private productService: ProductsService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private cartSevice: CartService
   ) {}
 
   @Output() showCategory: boolean = false;
@@ -172,4 +174,8 @@ export class ProductsListComponent implements OnInit {
   
     return new Set(Object.values(productData).map(String));
   }
+  putTheProductToCart(product:ProductInterfaces){
+    this.cartSevice.addToCart(product)        
+  }
+
 }

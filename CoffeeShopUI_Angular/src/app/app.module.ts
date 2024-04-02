@@ -29,6 +29,7 @@ import { CategoriesProductsService } from './services/Product/categories-product
 import { NavbarProductsListComponent } from './componets/Product-Page/navbar-products-list/navbar-products-list.component';
 import { ProductQuantityCounterComponent } from './componets/Product-Page/product-details/product-quantity-counter/product-quantity-counter.component';
 import { ProductDescriptionComponent } from './componets/Product-Page/product-details/product-description/product-description.component';
+import { CartService } from './services/Product/cart.service';
 
 const appRoutes: Routes = [
   { path: 'sign-up', component: SignUpComponent },
@@ -75,6 +76,7 @@ const appRoutes: Routes = [
     AuthenticatorService,
     ProductsService,
     CategoriesProductsService,
+    CartService,
   ],
   bootstrap: [AppComponent],
 })

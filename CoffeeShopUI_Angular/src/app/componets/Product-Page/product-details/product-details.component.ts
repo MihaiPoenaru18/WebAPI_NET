@@ -1,16 +1,18 @@
 import { Component, Input, OnInit, Output } from '@angular/core';
 import { ProductInterfaces } from '../product.interfaces';
+import { CartService } from 'src/app/services/Product/cart.service';
 
 @Component({
   selector: 'cs-product-details',
   templateUrl: './product-details.component.html',
   styleUrls: ['./product-details.component.css'],
+  providers: [CartService],
 })
 export class ProductDetailsComponent implements OnInit {
   @Output() productInfo: ProductInterfaces | null = null;
-  constructor() {}
-  
-  ngOnInit(): void  {
+  constructor(private cartSevice: CartService) {}
+
+  ngOnInit(): void {
     this.getProductDataFromLocalStorage();
   }
   showDescription: boolean = false;
@@ -36,11 +38,16 @@ export class ProductDetailsComponent implements OnInit {
         imagePath: localStorage.getItem('Category ImagePath') || '',
       },
     };
-     
+
     this.productInfo = productData;
     console.log(this.productInfo);
   }
   toggleDescription(): void {
     this.showDescription = !this.showDescription;
+  }
+  putTheProductToCart() {
+    if (this.productInfo != null) {
+      this.cartSevice.addToCart(this.productInfo);
+    }
   }
 }

@@ -2,6 +2,9 @@
   display: flex;
   flex-wrap: wrap;
   background-color: #fbfbec;
+  
+   
+
 }
 
 .brand {
@@ -75,7 +78,7 @@ li a:hover {
 }
 .signUP {
   display: flex;
-  justify-content: right;
+  
   width: 200px;
   text-align: right;
   font-family: sans-serif;
@@ -98,6 +101,12 @@ button:hover{
   font-weight: bold;
   color: #fff;
   background-color: #b0b699;
+}
+.cart-icon{
+  margin-left: 120px;
+}
+.cart-icon span{
+
 }
 @media (max-width: 1126px) {
   .signUP {
