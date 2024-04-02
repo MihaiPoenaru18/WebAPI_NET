@@ -15,7 +15,7 @@ export class ProductsListComponent implements OnInit {
   constructor(
     private productService: ProductsService,
     private cdr: ChangeDetectorRef,
-    public cartSevice: CartService
+    private cartSevice: CartService
   ) {}
 
   @Output() showCategory: boolean = false;
