@@ -10,7 +10,7 @@ import { CartService } from 'src/app/services/Product/cart.service';
 })
 export class ProductDetailsComponent implements OnInit {
   @Output() productInfo: ProductInterfaces | null = null;
-  constructor(private cartSevice: CartService) {}
+  constructor(public  cartSevice: CartService) {}
 
   ngOnInit(): void {
     this.getProductDataFromLocalStorage();
@@ -48,6 +48,7 @@ export class ProductDetailsComponent implements OnInit {
   putTheProductToCart() {
     if (this.productInfo != null) {
       this.cartSevice.addToCart(this.productInfo);
+      console.log ("putTheProductToCart product name" + this.productInfo.name + " number= " + this.cartSevice.getNumberOfProducts() )
     }
   }
 }

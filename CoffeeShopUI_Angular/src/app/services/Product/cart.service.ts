@@ -11,12 +11,14 @@ export class CartService {
   constructor() { }
 
   getProducts(): ProductInterfaces[] {
+    console.log(this.products.length)
     return this.products;
   }
 
   addToCart(product: ProductInterfaces): void {
-    this.products.push(product);
-    console.log("product "+ this.products)
+    this.products.push(product)
+    
+    console.log("product "+ product.name + " l= "+ this.products.length)
   }
 
   removeFromCart(product: ProductInterfaces): void {
@@ -27,6 +29,8 @@ export class CartService {
   }
 
   getNumberOfProducts(): number {
+    
+    console.log("s Number "+ this.products.length )
     return this.products.length;
   }
 }

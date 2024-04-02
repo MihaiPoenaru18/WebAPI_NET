@@ -13,10 +13,11 @@ export class HeaderComponent implements OnInit {
   hamburgerVariabel: boolean = true;
   menuIconVariabel: boolean = false;
   menuType: String = 'Home';
-  constructor(private route: Router, public auth: AuthenticatorService, private cartSevices:CartService) {}
+  constructor(private route: Router, public auth: AuthenticatorService, public cartSevices:CartService) {}
   showCart: boolean = false; // Variable to control the display of cart dropdown
   cartProducts: any[] = [
   ];
+  numberOfProductInCart:number=0;
 
   openMenu() {
     if (!this.hamburgerVariabel) {
@@ -43,9 +44,18 @@ export class HeaderComponent implements OnInit {
         }
       }
     });
+   
   }
   toggleCart() {
+    this.addProductToCart()
+    this.showNumberOfProducts()
     this.showCart = !this.showCart; // Toggle the display of cart dropdown
   }
-  
+  showNumberOfProducts(){
+    this.numberOfProductInCart = this.cartSevices.getNumberOfProducts()
+    console.log("number="+ this.numberOfProductInCart)
+  }
+   addProductToCart(){
+    this.cartProducts = this.cartSevices.getProducts();
+   }
 }
