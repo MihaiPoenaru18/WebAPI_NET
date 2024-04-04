@@ -1,0 +1,33 @@
+button {
+    background-color: #676d3c;
+    border: none;
+    border-radius: 25px;
+    color: white;
+    padding: 5px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px 2px;
+    cursor: pointer;
+  }
+  
+.cart-icon button:hover {
+    border-radius: 25px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #b0b699da;
+  
+  }
+  
+  .cart-icon {
+    margin-left: 80px;
+  }
+  
+  .cart-icon button{
+    display: flex;
+    align-items: center;
+    gap: 10px
+  }
+  .cart-icon span {
+  }

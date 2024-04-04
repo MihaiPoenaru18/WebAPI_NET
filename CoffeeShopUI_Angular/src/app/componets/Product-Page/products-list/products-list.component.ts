@@ -8,7 +8,7 @@ import { CartService } from 'src/app/services/Product/cart.service';
   selector: 'cs-products-list',
   templateUrl: './products-list.component.html',
   styleUrls: ['./products-list.component.css'],
-  providers: [ProductsService,CartService],
+  providers: [ProductsService],
 })
 export class ProductsListComponent implements OnInit {
   isShowCategory: any;
@@ -21,7 +21,7 @@ export class ProductsListComponent implements OnInit {
   @Output() showCategory: boolean = false;
   @Output() categoryName: string = '';
 
-   products: ProductInterfaces[] = [
+  products: ProductInterfaces[] = [
     {
       name: 'Tea',
       sku: 'SKU123',
@@ -148,34 +148,46 @@ export class ProductsListComponent implements OnInit {
   sortProductsBy(orderProducts: ProductInterfaces[]) {
     this.products = orderProducts;
   }
-   getProductOnClick(product:ProductInterfaces) {
-    
+  getProductOnClick(product: ProductInterfaces) {
     localStorage.clear;
     const productData: { [key: string]: string } = {
       'Product Name': product.name,
-      'SKU': product.sku,
-      'Description': product.description,
-      'Currency': product.currency,
-      'Price': product.price.toString(),
-      'Quantity': product.quantity.toString(),
-      'IsStock': product.isStock.toString(),
-      'ImagePath': product.imagePath,
-      'Category': product.category.name,
-      'Price Promotion': product.promotion ? product.promotion.pricePromotion.toString() : '',
+      SKU: product.sku,
+      Description: product.description,
+      Currency: product.currency,
+      Price: product.price.toString(),
+      Quantity: product.quantity.toString(),
+      IsStock: product.isStock.toString(),
+      ImagePath: product.imagePath,
+      Category: product.category.name,
+      'Price Promotion': product.promotion
+        ? product.promotion.pricePromotion.toString()
+        : '',
       'Start Date': product.promotion ? product.promotion.startDate : '',
-      'End Date': product.promotion ? product.promotion.endDate : ''
+      'End Date': product.promotion ? product.promotion.endDate : '',
     };
-  
+
     for (const key in productData) {
       if (Object.prototype.hasOwnProperty.call(productData, key)) {
         localStorage.setItem(key, productData[key]);
       }
     }
-  
+
     return new Set(Object.values(productData).map(String));
   }
-  putTheProductToCart(product:ProductInterfaces){
-    this.cartSevice.addToCart(product)        
-  }
 
+  putTheProductToCart(product: ProductInterfaces) {
+    
+    if (product != null) {
+      
+      const productWithQuantity: ProductInterfaces = {
+        ...product,
+        quantity: 1
+      };
+  
+      // Add the product to the cart
+      this.cartSevice.addToCart(productWithQuantity);
+      console.log('Product added to cart:', productWithQuantity.name);
+    }
+  }
 }

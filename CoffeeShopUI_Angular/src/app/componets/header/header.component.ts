@@ -1,61 +1,36 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { AuthenticatorService } from 'src/app/services/Auth/authenticator.service';
 import { CartService } from 'src/app/services/Product/cart.service';
+import { ProductInterfaces } from '../Product-Page/product.interfaces';
 
 @Component({
   selector: 'cs-navbar',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
-  providers: [AuthenticatorService, CartService],
+  providers: [AuthenticatorService],
 })
 export class HeaderComponent implements OnInit {
   hamburgerVariabel: boolean = true;
   menuIconVariabel: boolean = false;
-  menuType: String = 'Home';
-  constructor(private route: Router, public auth: AuthenticatorService, public cartSevices:CartService) {}
-  showCart: boolean = false; // Variable to control the display of cart dropdown
-  cartProducts: any[] = [
-  ];
-  numberOfProductInCart:number=0;
+  menuType: string = 'Home';
+  
+  constructor(private route: Router, public auth: AuthenticatorService) {}
 
   openMenu() {
-    if (!this.hamburgerVariabel) {
-      this.hamburgerVariabel = true;
-    } else {
-      if (this.hamburgerVariabel) this.hamburgerVariabel = false;
-    }
-
-    if (!this.menuIconVariabel) {
-      this.menuIconVariabel = true;
-    } else {
-      if (this.menuIconVariabel) this.menuIconVariabel = false;
-    }
+    this.hamburgerVariabel = !this.hamburgerVariabel;
+    this.menuIconVariabel = !this.menuIconVariabel;
   }
   ngOnInit(): void {
     this.route.events.subscribe((val: any) => {
       if (val.url) {
-        if (val.url.includes('sign-up') || val.url.includes('sign-in')) {
-          this.menuType = 'sign-up';
-          console.warn('sign-up!');
-        } else {
-          console.warn('home');
-          this.menuType = 'Home';
-        }
+        this.menuType =
+          val.url.includes('sign-up') || val.url.includes('sign-in')
+            ? 'sign-up'
+            : 'Home';
+        console.warn(this.menuType === 'sign-up' ? 'sign-up!' : 'home'); // Simplified logging
       }
     });
-   
   }
-  toggleCart() {
-    this.addProductToCart()
-    this.showNumberOfProducts()
-    this.showCart = !this.showCart; // Toggle the display of cart dropdown
-  }
-  showNumberOfProducts(){
-    this.numberOfProductInCart = this.cartSevices.getNumberOfProducts()
-    console.log("number="+ this.numberOfProductInCart)
-  }
-   addProductToCart(){
-    this.cartProducts = this.cartSevices.getProducts();
-   }
 }

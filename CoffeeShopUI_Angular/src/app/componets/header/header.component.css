@@ -2,9 +2,6 @@
   display: flex;
   flex-wrap: wrap;
   background-color: #fbfbec;
-  
-   
-
 }
 
 .brand {
@@ -66,8 +63,9 @@ li a:hover {
   border-radius: 25px;
   font-weight: bold;
   color: #fff;
-  background-color: #b0b699;
+  background-color: #676d3c;
 }
+
 .welcome {
   display: flex;
   justify-content: right;
@@ -78,12 +76,12 @@ li a:hover {
 }
 .signUP {
   display: flex;
-  
   width: 200px;
   text-align: right;
   font-family: sans-serif;
 }
-button{
+
+button {
   background-color: #676d3c;
   border: none;
   border-radius: 25px;
@@ -96,24 +94,18 @@ button{
   margin: 10px 2px;
   cursor: pointer;
 }
-button:hover{
-  border-radius: 25px;
-  font-weight: bold;
-  color: #fff;
-  background-color: #b0b699;
-}
-.cart-icon{
-  margin-left: 120px;
-}
-.cart-icon span{
 
-}
+
 @media (max-width: 1126px) {
   .signUP {
     width: 140px;
   }
 }
 @media (max-width: 1031px) {
+  .navbar{
+    justify-content: flex-start;
+    align-items: stretch;
+  }
   .signUP {
     width: 95px;
   }
@@ -127,6 +119,11 @@ button:hover{
   }
 }
 @media (max-width: 876px) {
+  .navbar{
+    justify-content: flex-start;
+    align-items: stretch;
+  }
+
   ul {
     position: absolute;
     right: 0;
@@ -198,6 +195,11 @@ button:hover{
   }
 }
 @media (max-width: 414px) {
+  
+  .navbar{
+    justify-content: flex-start;
+    align-items: stretch;
+  }
   .menu-icon {
     display: inline;
     position: relative;

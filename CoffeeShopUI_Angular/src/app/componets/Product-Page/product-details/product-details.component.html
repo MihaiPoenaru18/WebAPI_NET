@@ -8,7 +8,7 @@
                 <h4>Prices: </h4>
                 <p>{{ productInfo?.price }}$</p>
             </div>
-            <cs-product-quantity-counter [quantityAvailable]="productInfo?.quantity"></cs-product-quantity-counter>
+            <cs-product-quantity-counter (eventCountQuantity)="getQuatityFromUser($event)" [quantityAvailable]="productInfo?.quantity"   ></cs-product-quantity-counter>
             <div class="subcontent">
 
                 <h4>Available: </h4>

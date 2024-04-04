@@ -6,10 +6,10 @@ import { CartService } from 'src/app/services/Product/cart.service';
   selector: 'cs-product-details',
   templateUrl: './product-details.component.html',
   styleUrls: ['./product-details.component.css'],
-  providers: [CartService],
 })
 export class ProductDetailsComponent implements OnInit {
   @Output() productInfo: ProductInterfaces | null = null;
+  quatity: number = 1;
   constructor(private cartSevice: CartService) {}
 
   ngOnInit(): void {
@@ -42,18 +42,27 @@ export class ProductDetailsComponent implements OnInit {
     this.productInfo = productData;
     console.log(this.productInfo);
   }
+  getQuatityFromUser(quantity: number) {
+    this.quatity = quantity
+    console.log(quantity + '??'+ this.quatity);
+  }
+
   toggleDescription(): void {
     this.showDescription = !this.showDescription;
   }
+
   putTheProductToCart() {
+   
     if (this.productInfo != null) {
-      this.cartSevice.addToCart(this.productInfo);
-      console.log(
-        'putTheProductToCart product name' +
-          this.productInfo.name +
-          ' number= ' +
-          this.cartSevice.getNumberOfProducts()
-      );
+      // Create a new instance of ProductInterfaces with quantity set to 1
+      const productWithQuantity: ProductInterfaces = {
+        ...this.productInfo,
+        quantity: this.quatity,
+      };
+        
+      // Add the product to the cart
+      this.cartSevice.addToCart(productWithQuantity);
+      console.log('Product added to cart:', productWithQuantity.name + "quantity="+ this.quatity);
     }
   }
 }

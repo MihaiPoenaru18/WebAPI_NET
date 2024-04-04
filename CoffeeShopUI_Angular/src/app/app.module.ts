@@ -30,6 +30,7 @@ import { NavbarProductsListComponent } from './componets/Product-Page/navbar-pro
 import { ProductQuantityCounterComponent } from './componets/Product-Page/product-details/product-quantity-counter/product-quantity-counter.component';
 import { ProductDescriptionComponent } from './componets/Product-Page/product-details/product-description/product-description.component';
 import { CartService } from './services/Product/cart.service';
+import { CartComponent } from './componets/cart/cart.component';
 
 const appRoutes: Routes = [
   { path: 'sign-up', component: SignUpComponent },
@@ -61,6 +62,7 @@ const appRoutes: Routes = [
     NavbarProductsListComponent,
     ProductQuantityCounterComponent,
     ProductDescriptionComponent,
+    CartComponent,
   ],
   imports: [
     AppRoutingModule,

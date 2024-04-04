@@ -1,36 +1,56 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ProductInterfaces } from 'src/app/componets/Product-Page/product.interfaces';
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CartService {
+  public productList: ProductInterfaces[] = [];
+  private cartItemList: BehaviorSubject<ProductInterfaces[]> =
+    new BehaviorSubject<ProductInterfaces[]>([]);
 
-  private products: ProductInterfaces[] = [];
+  constructor() {}
 
-  constructor() { }
-
-  getProducts(): ProductInterfaces[] {
-    console.log(this.products.length)
-    return this.products;
+  getProducts() {
+    return this.cartItemList.asObservable();
   }
 
-  addToCart(product: ProductInterfaces): void {
-    this.products.push(product)
-    
-    console.log("product "+ product.name + " l= "+ this.products.length)
+  setProduct(product: ProductInterfaces[]) {
+    this.productList.push(...product);
+    this.cartItemList.next(product);
   }
+
+  addToCart(product: ProductInterfaces) {
+    const existingProductIndex = this.productList.findIndex(
+      (item) => item.name === product.name
+    );
+
+    if (existingProductIndex !== -1 && existingProductIndex <= product.quantity) {
+      // Product already exists in the cart, update its quantity
+      this.productList[existingProductIndex].quantity += product.quantity;
+    } else {
+      // Product does not exist in the cart, add it
+      this.productList.push(product);
+    }
+
+    this.cartItemList.next(this.productList);
+    console.log('cart item length= ' + this.productList.length);
+  }
+
+  getTotalPrice() {}
 
   removeFromCart(product: ProductInterfaces): void {
-    const index = this.products.indexOf(product);
+    const index = this.productList.indexOf(product);
     if (index !== -1) {
-      this.products.splice(index, 1);
+      this.productList.splice(index, 1);
+      this.cartItemList.next([...this.productList]);
+      console.log(
+        'Product ' +
+          product.name +
+          ' removed from cart. Total products: ' +
+          this.productList.length
+      );
     }
-  }
-
-  getNumberOfProducts(): number {
-    
-    console.log("s Number "+ this.products.length )
-    return this.products.length;
   }
 }
