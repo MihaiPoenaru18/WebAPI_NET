@@ -27,10 +27,8 @@ export class CartService {
     );
 
     if (existingProductIndex !== -1 && existingProductIndex <= product.quantity) {
-      // Product already exists in the cart, update its quantity
       this.productList[existingProductIndex].quantity += product.quantity;
     } else {
-      // Product does not exist in the cart, add it
       this.productList.push(product);
     }
 

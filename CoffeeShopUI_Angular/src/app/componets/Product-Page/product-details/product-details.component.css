@@ -3,7 +3,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  flex-wrap: wrap;
   height: auto;
   width: auto;
   border-radius: 8px;
@@ -12,7 +11,7 @@
   box-shadow: 8px 8px 24px 0px rgba(0, 0, 0, 0.08);
   padding: 32px 48px;
   margin: 64px;
- 
+  flex-wrap: nowrap;
 }
 
 h2 {
@@ -150,6 +149,9 @@ cs-product-description {
   background-color: #676d3c;
 }
 @media (max-width: 414px) {
+  .content{
+    padding: 16px 24px;
+  }
   .product {
     flex-direction: column;
   }
@@ -162,6 +164,9 @@ cs-product-description {
   }
 }
 @media (max-width: 360px) {
+  .content{
+    padding: 16px 24px;
+  }
   .product {
     flex-direction: column;
   }

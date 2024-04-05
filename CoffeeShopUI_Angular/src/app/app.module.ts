@@ -31,6 +31,7 @@ import { ProductQuantityCounterComponent } from './componets/Product-Page/produc
 import { ProductDescriptionComponent } from './componets/Product-Page/product-details/product-description/product-description.component';
 import { CartService } from './services/Product/cart.service';
 import { CartComponent } from './componets/cart/cart.component';
+import { CartDropdownComponent } from './componets/cart/cart-dropdown/cart-dropdown.component';
 
 const appRoutes: Routes = [
   { path: 'sign-up', component: SignUpComponent },
@@ -63,6 +64,7 @@ const appRoutes: Routes = [
     ProductQuantityCounterComponent,
     ProductDescriptionComponent,
     CartComponent,
+    CartDropdownComponent,
   ],
   imports: [
     AppRoutingModule,

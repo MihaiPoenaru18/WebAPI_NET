@@ -1,0 +1,5 @@
+<div class="cart-dropdown" *ngIf="showCart">
+    <div *ngFor="let product of cartProducts">
+      {{ product.name }} - {{ product.price }} -{{product.quantity}}
+    </div>
+  </div>

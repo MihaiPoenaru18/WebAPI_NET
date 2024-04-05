@@ -20,7 +20,7 @@
       <li><a [routerLink]="['/sign-in']">Sign In</a></li>
     </ul>
   </div>
-    <cs-cart></cs-cart>
+    <cs-cart (eventShowCartIcon)="showCartIcon($event)"></cs-cart>
   <ul *ngIf="auth.isAuthenticated" [class.welcome]="auth.isAuthenticated" [class.menuClass]="hamburgerVariabel">
     <li><a routerLink="userInfo">Welcome {{auth.getName}}</a></li>
     <li><button (click)="auth.logout()">Logout</button></li>

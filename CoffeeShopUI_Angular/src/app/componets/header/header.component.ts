@@ -15,7 +15,7 @@ export class HeaderComponent implements OnInit {
   hamburgerVariabel: boolean = true;
   menuIconVariabel: boolean = false;
   menuType: string = 'Home';
-  
+  numberOfProductsFromCart = 0;
   constructor(private route: Router, public auth: AuthenticatorService) {}
 
   openMenu() {
@@ -32,5 +32,8 @@ export class HeaderComponent implements OnInit {
         console.warn(this.menuType === 'sign-up' ? 'sign-up!' : 'home'); // Simplified logging
       }
     });
+  }
+  showCartIcon(numberOfProducts:number){
+    this.numberOfProductsFromCart = numberOfProducts;
   }
 }

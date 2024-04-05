@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ProductInterfaces } from '../Product-Page/product.interfaces';
 import { CartService } from 'src/app/services/Product/cart.service';
 
@@ -12,6 +12,8 @@ export class CartComponent implements OnInit {
   showCart: boolean = false;
   cartProducts: ProductInterfaces[] = [];
   numberOfProductInCart: number = 0;
+  @Output() eventShowCartIcon = new EventEmitter<number>();
+
   ngOnInit(): void {
     this.cartService.getProducts().subscribe((items) => {
       this.cartProducts = items;
@@ -31,5 +33,8 @@ export class CartComponent implements OnInit {
   showNumberOfProducts() {
     this.numberOfProductInCart = this.cartProducts.length;
     console.log('--number = ' + this.numberOfProductInCart); // Logging observable
+  }
+  showTheCart(){
+    this.eventShowCartIcon.emit(this.numberOfProductInCart)
   }
 }
