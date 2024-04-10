@@ -32,15 +32,15 @@ import { ProductDescriptionComponent } from './componets/Product-Page/product-de
 import { CartService } from './services/Product/cart.service';
 import { CartComponent } from './componets/cart/cart.component';
 import { CartDropdownComponent } from './componets/cart/cart-dropdown/cart-dropdown.component';
-import { ContactComponent } from './componets/contact/contact.component';
-import { ContactUsFormComponent } from './componets/contact/contact-us-form/contact-us-form.component';
-import { ContactInfoComponent } from './componets/contact/contact-info/contact-info.component';
+import { ContactPageComponent } from './componets/contact-page/contact-page.component';
+import { ContactUsFormComponent } from './componets/contact-page/contact-us-form/contact-us-form.component';
+import { ContactInfoComponent } from './componets/contact-page/contact-info/contact-info.component';
 
 const appRoutes: Routes = [
   { path: 'sign-up', component: SignUpComponent },
   { path: 'sign-in', component: SignInComponent },
   { path: 'userInfo', component: UserinfoComponent },
-  {path : 'contact', component: ContactComponent},
+  {path : 'contact', component: ContactPageComponent},
   { path: 'products-list', component: ProductsListComponent },
   { path: 'products-details', component: ProductDetailsComponent },
   { path: 'Home', component: HomeComponent },
@@ -70,9 +70,9 @@ const appRoutes: Routes = [
     ProductDescriptionComponent,
     CartComponent,
     CartDropdownComponent,
-    ContactComponent,
     ContactUsFormComponent,
     ContactInfoComponent,
+    ContactPageComponent,
   ],
   imports: [
     AppRoutingModule,
