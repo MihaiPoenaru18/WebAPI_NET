@@ -1,7 +1,7 @@
 <nav class="navbar">
   <div class="brand">
-    <img href="#home" src="assets/images/logo.png" alt="image">
-    <a routerLink="">Coffee Master</a>
+    <img src="assets/images/logo.png" alt="image">
+    <a routerLink="Home">Coffee Master</a>
   </div>
 
   <div class="menu-icon" [class.menu_icon_class]="menuIconVariabel" (click)="openMenu()">
@@ -12,7 +12,7 @@
   <ul [class.menuClass]="hamburgerVariabel">
     <li><a routerLink="Home">Home</a></li>
     <li><a routerLink="/products-list">Products</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a routerLink="/contact">Contact</a></li>
   </ul>
   
   <div *ngIf="!auth.isAuthenticated">
