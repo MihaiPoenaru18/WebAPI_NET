@@ -1,1 +1,21 @@
-.container {}
+.container {
+  display: flex;
+  flex-direction: column;
+}
+.first-row{
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
+.socialMedia-container{
+
+  margin: 48px;
+  background-color: #fbfbec;
+  border-radius: 8px;
+  border: 1px solid #d1d9e6;
+  background: #fbfbec;
+  box-shadow: 8px 8px 24px 0px rgba(0, 0, 0, 0.08);
+  padding: 16px 20px;
+  color: #676d3c;
+  font-weight: bold;
+}
