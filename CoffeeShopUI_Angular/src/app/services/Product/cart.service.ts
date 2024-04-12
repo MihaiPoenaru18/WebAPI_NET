@@ -9,8 +9,18 @@ export class CartService {
   public productList: ProductInterfaces[] = [];
   private cartItemList: BehaviorSubject<ProductInterfaces[]> =
     new BehaviorSubject<ProductInterfaces[]>([]);
+  public totalPrices$: Observable<number>;
 
-  constructor() {}
+  constructor() {
+    this.totalPrices$ = this.cartItemList.pipe(
+      map((products) => {
+        return products.reduce(
+          (total, product) => total + product.price * product.quantity,
+          0
+        );
+      })
+    );
+  }
 
   getProducts() {
     return this.cartItemList.asObservable();
@@ -26,17 +36,18 @@ export class CartService {
       (item) => item.name === product.name
     );
 
-    if (existingProductIndex !== -1 && existingProductIndex <= product.quantity) {
+    if (
+      existingProductIndex !== -1 &&
+      existingProductIndex <= product.quantity
+    ) {
       this.productList[existingProductIndex].quantity += product.quantity;
     } else {
       this.productList.push(product);
     }
-
     this.cartItemList.next(this.productList);
+
     console.log('cart item length= ' + this.productList.length);
   }
-
-  getTotalPrice() {}
 
   removeFromCart(product: ProductInterfaces): void {
     const index = this.productList.indexOf(product);

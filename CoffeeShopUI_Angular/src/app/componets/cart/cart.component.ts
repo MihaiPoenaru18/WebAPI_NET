@@ -9,12 +9,13 @@ import { CartService } from 'src/app/services/Product/cart.service';
 })
 export class CartComponent implements OnInit {
   constructor(private cartService: CartService) {}
-  showCart: boolean = false;
   cartProducts: ProductInterfaces[] = [];
   numberOfProductInCart: number = 0;
+  showCart: boolean = false;
   @Output() eventShowCartIcon = new EventEmitter<number>();
 
   ngOnInit(): void {
+    this.toggleCart()
     this.cartService.getProducts().subscribe((items) => {
       this.cartProducts = items;
       this.numberOfProductInCart = items.length;

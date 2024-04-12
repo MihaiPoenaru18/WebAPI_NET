@@ -22,6 +22,8 @@ h3{
 }
 a {
   display: flex;
+  
+  
   flex-direction: row;
   gap: 24px;
 }

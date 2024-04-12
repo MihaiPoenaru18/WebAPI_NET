@@ -13,11 +13,19 @@ button {
 }
 
 .cart-icon button:hover {
+  display: block;
   border-radius: 25px;
   font-weight: bold;
   color: #fff;
   background-color: #b0b699da;
+  
 }
+.hide{
+  position: fixed;
+  right: 1.5%;
+  z-index: 1; 
+}
+
 @media (max-width: 414px) {
   .cart-icon {
     margin-left: 120px;
@@ -30,5 +38,4 @@ button {
 }
 .cart-icon span {
   font-weight: bold;
-  
 }

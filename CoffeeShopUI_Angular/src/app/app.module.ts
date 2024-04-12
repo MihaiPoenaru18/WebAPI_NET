@@ -35,17 +35,18 @@ import { CartDropdownComponent } from './componets/cart/cart-dropdown/cart-dropd
 import { ContactPageComponent } from './componets/contact-page/contact-page.component';
 import { ContactUsFormComponent } from './componets/contact-page/contact-us-form/contact-us-form.component';
 import { ContactInfoComponent } from './componets/contact-page/contact-info/contact-info.component';
+import { OrderPageComponent } from './componets/order-page/order-page.component';
 
 const appRoutes: Routes = [
   { path: 'sign-up', component: SignUpComponent },
   { path: 'sign-in', component: SignInComponent },
   { path: 'userInfo', component: UserinfoComponent },
-  {path : 'contact', component: ContactPageComponent},
+  { path: 'order-page', component: OrderPageComponent },
+  { path: 'contact', component: ContactPageComponent },
   { path: 'products-list', component: ProductsListComponent },
   { path: 'products-details', component: ProductDetailsComponent },
   { path: 'Home', component: HomeComponent },
- 
-  { path: '**', component: HomeComponent }
+  { path: '**', component: HomeComponent },
 ];
 
 @NgModule({
@@ -73,6 +74,7 @@ const appRoutes: Routes = [
     ContactUsFormComponent,
     ContactInfoComponent,
     ContactPageComponent,
+    OrderPageComponent,
   ],
   imports: [
     AppRoutingModule,
