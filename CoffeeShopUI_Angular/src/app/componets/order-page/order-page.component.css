@@ -1,5 +1,23 @@
-.container {
+.containers{
   display: flex;
+  flex-direction: row;
+ justify-content: center;
+}
+h5 {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  color: #676d3c;
+  margin: 16px  0px;
+  font-size: 25px;
+ 
+}
+
+svg{
+ margin-right: 10px ;
+}
+
+.container {
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -13,6 +31,73 @@
   margin: 64px;
   flex-wrap: nowrap;
 }
+
 hr{
     color: #676d3c;
+    width: 100%;
+}
+
+.product-list {
+  height: auto;
+
+}
+form{
+
+}
+input{
+  border-radius: 60px;
+    border: 1px solid #676d3c;
+    background: #fff;
+    height: 48px;
+    padding: 8px 10px 8px 24px;
+    text-align: center;
+    align-items: center;
+}
+
+section{
+  display: flex;
+  flex-direction: row;
+}
+.icon svg{
+  position: relative;
+  left: 35px;
+  bottom:3px;
+}
+.email form{
+  display: flex;
+  flex-direction: column;
+  gap:16px;
+  justify-content: center;
+  align-items: center;
+}
+.vl {
+  border-radius:20px ;
+  margin: 16px 24px;
+  height: auto;
+  border-left: 1px solid #676d3c;
+  opacity: 0.25;
+  
+}
+.order-form form{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+input{
+  width: 250px;
+  height: 36px;
+}
+.row{
+  margin-left: 3px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 32px;
+  
+}
+footer{
+  background-color: #fbfbec;
 }

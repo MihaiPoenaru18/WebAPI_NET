@@ -3,7 +3,7 @@
   flex-direction: column;
   margin: 48px 48px 0px 48px;
   height: auto;
-  width: 900px;
+  width: 500px;
   border-radius: 8px;
   border: 1px solid #d1d9e6;
   background: #fbfbec;
@@ -22,13 +22,13 @@ h3{
 }
 a {
   display: flex;
-  
-  
+  text-decoration: none;
+  color:#676d3c;
   flex-direction: row;
   gap: 24px;
 }
 iframe {
-  width: 900px;
+  width: 500px;
   height: 100px;
   margin: 0px 48px 48px 48px;
   border-radius: 8px;

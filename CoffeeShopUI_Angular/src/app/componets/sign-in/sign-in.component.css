@@ -35,11 +35,7 @@ input{
    left: 35px;
    bottom:3px;
 }
-.icon svg{
-    position: relative;
-    left: 35px;
-    bottom:3px;
- }
+
 input[type=submit]{
     margin: 32px 15px;
     color: #eaebe1;
