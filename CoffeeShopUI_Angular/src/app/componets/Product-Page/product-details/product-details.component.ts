@@ -43,8 +43,7 @@ export class ProductDetailsComponent implements OnInit {
     console.log(this.productInfo);
   }
   getQuatityFromUser(quantity: number) {
-    this.quatity = quantity
-    console.log(quantity + '??'+ this.quatity);
+    this.quatity = quantity;
   }
 
   toggleDescription(): void {
@@ -52,17 +51,13 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   putTheProductToCart() {
-   
     if (this.productInfo != null) {
-      // Create a new instance of ProductInterfaces with quantity set to 1
       const productWithQuantity: ProductInterfaces = {
         ...this.productInfo,
         quantity: this.quatity,
       };
-        
-      // Add the product to the cart
+
       this.cartSevice.addToCart(productWithQuantity);
-      console.log('Product added to cart:', productWithQuantity.name + "quantity="+ this.quatity);
     }
   }
 }

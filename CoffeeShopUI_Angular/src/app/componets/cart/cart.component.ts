@@ -23,17 +23,11 @@ export class CartComponent implements OnInit {
   }
 
   toggleCart() {
-    this.showCart = !this.showCart; // Toggle the display of cart dropdown
-    console.log(
-      'products.length:' +
-        this.cartProducts.length +
-        'show cart is -' +
-        this.showCart
-    );
+    this.showCart = !this.showCart; 
+    
   }
   showNumberOfProducts() {
     this.numberOfProductInCart = this.cartProducts.length;
-    console.log('--number = ' + this.numberOfProductInCart); // Logging observable
   }
   showTheCart(){
     this.eventShowCartIcon.emit(this.numberOfProductInCart)

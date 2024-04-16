@@ -1,22 +1,6 @@
 <div class="cart-dropdown" *ngIf="showCart">
   <h5> Last added</h5>
   <hr>
-  <div class="in-cart">
-    <div class="product-info" *ngFor="let product of cartProducts">
-      <img src="{{ product?.imagePath }}" alt="{{ product?.name }} Image">
-      <p>{{ product.name }}</p>
-      <p>x{{product.quantity}}</p>
-      <p class="price"> {{product.price}}$</p>
-      <button (click)="removeProduct(product)">X</button>
-    </div>
-    <hr>
-    <div class="total">
-      <p>Total:</p>
-      <p> {{cartProducts.length}} products</p>
-      <p></p>
-      <p class="price">{{totalPrice}} $ </p>
-    </div>
-
-  </div>
+  <cs-cart-product [cartProducts]="cartDropDownProducts"></cs-cart-product>
   <a routerLink="order-page"> Show the cart </a>
 </div>
