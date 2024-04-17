@@ -12,21 +12,23 @@
   color: #676d3c;
   font-weight: bold;
 }
-h3{
-    color: #676d3c;
+h3 {
+  color: #676d3c;
 }
 
 .info {
   display: flex;
   flex-direction: column;
 }
+
 a {
   display: flex;
   text-decoration: none;
-  color:#676d3c;
+  color: #676d3c;
   flex-direction: row;
   gap: 24px;
 }
+
 iframe {
   width: 500px;
   height: 100px;
