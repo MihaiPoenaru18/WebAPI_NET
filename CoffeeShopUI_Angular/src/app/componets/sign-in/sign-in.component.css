@@ -11,52 +11,8 @@ h1{
     margin-bottom: 48px;
     justify-content: center;
 }
-.fields{
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    gap:24px
-}
-input{
-    color: black;
-    width: 350px;
-    font-size: 16px;
-    border-radius: 60px;
-    border: 1px solid #676d3c;
-    background:  #FFF;
-    height: 48px;
-    padding: 12px 44px;
-    text-align: left;
-    font-size: 20px;
-}
-.icon svg{
-   position: relative;
-   left: 35px;
-   bottom:3px;
-}
 
-input[type=submit]{
-    margin: 32px 15px;
-    color: #eaebe1;
-    font-weight: bold;
-    padding: 0px 3px;
-    background-color:#676d3c; 
-    text-align: center;
-}
-p{
-    display: flex;
-    justify-content: center;
-    color: #4e5322;
-}
 a{
     text-decoration: none;
     color: #1764ca;
-}
-.invalid{
-    border: 2px solid red;
-    fill: red;
-}.valid{
-    border: 2px solid green;
-    fill: green;
 }

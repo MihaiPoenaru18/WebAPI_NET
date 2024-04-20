@@ -37,6 +37,9 @@ import { ContactUsFormComponent } from './componets/contact-page/contact-us-form
 import { ContactInfoComponent } from './componets/contact-page/contact-info/contact-info.component';
 import { OrderPageComponent } from './componets/order-page/order-page.component';
 import { CartProductComponent } from './componets/cart/cart-product/cart-product.component';
+import { OrderForRegisterUserComponent } from './componets/order-page/order-for-register-user/order-for-register-user.component';
+import { OrderForUnregisterUserComponent } from './componets/order-page/order-for-unregister-user/order-for-unregister-user.component';
+import { CredentialsComponent } from './componets/sign-in/credentials/credentials.component';
 
 const appRoutes: Routes = [
   { path: 'sign-up', component: SignUpComponent },
@@ -77,6 +80,9 @@ const appRoutes: Routes = [
     ContactPageComponent,
     OrderPageComponent,
     CartProductComponent,
+    OrderForRegisterUserComponent,
+    OrderForUnregisterUserComponent,
+    CredentialsComponent,
   ],
   imports: [
     AppRoutingModule,

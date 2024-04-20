@@ -1,21 +1,16 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ProductInterfaces } from '../../Product-Page/product.interfaces';
 import { CartService } from 'src/app/services/Product/cart.service';
-import { ProductInterfaces } from '../Product-Page/product.interfaces';
-import { AuthenticatorService } from 'src/app/services/Auth/authenticator.service';
 
 @Component({
-  selector: 'cs-order-page',
-  templateUrl: './order-page.component.html',
-  styleUrls: ['./order-page.component.css'],
+  selector: 'cs-order-for-unregister-user',
+  templateUrl: './order-for-unregister-user.component.html',
+  styleUrls: ['./order-for-unregister-user.component.css']
 })
-export class OrderPageComponent implements OnInit {
+export class OrderForUnregisterUserComponent implements OnInit {
   @Input() cartProductsFromOrderpage: ProductInterfaces[];
   totalPrice: number = 0;
-  constructor(
-    private cartService: CartService,
-    public auth: AuthenticatorService
-  ) {}
-
+  constructor(private cartService: CartService) {}
   ngOnInit() {
     this.getProducts();
     this.totalPriceProduct();
