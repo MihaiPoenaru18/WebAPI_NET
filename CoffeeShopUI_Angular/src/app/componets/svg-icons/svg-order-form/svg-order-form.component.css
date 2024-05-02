@@ -1,0 +1,13 @@
+.input {
+  position: relative;
+  top: 5px;
+  left: 44px;
+  width: 18px;
+}
+.invalid {
+  fill: red;
+}
+
+.valid {
+  fill: green;
+}

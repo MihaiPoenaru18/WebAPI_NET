@@ -18,7 +18,6 @@ import { Route, RouterModule, Routes } from '@angular/router';
 import { SignUpComponent } from './componets/sign-up/sign-up.component';
 import { HomeComponent } from './componets/home/home.component';
 import { SignInComponent } from './componets/sign-in/sign-in.component';
-import { SvgSignUpComponent } from './componets/svg-sign-up/svg-sign-up.component';
 import { SvgFooterComponent } from './componets/footer/svg-footer/svg-footer.component';
 import { UserinfoComponent } from './componets/userinfo/userinfo.component';
 import { ProductsListComponent } from './componets/Product-Page/products-list/products-list.component';
@@ -40,6 +39,8 @@ import { CartProductComponent } from './componets/cart/cart-product/cart-product
 import { OrderForRegisterUserComponent } from './componets/order-page/order-for-register-user/order-for-register-user.component';
 import { OrderForUnregisterUserComponent } from './componets/order-page/order-for-unregister-user/order-for-unregister-user.component';
 import { CredentialsComponent } from './componets/sign-in/credentials/credentials.component';
+import { SvgOrderFormComponent } from './componets/svg-icons/svg-order-form/svg-order-form.component';
+import { SvgSignUpComponent } from './componets/svg-icons/svg-sign-up/svg-sign-up.component';
 
 const appRoutes: Routes = [
   { path: 'sign-up', component: SignUpComponent },
@@ -83,6 +84,7 @@ const appRoutes: Routes = [
     OrderForRegisterUserComponent,
     OrderForUnregisterUserComponent,
     CredentialsComponent,
+    SvgOrderFormComponent,
   ],
   imports: [
     AppRoutingModule,

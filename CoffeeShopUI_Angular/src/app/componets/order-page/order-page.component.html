@@ -1,23 +1,19 @@
 <div class="containers">
     <div class="container product-list">
-        <h5 style=" width: 200px;"> <svg width="25" height="25" viewBox="0 0 16 16" fill="none"
-                xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M5.92875 1.7572C6.07082 1.52041 5.99404 1.21328 5.75725 1.07121C5.52046 0.929133 5.21333 1.00592 5.07125 1.24271L2.2169 5.99995H0.5C0.223858 5.99995 0 6.22381 0 6.49995V7.49995C0 7.7761 0.223858 7.99995 0.5 7.99995H1.12285L2.96743 14.456C3.05943 14.778 3.35372 15 3.68858 15H12.3114C12.6463 15 12.9406 14.778 13.0326 14.456L14.8772 7.99995H15.5C15.7761 7.99995 16 7.7761 16 7.49995V6.49995C16 6.22381 15.7761 5.99995 15.5 5.99995H13.7831L10.9287 1.24271C10.7867 1.00592 10.4795 0.929133 10.2428 1.07121C10.006 1.21328 9.92918 1.52041 10.0713 1.7572L12.6169 5.99995H3.3831L5.92875 1.7572ZM4 10C4 9.44772 4.44772 9 5 9C5.55228 9 6 9.44772 6 10V12C6 12.5523 5.55228 13 5 13C4.44772 13 4 12.5523 4 12V10ZM7 10C7 9.44772 7.44772 9 8 9C8.55228 9 9 9.44772 9 10V12C9 12.5523 8.55228 13 8 13C7.44772 13 7 12.5523 7 12V10ZM11 9C11.5523 9 12 9.44772 12 10V12C12 12.5523 11.5523 13 11 13C10.4477 13 10 12.5523 10 12V10C10 9.44772 10.4477 9 11 9Z"
-                    fill="#676d3c" />
-            </svg>
-
-            Your Products </h5>
+        <h5 style=" width: 200px;">
+            <cs-svg-order-form [svgName]="'basketProductSVG'">
+            </cs-svg-order-form>
+            Your Products
+        </h5>
         <cs-cart-product [cartProducts]="cartProductsFromOrderpage"></cs-cart-product>
     </div>
     <div class="container form-area">
 
-        <h5><svg width="25" height="25" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd"
-                    d="M15.5285 2.97293C15.8133 3.08683 16 3.36261 16 3.66929V12.3308C16 12.6374 15.8133 12.9132 15.5285 13.0271L8.27854 15.9271C8.09974 15.9987 7.90026 15.9987 7.72146 15.9271L0.471457 13.0271C0.186713 12.9132 0 12.6374 0 12.3308V3.66929C0 3.36261 0.186713 3.08683 0.471457 2.97293L7.44291 0.184311C7.44599 0.18308 7.44908 0.181859 7.45216 0.180648L7.72146 0.0729296C7.90026 0.00140642 8.09974 0.00140615 8.27854 0.0729295L8.54787 0.180658C8.55094 0.181865 8.55402 0.183083 8.55709 0.184311L15.5285 2.97293ZM10.4037 2.00001L4.25 4.46148L1.84633 3.50001L1 3.83855V4.23852L7.5 6.83852V14.7615L8 14.9615L8.5 14.7615V6.83852L15 4.23852V3.83855L14.1537 3.50001L8 5.96148L5.59629 5L11.75 2.53853L10.4037 2.00001Z"
-                    fill="#676d3c" />
-            </svg>
-            Finish your order </h5>
+        <h5>
+            <cs-svg-order-form [svgName]="'OrderBoxSVG'">
+            </cs-svg-order-form>
+            Finish your order
+        </h5>
         <hr>
         <section>
             <cs-order-for-unregister-user class="block-left"
@@ -25,26 +21,57 @@
             <cs-order-for-register-user class="block-left" *ngIf="auth.isAuthenticated"></cs-order-for-register-user>
             <div class="vl"></div>
             <div class="order-form">
-                <h4><svg width="20" height="20" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M15.5016 1.93934C15.6969 2.1346 15.6969 2.45118 15.5016 2.64645L14.4587 3.68933L12.4587 1.68933L13.5016 0.646447C13.6969 0.451184 14.0134 0.451185 14.2087 0.646447L15.5016 1.93934Z"
-                            fill="#676d3c" />
-                        <path
-                            d="M13.7516 4.39644L11.7516 2.39644L4.93861 9.20943C4.88372 9.26432 4.84237 9.33123 4.81782 9.40487L4.01326 11.8186C3.94812 12.014 4.13405 12.1999 4.32949 12.1348L6.74317 11.3302C6.81681 11.3057 6.88372 11.2643 6.93861 11.2094L13.7516 4.39644Z"
-                            fill="#676d3c" />
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M1 13.5C1 14.3284 1.67157 15 2.5 15H13.5C14.3284 15 15 14.3284 15 13.5V7.5C15 7.22386 14.7761 7 14.5 7C14.2239 7 14 7.22386 14 7.5V13.5C14 13.7761 13.7761 14 13.5 14H2.5C2.22386 14 2 13.7761 2 13.5V2.5C2 2.22386 2.22386 2 2.5 2H9C9.27614 2 9.5 1.77614 9.5 1.5C9.5 1.22386 9.27614 1 9 1H2.5C1.67157 1 1 1.67157 1 2.5V13.5Z"
-                            fill="#676d3c" />
-                    </svg>
-
-                    Your delivery information </h4>
+                <h4>
+                    <cs-svg-order-form [svgName]="'FormH4SVG'">
+                    </cs-svg-order-form>
+                    Your delivery information
+                </h4>
                 <hr>
-                <form>
-                    <input placeholder="Region">
-                    <input placeholder="Country">
-                    <input placeholder="Address">
-                    <input placeholder="Telefon">
-                    <input placeholder="Post code">
+                <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
+                    <div class="icon-form">
+                        <cs-svg-order-form [svgName]="'regionSVG'" [validForm]="validationField('region')"
+                            [invalidForm]="validationField('region') ">
+                        </cs-svg-order-form>
+                        <input formControlName="region" [class.invalid]="signInForm.get('region')?.invalid &&
+                        (signInForm.get('region')?.dirty || signInForm.get('region')?.touched)"
+                            [class.valid]="signInForm.get('region')?.valid" type="text"
+                            placeholder="{{MessagePlaceholder('region','Region')}}">
+                    </div>
+                    <div class="icon-form">
+                        <cs-svg-order-form [svgName]="'CountrySVG'" [validForm]="validationField('country')"
+                            [invalidForm]="validationField('country') ">
+                        </cs-svg-order-form>
+                        <input formControlName="country" [class.invalid]="signInForm.get('region')?.invalid &&
+                        (signInForm.get('country')?.dirty || signInForm.get('country')?.touched)"
+                            [class.valid]="signInForm.get('country')?.valid" type="text"
+                            placeholder="{{MessagePlaceholder('country','Country')}}">
+                    </div>
+                    <div class="icon-form">
+                        <cs-svg-order-form [svgName]="'addressSVG'" [validForm]="validationField('address')"
+                            [invalidForm]="validationField('address') ">
+                        </cs-svg-order-form>
+                        <input formControlName="address" [class.invalid]="signInForm.get('address')?.invalid &&
+                        (signInForm.get('address')?.dirty || signInForm.get('address')?.touched)"
+                            [class.valid]="signInForm.get('address')?.valid" type="text"
+                            placeholder="{{MessagePlaceholder('address','Address')}}">
+                    </div>
+                    <div class="icon-form"> <cs-svg-order-form [svgName]="'TelefonSVG'"
+                            [validForm]="validationField('telephone')" [invalidForm]="validationField('telephone') ">
+                        </cs-svg-order-form><input formControlName="telephone" [class.invalid]="signInForm.get('telephone')?.invalid &&
+                        (signInForm.get('telephone')?.dirty || signInForm.get('telephone')?.touched)"
+                            [class.valid]="signInForm.get('telephone')?.valid" type="text"
+                            placeholder="{{MessagePlaceholder('telephone','Phone Number')}}">
+                    </div>
+
+                    <div class="icon-form"> <cs-svg-order-form [svgName]="'postCodeSVG'"
+                            [validForm]="validationField('postCode')" [invalidForm]="validationField('postCode') ">
+                        </cs-svg-order-form>
+                        <input formControlName="postCode" [class.invalid]="signInForm.get('region')?.invalid &&
+                        (signInForm.get('region')?.dirty || signInForm.get('region')?.touched)"
+                            [class.valid]="signInForm.get('postCode')?.valid" type="text"
+                            placeholder="{{MessagePlaceholder('postCode','Post Code')}}" placeholder="Post code">
+                    </div>
+
                 </form>
             </div>
         </section>

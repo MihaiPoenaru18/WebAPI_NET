@@ -80,6 +80,11 @@ section {
   flex-wrap: wrap;
   gap: 24px;
 }
+form{
+  display: flex;
+  align-items: center;
+  
+}
 
 input {
   display: flex;
@@ -104,12 +109,27 @@ input[type="submit"] {
   background-color: #676d3c;
   text-align: center;
 }
+cs-svg-order-form{
+  position: relative;
+  margin-right: 10px;
+}
+.icon-form{
+  display: flex;
+
+}
 .row {
   margin-left: 3px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   gap: 32px;
+}
+.invalid{
+  border: 2px solid red;
+  fill: red;
+}.valid{
+  border: 2px solid green;
+  fill: green;
 }
 button {
   margin-top: 32px;

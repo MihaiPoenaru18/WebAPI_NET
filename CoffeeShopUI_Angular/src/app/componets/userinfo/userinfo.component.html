@@ -13,7 +13,7 @@
         </div>
         <div *ngIf="email == null" [formGroup]="form" class="password">
             <cs-svg-sign-up [svgName]="'passwordSVG'" [validForm]="validationField('password')"
-                [invalidForm]="validationField('password') ">s
+                [invalidForm]="validationField('password') ">
             </cs-svg-sign-up>
             <input formControlName="password" 
             [class.invalid]="form.get('password')?.invalid &&
