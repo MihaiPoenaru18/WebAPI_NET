@@ -8,14 +8,17 @@ import { UserInfoInterface } from './userInfo.interfaces';
   providedIn: 'root',
 })
 export class AuthenticatorService {
+  private apiUrl = 'https://localhost:7282/api/Auth';
+
   @Input() isSubmitted = false;
   @Input() isRegistered = false;
   @Input() info: UserInfoInterface;
   constructor(private http: HttpClient, private router: Router) {}
 
+  
   register(requestBody: any, form: FormGroup) {
     this.http
-      .post<any>('https://localhost:7282/api/Auth/RegisterUser', requestBody)
+      .post<any>(`${this.apiUrl}/RegisterUser`, requestBody)
       .subscribe({
         next: (response) => {
           console.log('POST request successful', response);
@@ -26,6 +29,7 @@ export class AuthenticatorService {
           }
           form.reset();
           this.isRegistered = true;
+          
         },
         error: (error) => {
           console.error('POST request failed', error);
@@ -42,7 +46,7 @@ export class AuthenticatorService {
 
   login(requestBody: any, form: FormGroup) {
     this.http
-      .post<any>('https://localhost:7282/api/Auth/Authenticate', requestBody)
+      .post<any>(`${this.apiUrl}/Authenticate`, requestBody)
       .subscribe({
         next: (response) => {
           console.log('POST request successful', response);
@@ -65,9 +69,10 @@ export class AuthenticatorService {
         },
       });
   }
+
   userInfo(credentials: any) {
     this.http
-      .post<any>('https://localhost:7282/api/Auth/GetUserInfo', credentials)
+      .post<any>(`${this.apiUrl}/GetUserInfo`, credentials)
       .subscribe({
         next: (response) => {
           console.log('POST request successful', response);
@@ -89,12 +94,15 @@ export class AuthenticatorService {
         },
       });
   }
+
   get getName() {
     return localStorage.getItem('name');
   }
+
   get getEmail() {
     return localStorage.getItem('email');
   }
+
   get isAuthenticated() {
     return !!localStorage.getItem('token_valid');
   }
@@ -105,4 +113,5 @@ export class AuthenticatorService {
     localStorage.removeItem('token_valid');
     this.isSubmitted = false;
   }
+  
 }

@@ -27,60 +27,55 @@
                     Your delivery information
                 </h4>
                 <hr>
-                <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
+                <form [formGroup]="orderForm">
                     <div class="icon-form">
                         <cs-svg-order-form [svgName]="'regionSVG'" [validForm]="validationField('region')"
                             [invalidForm]="validationField('region') ">
                         </cs-svg-order-form>
-                        <input formControlName="region" [class.invalid]="signInForm.get('region')?.invalid &&
-                        (signInForm.get('region')?.dirty || signInForm.get('region')?.touched)"
-                            [class.valid]="signInForm.get('region')?.valid" type="text"
+                        <input formControlName="region" [class.invalid]="orderForm.get('region')?.invalid &&
+                        (orderForm.get('region')?.dirty || orderForm.get('region')?.touched)"
+                            [class.valid]="orderForm.get('region')?.valid" type="text"
                             placeholder="{{MessagePlaceholder('region','Region')}}">
                     </div>
                     <div class="icon-form">
                         <cs-svg-order-form [svgName]="'CountrySVG'" [validForm]="validationField('country')"
                             [invalidForm]="validationField('country') ">
                         </cs-svg-order-form>
-                        <input formControlName="country" [class.invalid]="signInForm.get('region')?.invalid &&
-                        (signInForm.get('country')?.dirty || signInForm.get('country')?.touched)"
-                            [class.valid]="signInForm.get('country')?.valid" type="text"
+                        <input formControlName="country" [class.invalid]="orderForm.get('region')?.invalid &&
+                        (orderForm.get('country')?.dirty || orderForm.get('country')?.touched)"
+                            [class.valid]="orderForm.get('country')?.valid" type="text"
                             placeholder="{{MessagePlaceholder('country','Country')}}">
                     </div>
                     <div class="icon-form">
                         <cs-svg-order-form [svgName]="'addressSVG'" [validForm]="validationField('address')"
                             [invalidForm]="validationField('address') ">
                         </cs-svg-order-form>
-                        <input formControlName="address" [class.invalid]="signInForm.get('address')?.invalid &&
-                        (signInForm.get('address')?.dirty || signInForm.get('address')?.touched)"
-                            [class.valid]="signInForm.get('address')?.valid" type="text"
+                        <input formControlName="address" [class.invalid]="orderForm.get('address')?.invalid &&
+                        (orderForm.get('address')?.dirty || orderForm.get('address')?.touched)"
+                            [class.valid]="orderForm.get('address')?.valid" type="text"
                             placeholder="{{MessagePlaceholder('address','Address')}}">
                     </div>
                     <div class="icon-form"> <cs-svg-order-form [svgName]="'TelefonSVG'"
                             [validForm]="validationField('telephone')" [invalidForm]="validationField('telephone') ">
-                        </cs-svg-order-form><input formControlName="telephone" [class.invalid]="signInForm.get('telephone')?.invalid &&
-                        (signInForm.get('telephone')?.dirty || signInForm.get('telephone')?.touched)"
-                            [class.valid]="signInForm.get('telephone')?.valid" type="text"
+                        </cs-svg-order-form><input formControlName="telephone" [class.invalid]="orderForm.get('telephone')?.invalid &&
+                        (orderForm.get('telephone')?.dirty || orderForm.get('telephone')?.touched)"
+                            [class.valid]="orderForm.get('telephone')?.valid" type="text"
                             placeholder="{{MessagePlaceholder('telephone','Phone Number')}}">
                     </div>
-
                     <div class="icon-form"> <cs-svg-order-form [svgName]="'postCodeSVG'"
                             [validForm]="validationField('postCode')" [invalidForm]="validationField('postCode') ">
                         </cs-svg-order-form>
-                        <input formControlName="postCode" [class.invalid]="signInForm.get('region')?.invalid &&
-                        (signInForm.get('region')?.dirty || signInForm.get('region')?.touched)"
-                            [class.valid]="signInForm.get('postCode')?.valid" type="text"
+                        <input formControlName="postCode" [class.invalid]="orderForm.get('region')?.invalid &&
+                        (orderForm.get('region')?.dirty || orderForm.get('region')?.touched)"
+                            [class.valid]="orderForm.get('postCode')?.valid" type="text"
                             placeholder="{{MessagePlaceholder('postCode','Post Code')}}" placeholder="Post code">
                     </div>
-
                 </form>
             </div>
         </section>
         <hr>
-        <button> Finish </button>
+        <button (click)="onSubmit()"> Finish </button>
     </div>
-
-
 </div>
-
 
 <footer></footer>

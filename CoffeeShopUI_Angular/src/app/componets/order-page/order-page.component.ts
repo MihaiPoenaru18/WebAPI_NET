@@ -4,6 +4,8 @@ import { ProductInterfaces } from '../Product-Page/product.interfaces';
 import { AuthenticatorService } from 'src/app/services/Auth/authenticator.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { HttpHeaders } from '@angular/common/http';
+import { OrderInterfaces, address } from './orderInterfaces';
+import { OrderService } from 'src/app/services/Order/order.service';
 
 @Component({
   selector: 'cs-order-page',
@@ -12,26 +14,47 @@ import { HttpHeaders } from '@angular/common/http';
 })
 export class OrderPageComponent implements OnInit {
   @Input() cartProductsFromOrderpage: ProductInterfaces[];
-  @Input() isSubmitted = true;
-
+  @Input() isSubmitted = false;
+  private productFromCart: ProductInterfaces[];
   totalPrice: number = 0;
   constructor(
     private fb: FormBuilder,
     private cartService: CartService,
-    public auth: AuthenticatorService
+    public auth: AuthenticatorService,
+    public orderServices: OrderService,
   ) {}
 
-  signInForm = this.fb.group({
-   
-    region: ['', [Validators.required, Validators.pattern(/(?<![0-9])[a-zA-Z]+(?![0-9])/)]],
-    country: ['', [Validators.required, Validators.pattern(/(?<![0-9])[a-zA-Z]+(?![0-9])/)]],
+  orderForm = this.fb.group({
+    region: [
+      '',
+      [Validators.required, Validators.pattern(/(?<![0-9])[a-zA-Z]+(?![0-9])/)],
+    ],
+    country: [
+      '',
+      [Validators.required, Validators.pattern(/(?<![0-9])[a-zA-Z]+(?![0-9])/)],
+    ],
     address: ['', Validators.required],
-    postCode: ['', [Validators.required, Validators.pattern(/(?<![a-zA-Z])\d+\b(?![a-zA-Z])/)]],
-    telephone: ['', [Validators.required, Validators.pattern(/(?<![a-zA-Z])\d+\b(?![a-zA-Z])/)]],
+    postCode: [
+      '',
+      [
+        Validators.required,
+        Validators.pattern(/(?<![a-zA-Z])\d+\b(?![a-zA-Z])/),
+      ],
+    ],
+    telephone: [
+      '',
+      [
+        Validators.required,
+        Validators.pattern(/(?<![a-zA-Z])\d+\b(?![a-zA-Z])/),
+      ],
+    ],
   });
+
   ngOnInit() {
     this.getProducts();
     this.totalPriceProduct();
+
+    this.cartService.getProducts().subscribe((p) => (this.productFromCart = p));
   }
   getProducts() {
     this.cartService
@@ -46,26 +69,37 @@ export class OrderPageComponent implements OnInit {
   }
   removeProduct(product: ProductInterfaces) {
     this.cartService.removeFromCart(product);
+    //this.orderServices.updateOrder()
   }
   onSubmit(): void {
-    console.log(
-      'signUpForm form',
-      this.signInForm.value,
-      this.signInForm.valid
-    );
-    // const headers = new HttpHeaders({
-    //   'Content-Type': 'application/json',
-    //   'Content-Length': '<calculated when request is sent>',
-    //   'User-Agent': 'PostmanRuntime/7.33.0',
-    //   'Accept-Encoding': 'gzip, deflate, br',
-    //   Connection: 'keep-alive',
-    // });
+    console.log('signUpForm form', this.orderForm.value, this.orderForm.valid);
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Content-Length': '<calculated when request is sent>',
+      'User-Agent': 'PostmanRuntime/7.33.0',
+      'Accept-Encoding': 'gzip, deflate, br',
+      Connection: 'keep-alive',
+    });
+    const addressOrder: address = {
+      street: this.orderForm.get('address')?.value ?? '',
+      city: this.orderForm.get('City')?.value ?? '',
+      region: this.orderForm.get('region')?.value ?? '',
+      state: this.orderForm.get('region')?.value ?? '',// change to telephone number in .net
+      postalCode: this.orderForm.get('postCode')?.value ?? '',
+      country: this.orderForm.get('Country')?.value ?? '',
+    };
 
-    // const requestBody = {
-    
-    // };
-    // this.auth.login(requestBody, this.signInForm);
-    // this.isSubmitted = this.auth.isSubmitted;
+    const requestBody: OrderInterfaces = {
+      products: this.productFromCart,
+      address: addressOrder,
+      totalPrices: this.totalPrice,
+      currency: "$",
+      status: 1, 
+      userId: "id",
+    };
+    this.orderServices.addOrder(requestBody);
+    this.isSubmitted= this.orderServices.isSubmitted;
+     
   }
   onUserInput(event: any) {
     let inputText = event.target.value;
@@ -73,7 +107,7 @@ export class OrderPageComponent implements OnInit {
   }
 
   validationField(fieldname: string): string {
-    const control = this.signInForm.get(fieldname);
+    const control = this.orderForm.get(fieldname);
 
     if (control?.invalid && (control?.dirty || control?.touched)) {
       return 'invalid';
@@ -84,11 +118,10 @@ export class OrderPageComponent implements OnInit {
     return 'normal';
   }
   MessagePlaceholder(labelname: string, placeholder: string): string {
-    return this.signInForm.get(labelname)?.invalid &&
-      (this.signInForm.get(labelname)?.dirty ||
-        this.signInForm.get(labelname)?.touched)
+    return this.orderForm.get(labelname)?.invalid &&
+      (this.orderForm.get(labelname)?.dirty ||
+        this.orderForm.get(labelname)?.touched)
       ? ' Required'
       : placeholder;
   }
-  
 }

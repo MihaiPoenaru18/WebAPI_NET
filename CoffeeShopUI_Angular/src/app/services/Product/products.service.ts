@@ -9,7 +9,7 @@ import { ProductConversionTypeService } from './product-conversion-type.service'
   providedIn: 'root',
 })
 export class ProductsService {
-  private apiUrl = 'https://localhost:7282/api/Product/GetProducts';
+  private apiUrl = 'https://localhost:7282/api/Product';
 
   constructor(
     private http: HttpClient,
@@ -27,22 +27,24 @@ export class ProductsService {
 
   searchProducts(searchTerm: any): Observable<ProductInterfaces[]> {
     return this.http.get<ProductInterfaces[]>(
-      `https://localhost:7282/api/Product/GetProducts?SearchTerm=${searchTerm}`
+      `${this.apiUrl}/GetProducts?SearchTerm=${searchTerm}`
     );
   }
-  // addProduct(newProduct: ProductInterfaces): Observable<ProductInterfaces> {
-  //   // Assuming your API supports adding a new product
-  //   return this.http.post<ProductInterfaces>(`${this.apiUrl}/products`, newProduct);
-  // }
+
+  addProduct(newProduct: ProductInterfaces): Observable<ProductInterfaces> {
+    return this.http.post<ProductInterfaces>(`${this.apiUrl}/AddProducts`, newProduct);
+  }
+
   sortProductByTerm(sortTerm: any, orderType: string) {
     if (orderType === 'desc') {
       return this.http.get<ProductInterfaces[]>(
-        `https://localhost:7282/api/Product/GetProducts?SortBy=${sortTerm}&SortOrder=desc`
+        `${this.apiUrl}/GetProducts?SortBy=${sortTerm}&SortOrder=desc`
       );
     } else {
       return this.http.get<ProductInterfaces[]>(
-        `https://localhost:7282/api/Product/GetProducts?SortBy=${sortTerm}`
+        `${this.apiUrl}/GetProducts?SortBy=${sortTerm}`
       );
     }
   }
+  
 }
