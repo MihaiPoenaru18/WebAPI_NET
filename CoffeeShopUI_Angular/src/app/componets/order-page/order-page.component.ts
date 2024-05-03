@@ -25,27 +25,28 @@ export class OrderPageComponent implements OnInit {
   ) {}
 
   orderForm = this.fb.group({
+    email: ['',Validators.required,Validators.required],
     region: [
       '',
-      [Validators.required, Validators.pattern(/(?<![0-9])[a-zA-Z]+(?![0-9])/)],
+      [Validators.required,(Validators.required, Validators.pattern(/(?<![0-9])[a-zA-Z]+(?![0-9])/))],
     ],
     country: [
       '',
-      [Validators.required, Validators.pattern(/(?<![0-9])[a-zA-Z]+(?![0-9])/)],
+      [Validators.required, (Validators.required,Validators.pattern(/(?<![0-9])[a-zA-Z]+(?![0-9])/))],
     ],
     address: ['', Validators.required],
     postCode: [
       '',
       [
-        Validators.required,
-        Validators.pattern(/(?<![a-zA-Z])\d+\b(?![a-zA-Z])/),
+        Validators.required,(Validators.required,
+        Validators.pattern(/(?<![a-zA-Z])\d+\b(?![a-zA-Z])/)),
       ],
     ],
     telephone: [
       '',
       [
-        Validators.required,
-        Validators.pattern(/(?<![a-zA-Z])\d+\b(?![a-zA-Z])/),
+        Validators.required,(Validators.required,
+        Validators.pattern(/(?<![a-zA-Z])\d+\b(?![a-zA-Z])/)),
       ],
     ],
   });

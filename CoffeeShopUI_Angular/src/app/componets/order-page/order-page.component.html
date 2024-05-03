@@ -1,4 +1,4 @@
-<div class="containers">
+<div class="containers" *ngIf="!isSubmitted">
     <div class="container product-list">
         <h5 style=" width: 200px;">
             <cs-svg-order-form [svgName]="'basketProductSVG'">
@@ -19,6 +19,7 @@
             <cs-order-for-unregister-user class="block-left"
                 *ngIf="!auth.isAuthenticated"></cs-order-for-unregister-user>
             <cs-order-for-register-user class="block-left" *ngIf="auth.isAuthenticated"></cs-order-for-register-user>
+            
             <div class="vl"></div>
             <div class="order-form">
                 <h4>
@@ -28,6 +29,15 @@
                 </h4>
                 <hr>
                 <form [formGroup]="orderForm">
+                    <div class="icon-form">
+                        <cs-svg-order-form [svgName]="'emailSVG'" [validForm]="validationField('email')"
+                            [invalidForm]="validationField('email') ">
+                        </cs-svg-order-form>
+                        <input formControlName="email" [class.invalid]="orderForm.get('email')?.invalid &&
+                        (orderForm.get('email')?.dirty || orderForm.get('email')?.touched)"
+                            [class.valid]="orderForm.get('email')?.valid" type="email"
+                            placeholder="{{MessagePlaceholder('email','Email')}}">
+                    </div>
                     <div class="icon-form">
                         <cs-svg-order-form [svgName]="'regionSVG'" [validForm]="validationField('region')"
                             [invalidForm]="validationField('region') ">
@@ -76,6 +86,8 @@
         <hr>
         <button (click)="onSubmit()"> Finish </button>
     </div>
+    
 </div>
+<cs-ordersent *ngIf="isSubmitted"></cs-ordersent>
 
 <footer></footer>

@@ -41,6 +41,7 @@ import { OrderForUnregisterUserComponent } from './componets/order-page/order-fo
 import { CredentialsComponent } from './componets/sign-in/credentials/credentials.component';
 import { SvgOrderFormComponent } from './componets/svg-icons/svg-order-form/svg-order-form.component';
 import { SvgSignUpComponent } from './componets/svg-icons/svg-sign-up/svg-sign-up.component';
+import { OrdersentComponent } from './componets/order-page/ordersent/ordersent.component';
 
 const appRoutes: Routes = [
   { path: 'sign-up', component: SignUpComponent },
@@ -85,6 +86,7 @@ const appRoutes: Routes = [
     OrderForUnregisterUserComponent,
     CredentialsComponent,
     SvgOrderFormComponent,
+    OrdersentComponent,
   ],
   imports: [
     AppRoutingModule,
