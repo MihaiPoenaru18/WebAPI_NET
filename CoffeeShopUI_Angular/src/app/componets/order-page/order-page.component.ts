@@ -62,17 +62,21 @@ export class OrderPageComponent implements OnInit {
       .subscribe((products) => (this.cartProductsFromOrderpage = products));
   }
 
+
   totalPriceProduct() {
     this.cartService.totalPrices$.subscribe((total) => {
       this.totalPrice = total;
     });
   }
+
   removeProduct(product: ProductInterfaces) {
     this.cartService.removeFromCart(product);
     //this.orderServices.updateOrder()
   }
+
   onSubmit(): void {
-    console.log('signUpForm form', this.orderForm.value, this.orderForm.valid);
+    console.log('form', this.orderForm.value, this.orderForm.valid);
+
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Content-Length': '<calculated when request is sent>',
@@ -80,6 +84,7 @@ export class OrderPageComponent implements OnInit {
       'Accept-Encoding': 'gzip, deflate, br',
       Connection: 'keep-alive',
     });
+
     const addressOrder: address = {
       street: this.orderForm.get('address')?.value ?? '',
       city: this.orderForm.get('City')?.value ?? '',
@@ -101,6 +106,7 @@ export class OrderPageComponent implements OnInit {
     this.isSubmitted= this.orderServices.isSubmitted;
      
   }
+
   onUserInput(event: any) {
     let inputText = event.target.value;
     this.isSubmitted = inputText === '';
@@ -117,6 +123,7 @@ export class OrderPageComponent implements OnInit {
     }
     return 'normal';
   }
+
   MessagePlaceholder(labelname: string, placeholder: string): string {
     return this.orderForm.get(labelname)?.invalid &&
       (this.orderForm.get(labelname)?.dirty ||
