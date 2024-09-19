@@ -3,7 +3,14 @@ This Project is format from two parts: .Net (Rest API) and Angular 15.9 ( web pa
 What you can to on this web app is:
 * Register (Sign Up)
 * Login (Sign In)
-* Subscribe to newsletter 
+* Subscribe to newsletter
+* Show the Products
+* Show products category
+* Show products per category 
+* Show the details of a product
+* Add in the cart one or more products
+* Show the cart
+  
 ## Angular Part of Coffee shop ( Master Coffee)
 ### Main page for web desktop view
 ![Captură de ecran 2023-11-15 184605](https://github.com/MihaiPoenaru18/WebAPI_NET/assets/45234856/ea782630-1314-4e82-ab2f-1c23bad1b561)
