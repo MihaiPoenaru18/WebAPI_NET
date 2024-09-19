@@ -1,7 +1,6 @@
 ﻿using CoffeeShop.ServicesLogic.EntiteModels;
 using CoffeeShop.ServicesLogic.Services.Interfaces;
 using CoffeeShop_WebApi.Authorization.Models;
-using CoffeeShop_WebApi.Controllers;
 using FakeItEasy;
 using Microsoft.AspNetCore.Mvc;
 using CoffeeShop_WebApi.Controllers.User;
@@ -58,9 +57,11 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
                 Password = "21",
                 Role = "User"
             };
+            var nullresponse = new UserDto() { };
             var services = A.Fake<IServicesAuth<UserDto>>();
-            A.CallTo(() => services.GetInfo(authenticateRequest)).Returns(null);
+            A.CallTo(() => services.GetInfo(authenticateRequest)).Returns(nullresponse);
             var controller = new AuthController(services);
+
             //act
             var actionResult = controller.GetUserInfo(authenticateRequest);
 

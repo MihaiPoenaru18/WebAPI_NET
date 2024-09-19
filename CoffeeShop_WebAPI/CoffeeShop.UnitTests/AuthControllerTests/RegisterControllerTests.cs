@@ -31,8 +31,10 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
             var services = A.Fake<IServicesAuth<UserDto>>();
             A.CallTo(() => services.IsUserRegistered(requestUser)).Returns(true);
             var controller = new AuthController(services);
+
             //act
             var actionResult = controller.Register(requestUser);
+
             //Assert
             var result = actionResult as OkObjectResult;
             var resultMessage = result.Value as string;

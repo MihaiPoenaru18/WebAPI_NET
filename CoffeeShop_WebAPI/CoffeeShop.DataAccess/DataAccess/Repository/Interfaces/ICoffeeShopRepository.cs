@@ -6,7 +6,7 @@
 
         Task<T> GetById(Guid id);
 
-        Task<bool> Insert(T item);
+        Task<bool>Insert(T item);
 
         Task Update(T item);
         Task DeleteById(Guid id);

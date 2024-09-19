@@ -1,9 +1,7 @@
 using CoffeeShop.DataAccess.DataAccess.DataBaseContext;
 using CoffeeShop.ServicesLogic.Authorization;
-using CoffeeShop_WebApi.Authorization.Models;
 using CoffeeShop.ServicesLogic.EntiteModels;
 using CoffeeShop.ServicesLogic.Services;
-using CoffeeShop_WebApi.Services.AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.DataAccess.Repository;
 using CoffeeShop.DataAccess.DataAccess.Repository;
@@ -30,6 +28,7 @@ builder.Services.AddDbContext<CoffeeShopContext>(options =>
     options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 });
 #endregion 
+
 Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(builder.Configuration).CreateLogger();
 
 #region Repositories
@@ -45,20 +44,6 @@ builder.Services.AddScoped<IServicesProduct<ProductDto>, ServicesProducts>();
 builder.Services.AddScoped<IServicesAuth<UserDto>, ServicesAuth>();
 builder.Services.AddScoped<IServicesNewsLetter<UserWithNewsLetterDto>, ServicesNewsLetter>();
 builder.Services.AddScoped<IServicesOrder<OrderDto>,ServicesOrder>();
-#endregion
-
-
-#region MapperConfig
-builder.Services.AddScoped<MapperConfig<User,UserDto>>();
-builder.Services.AddScoped<MapperConfig<UserDto, User>>();
-builder.Services.AddScoped<MapperConfig<AuthenticateRequest, User>>();
-builder.Services.AddScoped<MapperConfig<UserWithNewsLetter, UserWithNewsLetterDto>>();
-builder.Services.AddScoped<MapperConfig<UserWithNewsLetterDto, UserWithNewsLetter>>();
-builder.Services.AddScoped<MapperConfig<ProductDto, Product>>();
-builder.Services.AddScoped<MapperConfig<Product, ProductDto>>();
-builder.Services.AddScoped<MapperConfig<OrderDto, Order>>();
-builder.Services.AddScoped<MapperConfig<Order, OrderDto>>();
-builder.Services.AddScoped < MapperConfig<Category, CategoryDto>>();
 #endregion
 
 builder.Services.AddCors(options => options.AddPolicy(name: "corspolicy",
@@ -98,6 +83,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.UseSerilogRequestLogging();
-
 
 app.Run();

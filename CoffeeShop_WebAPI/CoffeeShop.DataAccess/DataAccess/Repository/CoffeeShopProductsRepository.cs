@@ -3,99 +3,119 @@ using CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel;
 using CoffeeShop.DataAccess.DataAccess.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace CoffeeShop.DataAccess.DataAccess.Repository
+public class CoffeeShopProductsRepository : ICoffeeShopProductsRepository<Product>
 {
-    public class CoffeeShopProductsRepository : ICoffeeShopProductsRepository<Product>
+    private readonly CoffeeShopContext _context;
+
+    public CoffeeShopProductsRepository(CoffeeShopContext context)
     {
-        private CoffeeShopContext _context;
+        _context = context;
+    }
 
-        public CoffeeShopProductsRepository(CoffeeShopContext context)
+    // Improved Delete methods
+    public async Task Delete(string name)
+    {
+        var product = await _context.Products.FirstOrDefaultAsync(p => p.Name == name);
+        if (product != null)
         {
-            _context = context;
-        }
-        public async Task Delete(string Name)
-        {
-            _context.Products.Remove(GetById(GetByName(Name).Result.Id).Result);
+            _context.Products.Remove(product);
             await _context.SaveChangesAsync();
         }
-        public async Task DeleteById(Guid id)
+    }
+
+    public async Task DeleteById(Guid id)
+    {
+        var product = await _context.Products.FindAsync(id);
+        if (product != null)
         {
-            _context.Products.Remove(GetById(id).Result);
+            _context.Products.Remove(product);
             await _context.SaveChangesAsync();
         }
-        public async Task<Product> GetByName(string Name)
-        {
-            return await _context.Products.FindAsync(Name);
-        }
+    }
 
-        public async Task<Product> GetById(Guid id)
-        {
-            return await _context.Products.FindAsync(id);
-        }
+    // Improved GetByName method
+    public async Task<Product> GetByName(string name)
+    {
+        return await _context.Products.FirstOrDefaultAsync(p => p.Name == name);
+    }
 
-        public async Task<IEnumerable<Product>> GetAll()
-        {
-            return await _context.Products
-                                          .Include(p => p.Category)
-                                          .Include(p => p.Promotion)
-                                          .ToListAsync();
-        }
+     public async Task<Product> GetById(Guid id)
+    {
+        return await _context.Products.FindAsync(id);
+    }
 
-        public async Task Update(Product item)
+    public async Task<IEnumerable<Product>> GetAll()
+    {
+        return await _context.Products
+                             .Include(p => p.Category)
+                             .Include(p => p.Promotion)
+                             .ToListAsync();
+    }
+
+    public async Task Update(Product item)
+    {
+        if (item != null)
         {
-            if (item != null)
+            _context.Products.Update(item);
+            await _context.SaveChangesAsync();
+        }
+    }
+
+    // Improved AddCategory method
+    public async Task<Category> AddCategory(Category category)
+    {
+        var existingCategory = await _context.Categories.FirstOrDefaultAsync(c => c.Name == category.Name);
+
+        if (existingCategory == null && existingCategory.Name == null && existingCategory.ImagePath ==null)
+        {
+            existingCategory = new Category
             {
-                _context.Products.Update(item);
-                await _context.SaveChangesAsync();
-            }
-        }
+                Name = category.Name,
+                ImagePath = category.ImagePath,
+            };
 
-        public async Task<Category> AddCategory(Category category)
+            _context.Categories.Add(existingCategory);
+            await _context.SaveChangesAsync();
+        }
+        return existingCategory;
+    }
+    public async Task<IEnumerable<Category>> GetAllCategories()
+    {
+        return await _context.Categories.ToListAsync();
+    }
+
+
+    // Improved AddPromotion method
+    public async Task<Promotion> AddPromotion(Promotion promotion)
+    {
+        var existingPromotion = await _context.Promotion.FirstOrDefaultAsync(p =>
+            p.PricePromotion == promotion.PricePromotion &&
+            p.StartDate == promotion.StartDate &&
+            p.EndDate == promotion.EndDate);
+
+        if (existingPromotion == null)
         {
-            var existingCategory = _context.Categories.FirstOrDefault(c => c.Name == category.Name);
-
-            if (existingCategory.Name == null && existingCategory.ImagePath ==null )
+            existingPromotion = new Promotion
             {
-                existingCategory = new Category
-                {
-                    Name = category.Name,
-                    ImagePath = category.ImagePath,
-                };
+                PricePromotion = promotion.PricePromotion,
+                StartDate = promotion.StartDate,
+                EndDate = promotion.EndDate
+            };
 
-                _context.Categories.Add(existingCategory);
-                await _context.SaveChangesAsync();
-                return existingCategory;
-            }
-            return existingCategory;
+            _context.Promotion.Add(existingPromotion);
+            await _context.SaveChangesAsync();
         }
+        return existingPromotion;
+    }
 
-        public async Task<Promotion> AddPromotion(Promotion promotion)
-        {
-            var existingPromotion = _context.Promotion.FirstOrDefault(p =>p.PricePromotion == promotion.PricePromotion &&
-                                                                          p.StartDate == promotion.StartDate &&
-                                                                          p.EndDate == promotion.EndDate);
-            if (existingPromotion == null)
-            {
-                existingPromotion = new Promotion
-                {
-                    PricePromotion = promotion.PricePromotion,
-                    StartDate = promotion.StartDate,
-                    EndDate = promotion.EndDate
-                };
-
-                _context.Promotion.Add(existingPromotion);
-                await _context.SaveChangesAsync();
-                return existingPromotion;
-            }
-            return existingPromotion;
-        }
-
-        public async Task<bool> Insert(Product item)
+    // Improved Insert method
+    public async Task<bool> Insert(Product item)
+    {
+        try
         {
             var existingCategory = await AddCategory(item.Category);
             var existingPromotion = await AddPromotion(item.Promotion);
 
-            // Use the existing product's properties
             var newProduct = new Product
             {
                 Id = Guid.NewGuid(),
@@ -108,17 +128,17 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
                 PromotionId = existingPromotion.Id,
                 Price = item.Price,
                 Quantity = item.Quantity,
+                ImagePath = item.ImagePath,
             };
 
             _context.Products.Add(newProduct);
-
             await _context.SaveChangesAsync();
             return true;
         }
-
-        public async Task<IEnumerable<Category>> GetAllCategoris()
+        catch (Exception)
         {
-            return await _context.Categories.ToListAsync();
+            return false;
         }
+
     }
 }

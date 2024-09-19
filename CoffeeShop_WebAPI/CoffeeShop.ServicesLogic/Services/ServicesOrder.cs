@@ -4,17 +4,20 @@ using CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel;
 using CoffeeShop.DataAccess.DataAccess.Repository.Interfaces;
 using CoffeeShop.ServicesLogic.EntiteModels;
 using CoffeeShop.ServicesLogic.Services.InterfacesServices;
-using CoffeeShop_WebApi.Services.AutoMapper;
 using Serilog;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CoffeeShop.ServicesLogic.Services
 {
     public class ServicesOrder : IServicesOrder<OrderDto>
     {
-
-        private ICoffeeShopOrderRepository<Order> _repositoryOrder;
-        private ICoffeeShopProductsRepository<Product> _repositoryProduct;
+        private readonly ICoffeeShopOrderRepository<Order> _repositoryOrder;
+        private readonly ICoffeeShopProductsRepository<Product> _repositoryProduct;
         private readonly IMapper _mapper;
+
         public ServicesOrder(ICoffeeShopOrderRepository<Order> repository, IMapper mapper, ICoffeeShopProductsRepository<Product> repositoryProduct)
         {
             _repositoryOrder = repository;
@@ -22,127 +25,100 @@ namespace CoffeeShop.ServicesLogic.Services
             _repositoryProduct = repositoryProduct;
         }
 
-        public bool DeleteOrder(OrderDto order)
+        public async Task<bool> DeleteOrder(Guid orderId)
         {
-            var mappeOrder = MapperConfig<OrderDto, Order>.InitializeAutomapper();
-            var isFinishProcess = false;
             try
             {
-                if (order != null)
+                if (await IsOrderExistInDb(orderId))
                 {
-                        if (IsOrderExistInDb(order.Id))
-                        {
-                            _repositoryOrder.DeleteById(mappeOrder.Map<OrderDto, Order>(order).OrderId);
-                            isFinishProcess = true;
-                        }
-                    
-                    return isFinishProcess;
+                    await _repositoryOrder.DeleteById(orderId);
+                    return true;
                 }
-                return isFinishProcess;
+                return false;
             }
             catch (Exception ex)
             {
-                Log.Error($"ServicesProducts  -> DeleteOrder() -> Exception => {ex.Message}");
-                return isFinishProcess;
+                Log.Error($"ServicesOrder -> DeleteOrder() -> Exception => {ex.Message}");
+                return false;
             }
         }
 
         public async Task<IEnumerable<OrderDto>> GetAllOrders()
         {
-            var mappeOrders = MapperConfig<Order, OrderDto>.InitializeAutomapper();
-            var ordersDto = new List<OrderDto>();
             try
             {
-                var orders = _repositoryOrder.GetAll().Result;
-                if (orders != null || orders.Count() > 0)
-                {   
-                    foreach (var order in orders)
-                    {  
-                        ordersDto.Add(mappeOrders.Map<Order, OrderDto>(order));
-                    }
-                }
-                return ordersDto;
+                var orders = await _repositoryOrder.GetAll();
+                return _mapper.Map<IEnumerable<OrderDto>>(orders);
             }
             catch (Exception ex)
             {
-                Log.Error("ServicesProducts  -> GetAllOrders() -> Exception => {@ex.Message}", ex.Message);
+                Log.Error($"ServicesOrder -> GetAllOrders() -> Exception => {ex.Message}");
+                return Enumerable.Empty<OrderDto>();
             }
-            return null;
         }
 
-        public OrderDto GetOrder(Guid orderId)
+        public async Task<OrderDto> GetOrder(Guid orderId)
         {
-            var mappeOrder = MapperConfig<Order, OrderDto>.InitializeAutomapper();
             try
             {
-                if (orderId == null)
-                {
-                    throw new ArgumentException("Product Name is null or empty", nameof(orderId));
-                }
-
-                return  mappeOrder.Map<Order, OrderDto>(_repositoryOrder.GetAll().Result.FirstOrDefault(p => p.OrderId == orderId));
+                var order = await _repositoryOrder.GetById(orderId);
+                return _mapper.Map<OrderDto>(order);
             }
             catch (Exception ex)
             {
-                Log.Error($"ServicesOrder-> GetOrder() -> Exception => {ex.Message}");
+                Log.Error($"ServicesOrder -> GetOrder() -> Exception => {ex.Message}");
                 return null;
             }
         }
 
-        public bool AddNewOrder(OrderDto order)
+        public async Task<bool> AddNewOrder(OrderDto orderDto)
         {
-            var mappeProducts = MapperConfig<OrderDto, Order>.InitializeAutomapper();
-            var finishInsert = false;
             try
             {
-                if (order != null)
+                if (orderDto == null)
                 {
-                    if (!IsOrderExistInDb(order.Id))
-                    {
-                       finishInsert = _repositoryOrder.Insert(mappeProducts.Map<OrderDto, Order>(order)).Result;
-                    }
-                    return finishInsert;
+                    throw new ArgumentNullException(nameof(orderDto));
                 }
-                else
+
+                if (!await IsOrderExistInDb(orderDto.Id))
                 {
-                    throw new NullReferenceException("OrderID is null!!!");
+                    var order = _mapper.Map<Order>(orderDto);
+                    return await _repositoryOrder.Insert(order);
                 }
+                return false;
             }
             catch (Exception ex)
             {
-                Log.Error($"ServicesProducts  -> (OrderDto order)() -> Exception => {ex.Message}");
+                Log.Error($"ServicesOrder -> AddNewOrder() -> Exception => {ex.Message}");
                 return false;
             }
         }
 
-        public bool IsOrderExistInDb(Guid orderId)
+        public async Task<bool> IsOrderExistInDb(Guid orderId)
         {
             try
             {
-                if (orderId == null)
-                {
-                    throw new ArgumentException("Product Name is null or empty", nameof(orderId));
-                }
-                var order = _repositoryOrder.GetAll().Result;
-                return order != null ? order.Any(p => p.OrderId == orderId) : true;
+                var order = await _repositoryOrder.GetById(orderId);
+                return order != null;
             }
             catch (Exception ex)
             {
-                Log.Error($"ServicesOrder-> IsOrderExistInDb() -> Exception => {ex.Message}");
+                Log.Error($"ServicesOrder -> IsOrderExistInDb() -> Exception => {ex.Message}");
                 return false;
             }
         }
 
-        public async Task UpdateOrder(OrderDto order)
+        public async Task UpdateOrder(OrderDto orderDto)
         {
             try
             {
-                var mappeOrder = MapperConfig<OrderDto, Order>.InitializeAutomapper();
-                _repositoryOrder.Update(mappeOrder.Map<OrderDto, Order>(order));
+                var order = _mapper.Map<Order>(orderDto);
+                await _repositoryOrder.Update(order);
             }
             catch (Exception ex)
             {
-                Log.Error("ServicesProducts  -> UpdateOrder() -> Exception => {@ex.Message}", ex.Message);
+                Log.Error($"ServicesOrder -> UpdateOrder() -> Exception => {ex.Message}");
+                throw; // Rethrow the exception after logging
             }
         }
     }

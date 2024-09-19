@@ -91,7 +91,7 @@ namespace WebApplication1.DataAccess.Repository
             }
         }
 
-        public string GetNameByEmail(string email)
+        public string GetUserByEmail(string email)
         {
             var name = _context.Users.Where(e => e.Email == email).FirstOrDefault().FirstName;
             return name;

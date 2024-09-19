@@ -53,14 +53,14 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
                 Role = "Admin",
                 
             };
+            var nullUsers = new List<UserDto>() { };
             var services = A.Fake<IServicesAuth<UserDto>>();
-            A.CallTo(() => services.GetAllUsers()).Returns(null);
+            A.CallTo(() => services.GetAllUsers()).Returns(nullUsers);
             var controller = new AuthController(services);
+
             //act
             var actionResult = controller.GetAllUsersInfo(authenticateRequest);
 
-
-            // Assert
             //assert
             var result = actionResult.Result as BadRequestObjectResult;
             var resultMessage = result.Value as string;
@@ -77,9 +77,9 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
                 Password = "21",
                 Role = "User"
             };
-
+            var listOfUsers = new List<UserDto>() { };
             var services = A.Fake<IServicesAuth<UserDto>>();
-            A.CallTo(() => services.GetAllUsers()).Returns(null);
+            A.CallTo(() => services.GetAllUsers()).Returns(listOfUsers);
 
             var controller = new AuthController(services);
 

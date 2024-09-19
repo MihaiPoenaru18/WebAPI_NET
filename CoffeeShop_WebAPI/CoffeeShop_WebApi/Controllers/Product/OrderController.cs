@@ -24,7 +24,7 @@ namespace CoffeeShop_WebApi.Controllers.Product
                 if (orderId == Guid.Empty)
                     throw new ArgumentNullException(nameof(orderId));
 
-                return _services.GetOrder(orderId);
+                return await _services.GetOrder(orderId);
             }
             catch (Exception ex)
             {
@@ -42,7 +42,7 @@ namespace CoffeeShop_WebApi.Controllers.Product
                 {
                     throw new ArgumentNullException();
                 }
-                return _services.AddNewOrder(order) ? Ok("Order add with success") : BadRequest("Order fail!!");
+                return await _services.AddNewOrder(order) ? Ok("Order add with success") : BadRequest("Order fail!!");
             }
             catch (Exception ex)
             {
@@ -76,8 +76,8 @@ namespace CoffeeShop_WebApi.Controllers.Product
                     return BadRequest("Not order for to delete!");
                     throw new ArgumentNullException();
                 }
-                var result =  _services.DeleteOrder(order);
-                return _services.DeleteOrder(order) ? Ok("Your order was success with succes") : BadRequest("Delete order fail!!");
+                var result =  _services.DeleteOrder(order.Id);
+                return await _services.DeleteOrder(order.Id) ? Ok("Your order was success with succes") : BadRequest("Delete order fail!!");
             }
             catch (Exception ex)
             {
@@ -96,7 +96,7 @@ namespace CoffeeShop_WebApi.Controllers.Product
                     return BadRequest("Not order for to delete!");
                     throw new ArgumentNullException();
                 }
-                _services.DeleteOrder(order);
+                await _services.DeleteOrder(order.Id);
                 return Ok("Your order was success with succes");
             }
             catch (Exception ex)

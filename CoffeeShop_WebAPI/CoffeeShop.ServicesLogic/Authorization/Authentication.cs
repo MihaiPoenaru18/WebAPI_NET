@@ -1,8 +1,8 @@
 ﻿
+using AutoMapper;
 using CoffeeShop.DataAccess.DataAccess.ModelDB.UserModels;
 using CoffeeShop.DataAccess.DataAccess.Repository.Interfaces;
 using CoffeeShop_WebApi.Authorization.Models;
-using CoffeeShop_WebApi.Services.AutoMapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -15,11 +15,13 @@ namespace CoffeeShop.ServicesLogic.Authorization
     {
         private readonly IConfiguration _configuration;
         private readonly ICoffeeShopUserRepository<User> _usersRepository;
+        private readonly IMapper _mapper;
 
-        public Authentication(IConfiguration configuration, ICoffeeShopUserRepository<User> _usersRepository) 
+        public Authentication(IConfiguration configuration, ICoffeeShopUserRepository<User> _usersRepository, IMapper mapper) 
         {
             _configuration = configuration;
             this._usersRepository = _usersRepository;
+            _mapper = mapper;
         }
 
         public string CreateToken(AuthenticateRequest request, DateTime expiresDate)
@@ -41,7 +43,7 @@ namespace CoffeeShop.ServicesLogic.Authorization
 
         public AuthenticateResponse Authorization(AuthenticateRequest request, DateTime expiresDate)
         {
-            var user = MapperConfig<AuthenticateRequest, User>.InitializeAutomapper().Map<AuthenticateRequest, User>(request);
+            var user = _mapper.Map<User>(request);
             if (_usersRepository.IsUserExistingInDB(user))
             {
                 var token = CreateToken(request, expiresDate);
@@ -53,7 +55,7 @@ namespace CoffeeShop.ServicesLogic.Authorization
                 authenticateResponse.Email = request.Email;
                 authenticateResponse.CreatedDate = DateTime.Now;
                 authenticateResponse.ExpiresDate = expiresDate;
-                authenticateResponse.Name = _usersRepository.GetNameByEmail(request.Email);
+                authenticateResponse.Name = _usersRepository.GetUserByEmail(request.Email);
                 return authenticateResponse;
             }
             return null;

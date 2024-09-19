@@ -76,7 +76,7 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
             }
         }
 
-        public string GetNameByEmail(string email)
+        public string GetUserByEmail(string email)
         {
             throw new NotImplementedException();
         }

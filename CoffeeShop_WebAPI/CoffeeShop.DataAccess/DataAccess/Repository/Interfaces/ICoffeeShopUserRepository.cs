@@ -4,6 +4,6 @@
     {
         bool IsUserExistingInDB(T item);
 
-        string GetNameByEmail(string email);
+        string GetUserByEmail(string email);
     }
 }

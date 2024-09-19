@@ -27,11 +27,14 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
                 Role = "User",
 
             };
+            var authenticationResponse = new AuthenticateResponse(authenticateRequest, " ") { CreatedDate = DateTime.UtcNow };
             var services = A.Fake<IServicesAuth<UserDto>>();
-            A.CallTo(() => services.Authenticate(authenticateRequest)).Returns(null);
-            var controller =new AuthController(services);
+            A.CallTo(() => services.Authenticate(authenticateRequest)).Returns(authenticationResponse);
+            var controller = new AuthController(services);
+
             //act
             var actionResult = controller.Login(authenticateRequest);
+
             //assert
             var result = actionResult.Result as BadRequestObjectResult;
             var resultMessage = result.Value as string;
@@ -59,14 +62,14 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
                     claims: claims,
                     expires: DateTime.Now.AddDays(1),
                     signingCredentials: creds);
-          
-            var authenticateResponse = new AuthenticateResponse(authenticateRequest,token.ToString())
+
+            var authenticateResponse = new AuthenticateResponse(authenticateRequest, token.ToString())
             {
                 Email = "Poenaru@gmail",
                 CreatedDate = DateTime.Now,
                 ExpiresDate = DateTime.Now.AddDays(1),
                 Token = token.ToString(),
-             };
+            };
             var services = A.Fake<IServicesAuth<UserDto>>();
             A.CallTo(() => services.Authenticate(authenticateRequest)).Returns(authenticateResponse);
             var controller = new AuthController(services);

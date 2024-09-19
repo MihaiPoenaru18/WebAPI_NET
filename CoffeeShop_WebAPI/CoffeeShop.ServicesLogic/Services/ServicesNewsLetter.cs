@@ -4,7 +4,6 @@ using CoffeeShop.DataAccess.DataAccess.Repository.Interfaces;
 using CoffeeShop.ServicesLogic.Authorization;
 using CoffeeShop.ServicesLogic.EntiteModels;
 using CoffeeShop.ServicesLogic.Services.Interfaces;
-using CoffeeShop_WebApi.Services.AutoMapper;
 using Serilog;
 
 namespace CoffeeShop.ServicesLogic.Services
@@ -27,11 +26,10 @@ namespace CoffeeShop.ServicesLogic.Services
         {
             try
             {
-                var mapper = MapperConfig<UserWithNewsLetterDto, UserWithNewsLetter>.InitializeAutomapper();
                 var users = new List<UserWithNewsLetterDto>();
                 foreach (var user in _usersWithNewsLetterRepository.GetAll().Result)
                 {
-                    users.Add(mapper.Map<UserWithNewsLetter, UserWithNewsLetterDto>(user));
+                    users.Add(_mapper.Map<UserWithNewsLetterDto>(user));
                 }
                 return users;
             }
@@ -46,10 +44,9 @@ namespace CoffeeShop.ServicesLogic.Services
         {
             try
             {
-                var mapper = MapperConfig<UserWithNewsLetterDto, UserWithNewsLetter>.InitializeAutomapper();
                 if (!String.IsNullOrEmpty(userDto.Email))
                 {
-                    userWithNews = mapper.Map(userDto, userWithNews);
+                    userWithNews = _mapper.Map<UserWithNewsLetter>(userDto);
                     return await _usersWithNewsLetterRepository.Insert(userWithNews);
                 }
             }
@@ -64,8 +61,7 @@ namespace CoffeeShop.ServicesLogic.Services
         {
             try
             {
-                var mapper = MapperConfig<UserWithNewsLetterDto, UserWithNewsLetter>.InitializeAutomapper();
-                userWithNews = mapper.Map(userDto, userWithNews);
+                userWithNews = _mapper.Map<UserWithNewsLetter>(userDto);
                 if (!_usersWithNewsLetterRepository.IsUserExistingInDB(userWithNews))
                 {
                     return false;
