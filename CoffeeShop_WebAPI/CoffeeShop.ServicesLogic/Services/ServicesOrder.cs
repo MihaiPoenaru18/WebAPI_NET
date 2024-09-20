@@ -5,24 +5,20 @@ using CoffeeShop.DataAccess.DataAccess.Repository.Interfaces;
 using CoffeeShop.ServicesLogic.EntiteModels;
 using CoffeeShop.ServicesLogic.Services.InterfacesServices;
 using Serilog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CoffeeShop.ServicesLogic.Services
 {
     public class ServicesOrder : IServicesOrder<OrderDto>
     {
-        private readonly ICoffeeShopOrderRepository<Order> _repositoryOrder;
-        private readonly ICoffeeShopProductsRepository<Product> _repositoryProduct;
+        private readonly ICoffeeShopOrderRepository<Order> _orderRepository;
+        private readonly ICoffeeShopProductsRepository<Product> _productRepository;
         private readonly IMapper _mapper;
 
-        public ServicesOrder(ICoffeeShopOrderRepository<Order> repository, IMapper mapper, ICoffeeShopProductsRepository<Product> repositoryProduct)
+        public ServicesOrder(ICoffeeShopOrderRepository<Order> orderRepository, IMapper mapper, ICoffeeShopProductsRepository<Product> productRepository)
         {
-            _repositoryOrder = repository;
+            _orderRepository = orderRepository;
             _mapper = mapper;
-            _repositoryProduct = repositoryProduct;
+            _productRepository = productRepository;
         }
 
         public async Task<bool> DeleteOrder(Guid orderId)
@@ -31,14 +27,14 @@ namespace CoffeeShop.ServicesLogic.Services
             {
                 if (await IsOrderExistInDb(orderId))
                 {
-                    await _repositoryOrder.DeleteById(orderId);
+                    await _orderRepository.DeleteById(orderId);
                     return true;
                 }
                 return false;
             }
             catch (Exception ex)
             {
-                Log.Error($"ServicesOrder -> DeleteOrder() -> Exception => {ex.Message}");
+                Log.Error(ex, "Error deleting order with ID: {OrderId}", orderId);
                 return false;
             }
         }
@@ -47,12 +43,12 @@ namespace CoffeeShop.ServicesLogic.Services
         {
             try
             {
-                var orders = await _repositoryOrder.GetAll();
+                var orders = await _orderRepository.GetAll();
                 return _mapper.Map<IEnumerable<OrderDto>>(orders);
             }
             catch (Exception ex)
             {
-                Log.Error($"ServicesOrder -> GetAllOrders() -> Exception => {ex.Message}");
+                Log.Error(ex, "Error fetching all orders");
                 return Enumerable.Empty<OrderDto>();
             }
         }
@@ -61,35 +57,36 @@ namespace CoffeeShop.ServicesLogic.Services
         {
             try
             {
-                var order = await _repositoryOrder.GetById(orderId);
+                var order = await _orderRepository.GetById(orderId);
                 return _mapper.Map<OrderDto>(order);
             }
             catch (Exception ex)
             {
-                Log.Error($"ServicesOrder -> GetOrder() -> Exception => {ex.Message}");
-                return null;
+                Log.Error(ex, "Error fetching order with ID: {OrderId}", orderId);
+                return new OrderDto();
             }
         }
 
         public async Task<bool> AddNewOrder(OrderDto orderDto)
         {
+            if (orderDto == null)
+            {
+                Log.Warning("OrderDto is null");
+                throw new ArgumentNullException(nameof(orderDto));
+            }
+
             try
             {
-                if (orderDto == null)
-                {
-                    throw new ArgumentNullException(nameof(orderDto));
-                }
-
                 if (!await IsOrderExistInDb(orderDto.Id))
                 {
                     var order = _mapper.Map<Order>(orderDto);
-                    return await _repositoryOrder.Insert(order);
+                    return await _orderRepository.Insert(order);
                 }
                 return false;
             }
             catch (Exception ex)
             {
-                Log.Error($"ServicesOrder -> AddNewOrder() -> Exception => {ex.Message}");
+                Log.Error(ex, "Error adding new order");
                 return false;
             }
         }
@@ -98,27 +95,33 @@ namespace CoffeeShop.ServicesLogic.Services
         {
             try
             {
-                var order = await _repositoryOrder.GetById(orderId);
+                var order = await _orderRepository.GetById(orderId);
                 return order != null;
             }
             catch (Exception ex)
             {
-                Log.Error($"ServicesOrder -> IsOrderExistInDb() -> Exception => {ex.Message}");
+                Log.Error(ex, "Error checking existence of order with ID: {OrderId}", orderId);
                 return false;
             }
         }
 
         public async Task UpdateOrder(OrderDto orderDto)
         {
+            if (orderDto == null)
+            {
+                Log.Warning("OrderDto is null in UpdateOrder");
+                throw new ArgumentNullException(nameof(orderDto));
+            }
+
             try
             {
                 var order = _mapper.Map<Order>(orderDto);
-                await _repositoryOrder.Update(order);
+                await _orderRepository.Update(order);
             }
             catch (Exception ex)
             {
-                Log.Error($"ServicesOrder -> UpdateOrder() -> Exception => {ex.Message}");
-                throw; // Rethrow the exception after logging
+                Log.Error(ex, "Error updating order with ID: {OrderId}", orderDto.Id);
+                throw; // Re-throwing the exception to allow higher-level handling if needed
             }
         }
     }

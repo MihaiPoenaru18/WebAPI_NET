@@ -7,9 +7,9 @@ namespace CoffeeShop.ServicesLogic.Services.Interfaces
         Task<bool> IsProductExistingInDb (string productName);
         Task<IEnumerable<T>> GetAllProducts();
         Task<IEnumerable<CategoryDto>> GetAllCategories ();
-        bool AddNewProducts(List<T> products); 
-        void UpdateProductInformation(T product);
-        bool DeleteProduct(List<T> product);
+        Task<bool> AddNewProducts(List<T> products); 
+        Task UpdateProductInformation(T product);
+        Task<bool> DeleteProducts(List<T> product);
 
     }
 }

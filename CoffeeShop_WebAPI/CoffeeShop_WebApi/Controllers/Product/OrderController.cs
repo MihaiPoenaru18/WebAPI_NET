@@ -5,104 +5,111 @@ using Serilog;
 
 namespace CoffeeShop_WebApi.Controllers.Product
 {
-    [Route("api/[controller]")]
     [ApiController]
-    public class OrderController : Controller
+    [Route("api/[controller]")]
+    public class OrderController : ControllerBase
     {
         private readonly IServicesOrder<OrderDto> _services;
+        private readonly ILogger<OrderController> _logger;
 
-        public OrderController(IServicesOrder<OrderDto> services)
+        public OrderController(IServicesOrder<OrderDto> services, ILogger<OrderController> logger)
         {
-            _services = services;
+            _services = services ?? throw new ArgumentNullException(nameof(services));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
+
+        [HttpGet("{orderId:guid}")]
+        public async Task<ActionResult<OrderDto>> GetOrder(Guid orderId)
+        {
+            if (orderId == Guid.Empty)
+            {
+                return BadRequest("Invalid order ID.");
+            }
+
+            try
+            {
+                var order = await _services.GetOrder(orderId);
+                return order != null ? Ok(order) : NotFound("Order not found.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while getting order with ID: {OrderId}", orderId);
+                return StatusCode(500, "An error occurred while processing the request.");
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> AddOrder([FromBody] OrderDto order)
+        {
+            if (order == null)
+            {
+                return BadRequest("Order data is required.");
+            }
+
+            try
+            {
+                var result = await _services.AddNewOrder(order);
+                return result ? CreatedAtAction(nameof(GetOrder), new { orderId = order.Id }, order) : BadRequest("Failed to add order.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while adding new order");
+                return StatusCode(500, "An error occurred while processing the request.");
+            }
         }
 
         [HttpGet]
-        public async Task<ActionResult<OrderDto>> GetOrder([FromQuery] Guid orderId)
-        {
-            try
-            {
-                if (orderId == Guid.Empty)
-                    throw new ArgumentNullException(nameof(orderId));
-
-                return await _services.GetOrder(orderId);
-            }
-            catch (Exception ex)
-            {
-                Log.Error($"OrderController -> GetOrder()  -> Exception => {ex.Message}");
-                return BadRequest("An error occurred while processing the request.");
-            }
-        }
-
-        [HttpPost("AddOrder")]
-        public async Task<ActionResult> AddOrder([FromBody] OrderDto order)
-        {
-            try
-            {
-                if (order == null)
-                {
-                    throw new ArgumentNullException();
-                }
-                return await _services.AddNewOrder(order) ? Ok("Order add with success") : BadRequest("Order fail!!");
-            }
-            catch (Exception ex)
-            {
-                Log.Error($"OrderController -> AddOrder()  -> Exception => {ex.Message}");
-                return BadRequest("An error occurred while processing the request.");
-            }
-        }
-
-        [HttpGet("GetAllOrder")]
-        public async Task<ActionResult<IEnumerable<OrderDto>>> GetAllOrder()
+        public async Task<ActionResult<IEnumerable<OrderDto>>> GetAllOrders()
         {
             try
             {
                 var orders = await _services.GetAllOrders();
-                return  orders != null ? Ok(orders) : BadRequest("No orders exist in the system");
+                return orders.Any() ? Ok(orders) : NoContent();
             }
             catch (Exception ex)
             {
-                Log.Error($"OrderController -> GetAllOrder()  -> Exception => {ex.Message}");
-                return BadRequest("An error occurred while processing the request.");
+                _logger.LogError(ex, "Error occurred while getting all orders");
+                return StatusCode(500, "An error occurred while processing the request.");
             }
         }
 
-        [HttpPost("DeleteOrder")]
-        public async Task<ActionResult> DeleteOrder([FromBody] OrderDto order)
+        [HttpDelete("{orderId:guid}")]
+        public async Task<ActionResult> DeleteOrder(Guid orderId)
         {
+            if (orderId == Guid.Empty)
+            {
+                return BadRequest("Invalid order ID.");
+            }
+
             try
             {
-                if (order == null)
-                {
-                    return BadRequest("Not order for to delete!");
-                    throw new ArgumentNullException();
-                }
-                var result =  _services.DeleteOrder(order.Id);
-                return await _services.DeleteOrder(order.Id) ? Ok("Your order was success with succes") : BadRequest("Delete order fail!!");
+                var result = await _services.DeleteOrder(orderId);
+                return result ? NoContent() : NotFound("Order not found or deletion failed.");
             }
             catch (Exception ex)
             {
-                Log.Error($"OrderController -> GetAllOrder()  -> Exception => {ex.Message}");
-                return BadRequest("An error occurred while processing the request.");
+                _logger.LogError(ex, "Error occurred while deleting order with ID: {OrderId}", orderId);
+                return StatusCode(500, "An error occurred while processing the request.");
             }
         }
 
-        [HttpPost("UpdateOrder")]
-        public async Task<ActionResult> UpdateOrder([FromBody] OrderDto order)
+        [HttpPut("{orderId:guid}")]
+        public async Task<ActionResult> UpdateOrder(Guid orderId, [FromBody] OrderDto order)
         {
+            if (orderId == Guid.Empty || order == null || orderId != order.Id)
+            {
+                return BadRequest("Invalid order data or mismatched IDs.");
+            }
+
             try
             {
-                if (order == null)
-                {
-                    return BadRequest("Not order for to delete!");
-                    throw new ArgumentNullException();
-                }
-                await _services.DeleteOrder(order.Id);
-                return Ok("Your order was success with succes");
+                await _services.UpdateOrder(order);
+                return NoContent();
             }
             catch (Exception ex)
             {
-                Log.Error($"OrderController -> GetAllOrder()  -> Exception => {ex.Message}");
-                return BadRequest("An error occurred while processing the request.");
+                _logger.LogError(ex, "Error occurred while updating order with ID: {OrderId}", orderId);
+                return StatusCode(500, "An error occurred while processing the request.");
             }
         }
     }

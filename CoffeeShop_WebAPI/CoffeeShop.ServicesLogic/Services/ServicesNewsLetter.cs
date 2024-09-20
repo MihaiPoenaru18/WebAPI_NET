@@ -22,14 +22,14 @@ namespace CoffeeShop.ServicesLogic.Services
             _authorization = authorization;
         }
 
-        public IEnumerable<UserWithNewsLetterDto> GetAllUserWithNewsLetter()
+        public async Task<IEnumerable<UserWithNewsLetterDto>> GetAllUserWithNewsLetter()
         {
             try
             {
                 var users = new List<UserWithNewsLetterDto>();
-                foreach (var user in _usersWithNewsLetterRepository.GetAll().Result)
+                foreach (var user in await _usersWithNewsLetterRepository.GetAll())
                 {
-                    users.Add(_mapper.Map<UserWithNewsLetterDto>(user));
+                   users.Add(_mapper.Map<UserWithNewsLetterDto>(user));
                 }
                 return users;
             }
@@ -57,12 +57,12 @@ namespace CoffeeShop.ServicesLogic.Services
             return false;
         }
 
-        public bool GetStatusOfNewsLetter(UserWithNewsLetterDto userDto)
+        public async Task<bool> GetStatusOfNewsLetter(UserWithNewsLetterDto userDto)
         {
             try
             {
                 userWithNews = _mapper.Map<UserWithNewsLetter>(userDto);
-                if (!_usersWithNewsLetterRepository.IsUserExistingInDB(userWithNews))
+                if (!await _usersWithNewsLetterRepository.IsUserExistingInDB(userWithNews))
                 {
                     return false;
                 }
@@ -71,7 +71,8 @@ namespace CoffeeShop.ServicesLogic.Services
             {
                 Log.Error("ServicesAuth  -> GetInfo() -> Exception => {@ex.Message}", ex.Message);
             }
-            return true;
+            return false;
         }
     }
 }
+ 

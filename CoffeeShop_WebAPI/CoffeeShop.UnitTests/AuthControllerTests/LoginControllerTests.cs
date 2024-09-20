@@ -1,86 +1,72 @@
 ﻿using Xunit;
 using FakeItEasy;
 using CoffeeShop.ServicesLogic.EntiteModels;
-
 using Microsoft.AspNetCore.Mvc;
 using CoffeeShop_WebApi.Authorization.Models;
-using System.Security.Claims;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using CoffeeShop_WebApi.Controllers;
 using CoffeeShop.ServicesLogic.Services.Interfaces;
 using CoffeeShop_WebApi.Controllers.User;
+using System.Threading.Tasks;
 
 namespace CoffeeShop.UnitTests.AuthControllerTests
 {
     public class LoginControllerTests
     {
         [Fact]
-        public void HavingUser_WhenLogin_ThenRequestIsIncorresct()
+        public async Task HavingUser_WhenLoginFails_ThenReturnBadRequest()
         {
-            //arrange
+            // Arrange
             var authenticateRequest = new AuthenticateRequest()
             {
                 Email = "Poenaru@gmail",
                 Password = "21",
                 Role = "User",
-
             };
-            var authenticationResponse = new AuthenticateResponse(authenticateRequest, " ") { CreatedDate = DateTime.UtcNow };
+
             var services = A.Fake<IServicesAuth<UserDto>>();
-            A.CallTo(() => services.Authenticate(authenticateRequest)).Returns(authenticationResponse);
+            A.CallTo(() => services.Authenticate(authenticateRequest)).Returns(Task.FromResult<AuthenticateResponse>(null)); // Simulate failed authentication
+
             var controller = new AuthController(services);
 
-            //act
-            var actionResult = controller.Login(authenticateRequest);
+            // Act
+            var actionResult = await controller.Login(authenticateRequest);
 
-            //assert
+            // Assert
             var result = actionResult.Result as BadRequestObjectResult;
-            var resultMessage = result.Value as string;
-            Assert.Equal("Email or password is incorrect", resultMessage);
+            Assert.NotNull(result);
+            Assert.Equal("Email or password is incorrect", result.Value);
         }
 
         [Fact]
-        public void HavingUser_WhenLogin_ThenRequestIsCorresct()
+        public async Task HavingUser_WhenLoginSucceeds_ThenReturnOkResult()
         {
-            //arrange
+            // Arrange
             var authenticateRequest = new AuthenticateRequest()
             {
                 Email = "Poenaru@gmail",
                 Password = "21",
                 Role = "User"
             };
-            List<Claim> claims = new List<Claim> {
-                new Claim(ClaimTypes.Email, authenticateRequest.Email),
-                new Claim(ClaimTypes.Role, "Admin"),
-                new Claim(ClaimTypes.Role, "User"),
-            };
-            var key = new SymmetricSecurityKey(Encoding.UTF32.GetBytes("ion"));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-            var token = new JwtSecurityToken(
-                    claims: claims,
-                    expires: DateTime.Now.AddDays(1),
-                    signingCredentials: creds);
 
-            var authenticateResponse = new AuthenticateResponse(authenticateRequest, token.ToString())
+            var authenticateResponse = new AuthenticateResponse(authenticateRequest, "fake-token")
             {
                 Email = "Poenaru@gmail",
                 CreatedDate = DateTime.Now,
                 ExpiresDate = DateTime.Now.AddDays(1),
-                Token = token.ToString(),
+                Token = "fake-token",
             };
+
             var services = A.Fake<IServicesAuth<UserDto>>();
-            A.CallTo(() => services.Authenticate(authenticateRequest)).Returns(authenticateResponse);
+            A.CallTo(() => services.Authenticate(authenticateRequest)).Returns(Task.FromResult(authenticateResponse)); // Simulate successful authentication
+
             var controller = new AuthController(services);
 
-            //act
-            var actionResult = controller.Login(authenticateRequest);
+            // Act
+            var actionResult = await controller.Login(authenticateRequest);
 
-            //assert
+            // Assert
             var result = actionResult.Result as OkObjectResult;
-            var resultMessage = result.Value as AuthenticateResponse;
-            Assert.Equal(authenticateResponse, resultMessage);
+            Assert.NotNull(result);
+            Assert.Equal(authenticateResponse, result.Value);
         }
     }
 }

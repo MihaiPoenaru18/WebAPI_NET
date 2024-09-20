@@ -1,7 +1,6 @@
 ﻿using CoffeeShop.ServicesLogic.EntiteModels;
 using CoffeeShop.ServicesLogic.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Serilog;
 
 namespace CoffeeShop_WebApi.Controllers.User
@@ -10,25 +9,25 @@ namespace CoffeeShop_WebApi.Controllers.User
     [ApiController]
     public class NewsLetterController : ControllerBase
     {
-        private IServicesNewsLetter<UserWithNewsLetterDto> _servicesNewsLetter;
+        private readonly IServicesNewsLetter<UserWithNewsLetterDto> _servicesNewsLetter;
 
         public NewsLetterController(IServicesNewsLetter<UserWithNewsLetterDto> servicesNewsLetter)
         {
             _servicesNewsLetter = servicesNewsLetter;
-
         }
 
         [HttpPost("AddUserToNewsLetter")]
-        public ActionResult<string> AddUserToNewsLetter(UserWithNewsLetterDto body)
+        public async Task<ActionResult<string>> AddUserToNewsLetter(UserWithNewsLetterDto body)
         {
+            if (string.IsNullOrWhiteSpace(body.Email) || string.IsNullOrWhiteSpace(body.Name))
+            {
+                return BadRequest("The fields are empty!!!");
+            }
+
             try
             {
-                if (body.Email == null && body.Name == null)
-                {
-                    return BadRequest("The fields are empty!!!");
-                }
-                var x = _servicesNewsLetter.IsUserRegisteredWithNewsLetter(body).Result;
-                if (!x)
+                var isAlreadySubscribed = await _servicesNewsLetter.IsUserRegisteredWithNewsLetter(body);
+                if (isAlreadySubscribed)
                 {
                     return BadRequest("The user already subscribed to the newsletter!!!");
                 }
@@ -37,21 +36,9 @@ namespace CoffeeShop_WebApi.Controllers.User
             }
             catch (Exception ex)
             {
-                Log.Error("NewsLetterController -> AddUserToNewsLette() -> Exception => {@ex.Message}", ex.Message);
+                Log.Error("Error adding user to newsletter: {Message}", ex.Message);
                 return BadRequest("An error occurred while processing the request.");
             }
-
         }
-
-        //[HttpGet("GetNewsLetterInfo")]
-        //public ActionResult<bool> GetAllUsersInfo([FromBody] UserWithNewsLetterDto body)
-        //{
-
-        //    if (body == null)
-        //    {
-        //        return Ok(new ApiResponse { Success = false, Message = "The fiels are emplty!!!" });
-        //    }
-        //    return Ok(_servicesNewsLetter.GetStatusOfNewsLetter(body));
-        //}
     }
 }

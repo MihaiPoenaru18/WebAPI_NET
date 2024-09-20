@@ -4,7 +4,7 @@ namespace CoffeeShop.ServicesLogic.Authorization
 {
     public interface IAuthentication
     {
-        string CreateToken(AuthenticateRequest request, DateTime expiresDate);
-        AuthenticateResponse Authorization(AuthenticateRequest request, DateTime expiresDate);
+       Task<string> CreateToken(AuthenticateRequest request, DateTime expiresDate);
+       Task<AuthenticateResponse> Authorization(AuthenticateRequest request, DateTime expiresDate);
     }
 }

@@ -2,8 +2,8 @@
 {
     public interface ICoffeeShopUserRepository<T> : ICoffeeShopRepository<T> where T : class
     {
-        bool IsUserExistingInDB(T item);
+        Task<bool> IsUserExistingInDB(T item);
 
-        string GetUserByEmail(string email);
+        Task<string> GetUserByEmail(string email);
     }
 }

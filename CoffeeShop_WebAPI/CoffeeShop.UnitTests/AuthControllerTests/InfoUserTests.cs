@@ -5,22 +5,24 @@ using FakeItEasy;
 using Microsoft.AspNetCore.Mvc;
 using CoffeeShop_WebApi.Controllers.User;
 using Xunit;
+using System.Threading.Tasks;
 
 namespace CoffeeShop.UnitTests.AuthControllerTests
 {
     public class InfoUserTests
     {
         [Fact]
-        public void HavingUserLogin_WhenGetInfoUser_IsSuccess()
+        public async Task HavingUserLogin_WhenGetInfoUser_IsSuccess()
         {
-            //arrange
+            // Arrange
             var authenticateRequest = new AuthenticateRequest()
             {
                 Email = "Maria.Ion@yahoo.com",
                 Password = "123",
                 Role = "User"
             };
-            var response = new UserDto()
+
+            var expectedResponse = new UserDto()
             {
                 Email = "Maria.Ion@yahoo.com",
                 FirstName = "Maria",
@@ -34,41 +36,44 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
                     IsActived = true
                 }
             };
+
             var services = A.Fake<IServicesAuth<UserDto>>();
-            A.CallTo(() => services.GetInfo(authenticateRequest)).Returns(response);
+            A.CallTo(() => services.GetInfo(authenticateRequest)).Returns(Task.FromResult(expectedResponse));
             var controller = new AuthController(services);
 
-            //act
-            var actionResult = controller.GetUserInfo(authenticateRequest);
+            // Act
+            var actionResult = await controller.GetUserInfo(authenticateRequest);
 
-            //assert
+            // Assert
             var result = actionResult.Result as OkObjectResult;
             var resultMessage = result.Value as UserDto;
-            Assert.Equal(response, resultMessage);
+            Assert.NotNull(result);
+            Assert.Equal(expectedResponse, resultMessage);
         }
 
         [Fact]
-        public void HavingUserLogin_WhenGetInfoUser_IsFailes()
+        public async Task HavingUserLogin_WhenGetInfoUser_Fails_ReturnsBadRequest()
         {
-            //arrange
+            // Arrange
             var authenticateRequest = new AuthenticateRequest()
             {
                 Email = "Poenaru@gmail",
                 Password = "21",
                 Role = "User"
             };
-            var nullresponse = new UserDto() { };
+
             var services = A.Fake<IServicesAuth<UserDto>>();
-            A.CallTo(() => services.GetInfo(authenticateRequest)).Returns(nullresponse);
+            A.CallTo(() => services.GetInfo(authenticateRequest)).Returns(Task.FromResult<UserDto>(null));
+
             var controller = new AuthController(services);
 
-            //act
-            var actionResult = controller.GetUserInfo(authenticateRequest);
+            // Act
+            var actionResult = await controller.GetUserInfo(authenticateRequest);
 
-            //assert
+            // Assert
             var result = actionResult.Result as BadRequestObjectResult;
-            var resultMessage = result.Value as string;
-            Assert.Equal("User doesn't exit!! \n You need to register this user", resultMessage);
+            Assert.NotNull(result);
+            Assert.Equal("User doesn't exist! You need to register this user.", result.Value);
         }
     }
 }

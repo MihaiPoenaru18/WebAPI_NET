@@ -4,15 +4,16 @@ using CoffeeShop.ServicesLogic.EntiteModels;
 using CoffeeShop_WebApi.Controllers.User;
 using Microsoft.AspNetCore.Mvc;
 using CoffeeShop.ServicesLogic.Services.Interfaces;
+using System.Threading.Tasks;
 
 namespace CoffeeShop.UnitTests.AuthControllerTests
 {
     public class RegisterControllerTests
     {
         [Fact]
-        public void HavingUnregisterUser_WhenUserIsRegister_ThenAddNewUserWithSuccess()
+        public async Task HavingUnregisteredUser_WhenUserRegisters_ThenSuccessMessageReturned()
         {
-            //arrange
+            // Arrange
             var requestUser = new UserDto()
             {
                 Email = "Mihai@gm",
@@ -27,24 +28,25 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
                     IsActived = true
                 }
             };
-            var messageOk = "Register Success";
+            var expectedMessage = "Register Success";
             var services = A.Fake<IServicesAuth<UserDto>>();
-            A.CallTo(() => services.IsUserRegistered(requestUser)).Returns(true);
+            A.CallTo(() => services.IsUserRegistered(requestUser)).Returns(false);  // User is not registered
+
             var controller = new AuthController(services);
 
-            //act
-            var actionResult = controller.Register(requestUser);
+            // Act
+            var actionResult = await controller.Register(requestUser);
 
-            //Assert
+            // Assert
             var result = actionResult as OkObjectResult;
-            var resultMessage = result.Value as string;
-            Assert.Equal(messageOk, resultMessage);
+            var resultMessage = result?.Value as string;
+            Assert.Equal(expectedMessage, resultMessage);
         }
 
         [Fact]
-        public void HavingRegisterUser_WhenUserIsRegister_ThenAddNewUserWithFailes()
+        public async Task HavingRegisteredUser_WhenUserRegisters_ThenFailMessageReturned()
         {
-            //arrange
+            // Arrange
             var requestUser = new UserDto()
             {
                 Email = "Maria.Ion@yahoo.com",
@@ -58,39 +60,38 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
                     Email = "Mihai@gm",
                     IsActived = true
                 }
-
             };
-            var badMessage = "The user already exist!!!";
+            var expectedMessage = "The user already exists!";
             var services = A.Fake<IServicesAuth<UserDto>>();
-            A.CallTo(() => services.IsUserRegistered(requestUser)).Returns(false);
+            A.CallTo(() => services.IsUserRegistered(requestUser)).Returns(true);  // User is already registered
+
             var controller = new AuthController(services);
 
-            //act
-            var actionResult = controller.Register(requestUser);
+            // Act
+            var actionResult = await controller.Register(requestUser);
 
-            //Assert
+            // Assert
             var result = actionResult as BadRequestObjectResult;
-            var resultMessage = result.Value as string;
-            Assert.Equal(badMessage, resultMessage);
+            var resultMessage = result?.Value as string;
+            Assert.Equal(expectedMessage, resultMessage);
         }
 
         [Fact]
-        public void HavingRegisterUser_WhenUserIsNull_ThenAddNewUserWithFailes()
+        public async Task HavingNullUser_WhenUserRegisters_ThenFieldsEmptyMessageReturned()
         {
-            //arrange
-            var badMessage = "The fiels are emplty!!!";
+            // Arrange
+            var expectedMessage = "Fields are empty!";
             var services = A.Fake<IServicesAuth<UserDto>>();
-            A.CallTo(() => services.IsUserRegistered(null)).Returns(false);
+
             var controller = new AuthController(services);
 
-            //act
-            var actionResult = controller.Register(null);
+            // Act
+            var actionResult = await controller.Register(null);
 
-            //Assert
+            // Assert
             var result = actionResult as BadRequestObjectResult;
-            var resultMessage = result.Value as string;
-            Assert.Equal(badMessage, resultMessage);
+            var resultMessage = result?.Value as string;
+            Assert.Equal(expectedMessage, resultMessage);
         }
-
     }
 }

@@ -1,4 +1,8 @@
-﻿using CoffeeShop.ServicesLogic.EntiteModels.ModelsForProducts;
+﻿using AutoMapper;
+using CoffeeShop.DataAccess.DataAccess.ModelDB.ProductModel;
+using CoffeeShop.DataAccess.DataAccess.Repository.Interfaces;
+using CoffeeShop.ServicesLogic.EntiteModels.ModelsForProducts;
+using CoffeeShop.ServicesLogic.Services;
 using CoffeeShop.ServicesLogic.Services.Interfaces;
 using CoffeeShop_WebApi.Controllers.Product;
 using FakeItEasy;
@@ -9,64 +13,73 @@ namespace CoffeeShop.UnitTests.ProductControllerTests
 {
     public class AddProductsTests
     {
-        //[Fact]
-        //public void HavingProducts_WhenAddProducrts_WithSuccess()
-        //{
-        //    //arange
-        //    var body = new List<ProductDto>() {
-        //       new ProductDto
-        //    {
-        //        Name = "Product 1",
-        //        Sku = "ABC123",
-        //        Description = "This is a sample product",
-        //        Currency = "USD",
-        //        Price = 50,
-        //        Quantity = 10,
-        //        IsStock = true,
-        //        Promotion = new PromotionDto
-        //        {
-        //            PricePromotion= 10,
-        //            StartDate = DateTime.Now,
-        //            EndDate = DateTime.Now.AddDays(2),
-        //        },
-        //        Category = new CategoryDto
-        //        {
-        //            Name = "Category",
-        //        }
-        //    },
-        //         new ProductDto
-        //    {
-        //        Name = "Product 2",
-        //        Sku = "ABC123",
-        //        Description = "This is a sample product",
-        //        Currency = "USD",
-        //        Price = 50,
-        //        Quantity = 10,
-        //        IsStock = true,
-        //        Promotion = new PromotionDto
-        //        {
-        //            PricePromotion= 10,
-        //            StartDate = DateTime.Now,
-        //            EndDate = DateTime.Now.AddDays(2),
-        //        },
-        //        Category = new CategoryDto
-        //        {
-        //            Name = "Category",
-        //        }
-        //    }
-        //    };
-        //    var services = A.Fake<IServicesProduct<ProductDto>>();
-        //    A.CallTo(() => services.AddNewProducts(body));
-        //    var controller = new ProductController(services);
+        private readonly IMapper _mapper;
+        private readonly ICoffeeShopProductsRepository<Product> _productRepository;
+        private readonly ServicesProducts _services;
 
-        //    //act
-        //    var actionsResult = controller.AddProducts(body);
+        public AddProductsTests()
+        {
+            _mapper = A.Fake<IMapper>();
+            _productRepository = A.Fake<ICoffeeShopProductsRepository<Product>>();
+            _services = new ServicesProducts(_productRepository, _mapper);
+        }
 
-        //    //assert
-        //    var result = actionsResult as OkObjectResult;
-        //    var resultMessage = result.Value as string;
-        //    Assert.Equal("Products add in DB with success", resultMessage);
-        //}
+        [Fact]
+        public async Task AddProducts_WhenProductIsNull_ReturnsFalse()
+        {
+            // Arrange
+            List<ProductDto> products = null;
 
+            // Act
+            var result = await _services.AddNewProducts(products);
+
+            // Assert
+            Assert.False(result);
+            A.CallTo(() => _productRepository.Insert(A<Product>._)).MustNotHaveHappened();
+        }
+
+        [Fact]
+        public async Task AddProducts_WhenProductsProvided_AddsSuccessfully()
+        {
+            // Arrange
+            var products = new List<ProductDto>
+        {
+            new ProductDto { Name = "Espresso", Price = 10, Quantity = 100 }
+        };
+
+            var mappedProduct = new Product { Name = "Espresso", Price = 10, Quantity = 100 };
+
+            A.CallTo(() => _productRepository.GetAll()).Returns(new List<Product>());
+            A.CallTo(() => _mapper.Map<Product>(A<ProductDto>._)).Returns(mappedProduct);
+
+            // Act
+            var result = await _services.AddNewProducts(products);
+
+            // Assert
+            Assert.True(result);
+            A.CallTo(() => _productRepository.Insert(A<Product>._)).MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
+        public async Task AddProducts_WhenProductExists_DoesNotAddProduct()
+        {
+            // Arrange
+            var products = new List<ProductDto>
+        {
+            new ProductDto { Name = "Espresso", Price = 10, Quantity = 100 }
+        };
+
+            A.CallTo(() => _productRepository.GetAll()).Returns(new List<Product>
+        {
+            new Product { Name = "Espresso" }
+        });
+
+            // Act
+            var result = await _services.AddNewProducts(products);
+
+            // Assert
+            Assert.True(result);
+            A.CallTo(() => _productRepository.Insert(A<Product>._)).MustNotHaveHappened();
+        }
     }
 }

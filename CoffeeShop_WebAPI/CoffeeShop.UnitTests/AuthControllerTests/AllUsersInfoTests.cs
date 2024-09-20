@@ -4,7 +4,6 @@ using CoffeeShop_WebApi.Authorization.Models;
 using CoffeeShop_WebApi.Controllers.User;
 using FakeItEasy;
 using Microsoft.AspNetCore.Mvc;
-
 using Xunit;
 
 namespace CoffeeShop.UnitTests.AuthControllerTests
@@ -12,9 +11,9 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
     public class AllUsersInfoTests
     {
         [Fact]
-        public void HavingAdminLogin_WhenGetAllUsersInfo_IsSuccess()
+        public async Task HavingAdminLogin_WhenGetAllUsersInfo_IsSuccess()
         {
-            //arrange
+            // Arrange
             var authenticateRequest = new AuthenticateRequest()
             {
                 Email = "Poenaru@gmail",
@@ -22,75 +21,80 @@ namespace CoffeeShop.UnitTests.AuthControllerTests
                 Role = "Admin"
             };
 
-            var fakeUsers = new List<UserDto>() 
-            { new UserDto()
-            { Email = "Poenaru@gmail", 
-             FirstName = "Test",
-             LastName = "Test",
-             Password = "123",
-             Role = "User"
-            } };
-            var services = A.Fake<IServicesAuth<UserDto>>();
-            A.CallTo(() => services.GetAllUsers()).Returns(fakeUsers);
-            var controller = new AuthController(services);
-            //act
-            var actionResult = controller.GetAllUsersInfo(authenticateRequest);
+            var fakeUsers = new List<UserDto>
+            {
+                new UserDto
+                {
+                    Email = "Poenaru@gmail",
+                    FirstName = "Test",
+                    LastName = "Test",
+                    Password = "123",
+                    Role = "User"
+                }
+            };
 
-            //assert
+            var services = A.Fake<IServicesAuth<UserDto>>();
+            A.CallTo(() => services.GetAllUsers()).Returns(await Task.FromResult(fakeUsers)); // Async return
+            var controller = new AuthController(services);
+
+            // Act
+            var actionResult = await controller.GetAllUsersInfo(authenticateRequest); // Await async method
+
+            // Assert
             var result = actionResult.Result as OkObjectResult;
             var resultInfo = result.Value as List<UserDto>;
-            Assert.Equal(1, resultInfo.Count);
+            Assert.Single(resultInfo);
         }
 
         [Fact]
-        public void HavingAdminLogin_WhenGetAllUsersInfo_IsFailes()
+        public async Task HavingAdminLogin_WhenGetAllUsersInfo_IsFails()
         {
-            //arrange
+            // Arrange
             var authenticateRequest = new AuthenticateRequest()
             {
                 Email = "Poenaru@gmail",
                 Password = "21",
-                Role = "Admin",
-                
+                Role = "Admin"
             };
-            var nullUsers = new List<UserDto>() { };
+
+            var nullUsers = new List<UserDto>(); // Empty list, simulating no users
             var services = A.Fake<IServicesAuth<UserDto>>();
-            A.CallTo(() => services.GetAllUsers()).Returns(nullUsers);
+            A.CallTo(() => services.GetAllUsers()).Returns(await Task.FromResult(nullUsers)); // Async return
             var controller = new AuthController(services);
 
-            //act
-            var actionResult = controller.GetAllUsersInfo(authenticateRequest);
+            // Act
+            var actionResult = await controller.GetAllUsersInfo(authenticateRequest);
 
-            //assert
+            // Assert
             var result = actionResult.Result as BadRequestObjectResult;
             var resultMessage = result.Value as string;
-            Assert.Equal("User doesn't exit!! \n You need to register this user", resultMessage);
+            Assert.Equal("No users found! You need to register users.", resultMessage);
         }
 
         [Fact]
-        public void GetAllUsersInfo_WhenNoUsers_ReturnsBadRequest()
+        public async Task GetAllUsersInfo_WhenNoAdminRole_ReturnsBadRequest()
         {
             // Arrange
             var authenticateRequest = new AuthenticateRequest()
             {
                 Email = "Poenarugmail",
                 Password = "21",
-                Role = "User"
+                Role = "User" // Not an admin
             };
-            var listOfUsers = new List<UserDto>() { };
+
+            var listOfUsers = new List<UserDto>();
             var services = A.Fake<IServicesAuth<UserDto>>();
-            A.CallTo(() => services.GetAllUsers()).Returns(listOfUsers);
+            A.CallTo(() => services.GetAllUsers()).Returns(await Task.FromResult(listOfUsers)); // Async return
 
             var controller = new AuthController(services);
 
             // Act
-            var actionResult = controller.GetAllUsersInfo(authenticateRequest);
+            var actionResult = await controller.GetAllUsersInfo(authenticateRequest);
 
             // Assert
             var result = actionResult.Result as BadRequestObjectResult;
             var resultMessage = result.Value as string;
-            Assert.Equal("You are not authorised for this request!!!", resultMessage);
+            Assert.Equal("You are not authorized for this request!", resultMessage);
         }
-
     }
 }

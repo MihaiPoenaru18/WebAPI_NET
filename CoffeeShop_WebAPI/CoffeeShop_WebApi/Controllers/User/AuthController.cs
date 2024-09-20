@@ -11,7 +11,7 @@ namespace CoffeeShop_WebApi.Controllers.User
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private IServicesAuth<UserDto> _services;
+        private readonly IServicesAuth<UserDto> _services;
 
         public AuthController(IServicesAuth<UserDto> services)
         {
@@ -19,33 +19,36 @@ namespace CoffeeShop_WebApi.Controllers.User
         }
 
         [HttpPost("RegisterUser")]
-        public ActionResult Register(UserDto request)
+        public async Task<ActionResult> Register(UserDto request)
         {
+            if (request == null || string.IsNullOrWhiteSpace(request.Role))
+            {
+                return BadRequest("Fields are empty!");
+            }
+
             try
             {
-                if (request == null || String.IsNullOrEmpty(request.Role))
+                var isRegistered = await _services.IsUserRegistered(request);
+                if (isRegistered)
                 {
-                    return BadRequest("The fiels are emplty!!!");
+                    return BadRequest("The user already exists!");
                 }
-                if (!_services.IsUserRegistered(request).Result)
-                {
-                    return BadRequest("The user already exist!!!");
-                }
+
                 return Ok("Register Success");
             }
             catch (Exception ex)
             {
-                Log.Error("AutoController -> Register -> Exception => {@ex.Message}", ex.Message);
+                Log.Error("Error during user registration: {Message}", ex.Message);
                 return BadRequest("An error occurred while processing the request.");
             }
         }
 
         [HttpPost("Authenticate")]
-        public ActionResult<AuthenticateResponse> Login([FromBody] AuthenticateRequest authenticateRequest)
+        public async Task<ActionResult<AuthenticateResponse>> Login([FromBody] AuthenticateRequest authenticateRequest)
         {
-            var response = _services.Authenticate(authenticateRequest);
             try
             {
+                var response = await _services.Authenticate(authenticateRequest);
                 if (response == null)
                 {
                     return BadRequest("Email or password is incorrect");
@@ -55,56 +58,53 @@ namespace CoffeeShop_WebApi.Controllers.User
             }
             catch (Exception ex)
             {
-
-                Log.Error("AutoController -> Login() -> Exception => {@ex.Message}", ex.Message);
+                Log.Error("Error during login: {Message}", ex.Message);
                 return BadRequest("An error occurred while processing the request.");
             }
-
         }
 
         [HttpPost("GetUserInfo")]
-        public ActionResult<UserDto> GetUserInfo([FromBody] AuthenticateRequest authenticateRequest)
+        public async  Task<ActionResult<UserDto>> GetUserInfo([FromBody] AuthenticateRequest authenticateRequest)
         {
             try
             {
-                if (_services.GetInfo(authenticateRequest) == null)
-                {
-                    return BadRequest("User doesn't exit!! \n You need to register this user");
-                }
-                var userInfo = _services.GetInfo(authenticateRequest);
+                var userInfo = await _services.GetInfo(authenticateRequest);
                 if (userInfo == null)
                 {
-                    Log.Information("AutoController -> GetUserInfo() -> _services.GetInfo(authenticateRequest) = null =>  Null answer!!!");
+                    return BadRequest("User doesn't exist! You need to register this user.");
                 }
+
                 return Ok(userInfo);
             }
             catch (Exception ex)
             {
-                Log.Error("AutoController -> GetUserInfo() -> Exception => {@ex.Message}", ex.Message);
+                Log.Error("Error retrieving user info: {Message}", ex.Message);
                 return BadRequest("An error occurred while processing the request.");
             }
         }
 
         [AllowAnonymous]
         [HttpGet("GetAllUsersInfo"), Authorize]
-        public ActionResult<IEnumerable<UserDto>> GetAllUsersInfo([FromBody] AuthenticateRequest loginUser)
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUsersInfo([FromBody] AuthenticateRequest loginUser)
         {
+            if (loginUser.Role != "Admin")
+            {
+                return BadRequest("You are not authorized for this request!");
+            }
+
             try
             {
-                if (loginUser.Role == "Admin")
+                var users = await  _services.GetAllUsers();
+                if (users == null || !users.Any())
                 {
-                    var users = _services.GetAllUsers();
-                    if (users == null)
-                    {
-                        return BadRequest("User doesn't exit!! \n You need to register this user");
-                    }
-                    return Ok(users);
+                    return BadRequest("No users found! You need to register users.");
                 }
-                return BadRequest("You are not authorised for this request!!!");
+
+                return Ok(users);
             }
             catch (Exception ex)
             {
-                Log.Error("AutoController -> GetAllUsersInfo() -> Exception => {@ex.Message}", ex.Message);
+                Log.Error("Error retrieving all users info: {Message}", ex.Message);
                 return BadRequest("An error occurred while processing the request.");
             }
         }

@@ -6,7 +6,6 @@ using CoffeeShop.DataAccess.DataAccess.Repository.Interfaces;
 using CoffeeShop.ServicesLogic.Services.Interfaces;
 using Serilog;
 using CoffeeShop.DataAccess.DataAccess.ModelDB.UserModels;
-using System.Linq;
 
 namespace CoffeeShop.ServicesLogic.Services
 {
@@ -14,92 +13,122 @@ namespace CoffeeShop.ServicesLogic.Services
     {
         private readonly IMapper _mapper;
         private readonly IAuthentication _authorization;
-        private readonly ICoffeeShopUserRepository<User> _usersRepository;
-        private readonly ICoffeeShopUserRepository<UserWithNewsLetter> _usersWithNewsLetterRepository;
+        private readonly ICoffeeShopUserRepository<User> _userRepository;
+        private readonly ICoffeeShopUserRepository<UserWithNewsLetter> _newsletterRepository;
 
-        public ServicesAuth(ICoffeeShopUserRepository<User> usersRepository, IMapper mapper, IAuthentication authorization, ICoffeeShopUserRepository<UserWithNewsLetter> usersWithNewsLetterRepository)
+        public ServicesAuth(
+            ICoffeeShopUserRepository<User> userRepository,
+            IMapper mapper,
+            IAuthentication authorization,
+            ICoffeeShopUserRepository<UserWithNewsLetter> newsletterRepository)
         {
-            _usersRepository = usersRepository;
+            _userRepository = userRepository;
             _mapper = mapper;
             _authorization = authorization;
-            _usersWithNewsLetterRepository = usersWithNewsLetterRepository;
+            _newsletterRepository = newsletterRepository;
         }
 
         public async Task<UserDto> GetInfo(AuthenticateRequest loginUser)
         {
+            if (loginUser == null || string.IsNullOrEmpty(loginUser.Email))
+            {
+                Log.Warning("GetInfo() called with null or invalid AuthenticateRequest.");
+                return null;
+            }
+
             try
             {
-                var user = _usersRepository.GetUserByEmail(loginUser.Email);
-                if (user != null)
-                {
-                    return _mapper.Map<UserDto>(user);
-                }
+                var user = await _userRepository.GetUserByEmail(loginUser.Email);
+                return user == null ? null : _mapper.Map<UserDto>(user);
             }
             catch (Exception ex)
             {
-                Log.Error("ServicesAuth -> GetInfo() -> Exception => {@ex.Message}", ex.Message);
+                Log.Error(ex, "Error occurred while retrieving user info for email: {Email}", loginUser.Email);
+                return null;
             }
-            return null;
         }
 
         public async Task<IEnumerable<UserDto>> GetAllUsers()
         {
             try
             {
-                var users = await _usersRepository.GetAll();
-                var userWithNewsLetters = await _usersWithNewsLetterRepository.GetAll();
+                var users = await _userRepository.GetAll();
+                var newsletters = await _newsletterRepository.GetAll();
 
-                var userDtos = users.Join(
-                    userWithNewsLetters,
-                    user => user.IdUserNewsLetter,
-                    newsletter => newsletter.Id,
-                    (user, newsletter) => new { User = user, Newsletter = newsletter }
-                ).Select(joined => _mapper.Map<UserDto>(joined.User, opts =>
-                {
-                    opts.AfterMap((src, dest) =>
-                    {
-                        dest.NewsLetter = _mapper.Map<UserWithNewsLetterDto>(joined.Newsletter);
-                    });
-                }));
+                var userDtos = users
+                    .GroupJoin(newsletters,
+                        user => user.IdUserNewsLetter,
+                        newsletter => newsletter.Id,
+                        (user, matchingNewsletters) => new
+                        {
+                            User = user,
+                            Newsletter = matchingNewsletters.FirstOrDefault()
+                        })
+                    .Select(joined => MapUserWithNewsletter(joined.User, joined.Newsletter));
 
                 return userDtos.ToList();
             }
             catch (Exception ex)
             {
-                Log.Error("ServicesAuth -> GetAllUsers() -> Exception => {@ex.Message}", ex.Message);
+                Log.Error(ex, "Error occurred while retrieving all users.");
+                return Enumerable.Empty<UserDto>();
             }
-            return Enumerable.Empty<UserDto>();
         }
 
         public async Task<bool> IsUserRegistered(UserDto userDto)
         {
+            if (userDto == null || string.IsNullOrEmpty(userDto.Role))
+            {
+                Log.Warning("IsUserRegistered() called with invalid UserDto.");
+                return false;
+            }
+
+            if (userDto.Role != "User" && userDto.Role != "Admin")
+            {
+                Log.Warning("Invalid user role: {Role}", userDto.Role);
+                return false;
+            }
+
             try
             {
-                if (userDto != null && (userDto.Role == "User" || userDto.Role == "Admin"))
-                {
-                    var user = _mapper.Map<User>(userDto);
-                    return await _usersRepository.Insert(user);
-                }
+                var user = _mapper.Map<User>(userDto);
+                return await _userRepository.Insert(user);
             }
             catch (Exception ex)
             {
-                Log.Error("ServicesAuth -> IsUserRegistered() -> Exception => {@ex.Message}", ex.Message);
+                Log.Error(ex, "Error occurred while registering user.");
+                return false;
             }
-            return false;
         }
 
         public async Task<AuthenticateResponse> Authenticate(AuthenticateRequest request)
         {
+            if (request == null)
+            {
+                Log.Warning("Authenticate() called with null request.");
+                return null;
+            }
+
             try
             {
-                var response = _authorization.Authorization(request, DateTime.Now.AddDays(7));
-                return response;
+                return await _authorization.Authorization(request, DateTime.Now.AddDays(7));
             }
             catch (Exception ex)
             {
-                Log.Error("ServicesAuth -> Authenticate() -> Exception => {@ex.Message}", ex.Message);
+                Log.Error(ex, "Error occurred during authentication.");
+                return null;
             }
-            return null;
+        }
+
+        private UserDto MapUserWithNewsletter(User user, UserWithNewsLetter newsletter)
+        {
+            var userDto = _mapper.Map<UserDto>(user);
+            if (newsletter != null)
+            {
+                userDto.NewsLetter = _mapper.Map<UserWithNewsLetterDto>(newsletter);
+            }
+
+            return userDto;
         }
     }
 }

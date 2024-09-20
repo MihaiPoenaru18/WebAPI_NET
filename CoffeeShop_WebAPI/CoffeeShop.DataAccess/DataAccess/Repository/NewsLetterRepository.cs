@@ -42,7 +42,7 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
 
         public async Task<bool> Insert(UserWithNewsLetter userWithNews)
         {
-            if (!IsUserExistingInDB(userWithNews) && userWithNews != null)
+            if (!await IsUserExistingInDB(userWithNews) && userWithNews != null)
             {    
                 _context.Add(new UserWithNewsLetter
                 {
@@ -57,7 +57,7 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
             return false;
         }
 
-        public bool IsUserExistingInDB(UserWithNewsLetter userWithNews) 
+        public async Task<bool> IsUserExistingInDB(UserWithNewsLetter userWithNews) 
         { 
             var userWithNewsLetterDB = GetAll().Result.Where(x => x.Email.Equals(userWithNews.Email)).FirstOrDefault();
             if (userWithNewsLetterDB != null)
@@ -76,7 +76,7 @@ namespace CoffeeShop.DataAccess.DataAccess.Repository
             }
         }
 
-        public string GetUserByEmail(string email)
+        public async Task<string> GetUserByEmail(string email)
         {
             throw new NotImplementedException();
         }

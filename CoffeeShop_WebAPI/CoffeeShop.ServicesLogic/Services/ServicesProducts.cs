@@ -27,68 +27,67 @@ namespace CoffeeShop.ServicesLogic.Services
             }
             catch (Exception ex)
             {
-                Log.Error("ServicesProducts -> GetAllProducts() -> Exception => {@ex.Message}", ex.Message);
-                return null;
+                Log.Error(ex, "Error fetching all products");
+                return Enumerable.Empty<ProductDto>();
             }
         }
 
-        public void UpdateProductInformation(ProductDto product)
+        public async Task UpdateProductInformation(ProductDto product)
         {
             try
             {
                 var mappedProduct = _mapper.Map<Product>(product);
-                _coffeeShopProductRepository.Update(mappedProduct);
+                await _coffeeShopProductRepository.Update(mappedProduct);
             }
             catch (Exception ex)
             {
-                Log.Error("ServicesProducts -> UpdateProductInformation() -> Exception => {@ex.Message}", ex.Message);
+                Log.Error(ex, "Error updating product information for {ProductName}", product.Name);
             }
         }
 
         public async Task<bool> IsProductExistingInDb(string productName)
         {
+            if (string.IsNullOrWhiteSpace(productName))
+            {
+                Log.Warning("Product name is empty or null");
+                return false;
+            }
+
             try
             {
-                if (string.IsNullOrWhiteSpace(productName))
-                {
-                    throw new ArgumentException("Product Name is null or empty", nameof(productName));
-                }
-
                 var products = await _coffeeShopProductRepository.GetAll();
                 return products.Any(p => p.Name == productName);
             }
             catch (Exception ex)
             {
-                Log.Error($"ServicesProducts -> IsProductExistingInDb() -> Exception => {ex.Message}");
+                Log.Error(ex, "Error checking if product {ProductName} exists in DB", productName);
                 return false;
             }
         }
 
-        public bool AddNewProducts(List<ProductDto> products)
+        public async Task<bool> AddNewProducts(List<ProductDto> products)
         {
-            var finishInsert = false;
+            if (products == null || !products.Any())
+            {
+                Log.Warning("No products provided to add");
+                return false;
+            }
+
             try
             {
-                if (products != null)
+                foreach (var product in products)
                 {
-                    foreach (var product in products)
+                    if (!await IsProductExistingInDb(product.Name))
                     {
-                        if (!IsProductExistingInDb(product.Name).Result)
-                        {
-                            var mappedProduct = _mapper.Map<Product>(product);
-                            finishInsert = _coffeeShopProductRepository.Insert(mappedProduct).Result;
-                        }
+                        var mappedProduct = _mapper.Map<Product>(product);
+                        await _coffeeShopProductRepository.Insert(mappedProduct);
                     }
-                    return finishInsert;
                 }
-                else
-                {
-                    throw new NullReferenceException("Product Name is null!!!");
-                }
+                return true;
             }
             catch (Exception ex)
             {
-                Log.Error($"ServicesProducts -> AddNewProducts() -> Exception => {ex.Message}");
+                Log.Error(ex, "Error adding new products");
                 return false;
             }
         }
@@ -98,37 +97,37 @@ namespace CoffeeShop.ServicesLogic.Services
             try
             {
                 var categories = await _coffeeShopProductRepository.GetAllCategories();
-                var categoryDtos = _mapper.Map<IEnumerable<CategoryDto>>(categories);
-                return categoryDtos.DistinctBy(c => c.Name);
+                return _mapper.Map<IEnumerable<CategoryDto>>(categories).DistinctBy(c => c.Name);
             }
             catch (Exception ex)
             {
-                Log.Error($"ServicesProducts -> GetAllCategories() -> Exception => {ex.Message}");
-                return null;
+                Log.Error(ex, "Error fetching all categories");
+                return Enumerable.Empty<CategoryDto>();
             }
         }
 
-        public bool DeleteProduct(List<ProductDto> products)
+        public async Task<bool> DeleteProducts(List<ProductDto> products)
         {
-            var isFinishProcess = false;
+            if (products == null || !products.Any())
+            {
+                Log.Warning("No products provided for deletion");
+                return false;
+            }
+
             try
             {
-                if (products != null)
+                foreach (var product in products)
                 {
-                    foreach (var product in products)
+                    if (await IsProductExistingInDb(product.Name))
                     {
-                        if (IsProductExistingInDb(product.Name).Result)
-                        {
-                            _coffeeShopProductRepository.Delete(product.Name);
-                            isFinishProcess = true;
-                        }
+                        await _coffeeShopProductRepository.Delete(product.Name);
                     }
                 }
-                return isFinishProcess;
+                return true;
             }
             catch (Exception ex)
             {
-                Log.Error($"ServicesProducts -> DeleteProduct() -> Exception => {ex.Message}");
+                Log.Error(ex, "Error deleting products");
                 return false;
             }
         }

@@ -24,7 +24,7 @@ namespace CoffeeShop.ServicesLogic.Authorization
             _mapper = mapper;
         }
 
-        public string CreateToken(AuthenticateRequest request, DateTime expiresDate)
+        public async Task<string> CreateToken(AuthenticateRequest request, DateTime expiresDate)
         {
             List<Claim> claims = new List<Claim> {
                 new Claim(ClaimTypes.Email, request.Email),
@@ -41,21 +41,21 @@ namespace CoffeeShop.ServicesLogic.Authorization
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public AuthenticateResponse Authorization(AuthenticateRequest request, DateTime expiresDate)
+        public async Task<AuthenticateResponse> Authorization(AuthenticateRequest request, DateTime expiresDate)
         {
             var user = _mapper.Map<User>(request);
-            if (_usersRepository.IsUserExistingInDB(user))
+            if (await _usersRepository.IsUserExistingInDB(user))
             {
                 var token = CreateToken(request, expiresDate);
                 if (token == null)
                 {
                     return null;
                 }
-                AuthenticateResponse authenticateResponse = new AuthenticateResponse(request, token);
+                AuthenticateResponse authenticateResponse = new AuthenticateResponse(request, await token);
                 authenticateResponse.Email = request.Email;
                 authenticateResponse.CreatedDate = DateTime.Now;
                 authenticateResponse.ExpiresDate = expiresDate;
-                authenticateResponse.Name = _usersRepository.GetUserByEmail(request.Email);
+                authenticateResponse.Name =await _usersRepository.GetUserByEmail(request.Email);
                 return authenticateResponse;
             }
             return null;
